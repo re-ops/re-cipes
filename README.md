@@ -1,6 +1,6 @@
 # Intro
 
-Re-cipes is a collection of recipes that can be remotely executed by [Re-gent](https://github.com/re-ops/re-gent) they use resources and facts from  [Re-cog](https://github.com/re-ops/re-cog).
+Re-cipes is a collection of recipes that can be remotely executed by [Re-gent](https://github.com/re-ops/re-gent), they use resources and facts from  [Re-cog](https://github.com/re-ops/re-cog).
 
 It is a part of the [Re-ops](https://re-ops.github.io/re-ops/) project that offers a live coding environment for managing and information gathering from remote systems.
 
