@@ -15,7 +15,7 @@ We can either launch them ad-hoc:
 (run-hosts (hosts ip :hostname) re-cipes.python/python-3.7 [] [5 :minute])
 ```
 
-We may uses a profile (a collection of recipe ns):
+Or uses a profile (a collection of recipe namespaces):
 
 ```clojure
 ; Basic profiles
