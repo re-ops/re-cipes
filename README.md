@@ -4,7 +4,7 @@ Re-cipes is a collection remote provisioning functions that are exetuable by [Re
 
 It is a part of the [Re-ops](https://re-ops.github.io/re-ops/) project that offers a live coding environment for configuration management.
 
-[![Build Status](https://travis-ci.org/re-ops/re-mote.png)](https://travis-ci.org/re-ops/re-cog)
+[![Build Status](https://travis-ci.org/re-ops/re-cipes.png)](https://travis-ci.org/re-ops/re-cipes)
 
 # Basic Usage
 
