@@ -2,7 +2,7 @@
 
 ; Basic profiles
 (def ^{:doc "Minimal set of recipes"}
-  lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.hardening 're-cipes.cleanup})
+  lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.hardening 're-cipes.desktop})
 
 (def ^{:doc "Base setup common to all plans (shell, hardening, osquery etc.)"}
   base (into #{'re-cipes.osquery 're-cipes.monitoring} lean))
