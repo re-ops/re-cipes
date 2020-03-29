@@ -26,3 +26,23 @@
       (load- "/org/mate/desktop/keybindings/" {"custom1" virt})
       (load- "/org/mate/desktop/keybindings/" {"custom2" term}))
     {}))
+
+(def-inline mate-terminal
+  "Mate terminal settings"
+  []
+  (if (ubuntu-desktop?)
+    (let [pallet "#2E2E34343636:#CCCC00000000:#4E4E9A9A0606:#C4C4A0A00000:#34346565A4A4:#757550507B7B:#060698209A9A:#D3D3D7D7CFCF:#555557575353:#EFEF29292929:#8A8AE2E23434:#FCFCE9E94F4F:#72729F9FCFCF:#ADAD7F7FA8A8:#3434E2E2E2E2:#EEEEEEEEECEC"
+          colors {:palette pallet
+                  :bold-color "#000000000000"
+                  :background-color "#000000000000"
+                  :foreground-color "#FFFFFFFFFFFF"}
+          profile {:visible-name "Default"
+                   :scrollbar-position "hidden"
+                   :palette pallet
+                   :default-show-menubar "false"
+                   :use-theme-colors "false"
+                   :allow-bold "false"}
+          settings {"keybindings" {:select-all "disabled"}
+                    "profiles/default" (merge profile colors)}]
+      (load- "/org/mate/terminal/" settings))
+    {}))
