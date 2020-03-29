@@ -1,6 +1,7 @@
 (ns re-cipes.intellij
   "Setting up Intellij"
   (:require
+   [re-cipes.access :refer (permissions)]
    [re-cipes.shell :refer [dot-files]]
    [re-cipes.access :refer [permissions]]
    [re-cog.resources.exec :refer [run]]

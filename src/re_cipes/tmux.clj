@@ -1,6 +1,7 @@
 (ns re-cipes.tmux
   "Setting up tmux and related utilities"
   (:require
+   [re-cipes.access :refer (permissions)]
    [re-cog.resources.git :refer (clone)]
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]

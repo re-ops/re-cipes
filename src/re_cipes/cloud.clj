@@ -1,6 +1,7 @@
 (ns re-cipes.cloud
   "Cloud providers cli tools"
   (:require
+   [re-cipes.access :refer (permissions)]
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [clojure.core.strint :refer (<<)]
