@@ -26,13 +26,13 @@ Provisioning a system using a [profile](https://github.com/re-ops/re-cipes/blob/
   base (into #{'re-cipes.osquery 're-cipes.monitoring} lean))
 ```
 
-And use this profile when creating a Re-core type inside the Repl:
+We now use this profile to creating a Re-core type inside the REPL:
 
 ```clojure
 ; Define a type
 (create cog 're-cipes.profiles/base default-src :base "A machine that uses the base profile")
-; Create a VM
-(create kvm defaults local c1-medium :vuepress "vuepress")
+; Create a new VM
+(create kvm defaults local c1-medium :base "An example machine that uses the base profile")
 ; Deploy Re-gent into the newly create VM
 (deploy (hosts (matching (*1)) :ip) "/home/user/code/re-ops/re-gent/target/re-gent")
 ; Provision the system using the profile
