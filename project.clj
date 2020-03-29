@@ -18,4 +18,22 @@
        "do" "clean," "compile," "cljfmt" "check"
      ]
   }
+
+  :profiles {
+     :dev {
+       :source-paths  ["dev"]
+       :set-version {
+         :updates [
+            {:path "main/re_cipes/main.clj" :search-regex #"\"\d+\.\d+\.\d+\""}
+            {:path "bin/binary.sh" :search-regex #"\d+\.\d+\.\d+"}
+            {:path "README.md" :search-regex #"\d+\.\d+\.\d+"}
+          ]}
+
+     }
+
+    :package {
+        :source-paths  ["src" "main"]
+        :main re-cipes.main
+    }
+  }
   :repl-options {:init-ns re-cipes.core})
