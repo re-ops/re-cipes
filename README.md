@@ -1,6 +1,6 @@
 # Intro
 
-Re-cipes is a collection of recipes that can be remotely executed by [Re-gent](https://github.com/re-ops/re-gent), they use resources and facts from  [Re-cog](https://github.com/re-ops/re-cog).
+Re-cipes a collection of recipes for provisioing Linux systems, supporting remote execution by [Re-gent](https://github.com/re-ops/re-gent), they use resources and facts from  [Re-cog](https://github.com/re-ops/re-cog).
 
 It is a part of the [Re-ops](https://re-ops.github.io/re-ops/) project that offers a live coding environment for managing and information gathering from remote systems.
 
@@ -8,14 +8,14 @@ It is a part of the [Re-ops](https://re-ops.github.io/re-ops/) project that offe
 
 # Usage
 
-We can either launch them ad-hoc:
+Ad-hoc execution:
 
 ```clojure
 ; mainly useful during development
 (run-hosts (hosts ip :hostname) re-cipes.python/python-3.7 [] [5 :minute])
 ```
 
-Or uses a [profile](https://github.com/re-ops/re-cipes/blob/master/src/re_cipes/profiles.clj) (a collection of recipe namespaces):
+Provisioning a system using a [profile](https://github.com/re-ops/re-cipes/blob/master/src/re_cipes/profiles.clj) (collection of recipe namespaces):
 
 ```clojure
 ; Basic profiles
@@ -24,7 +24,6 @@ Or uses a [profile](https://github.com/re-ops/re-cipes/blob/master/src/re_cipes/
 
 (def ^{:doc "Base setup common to all plans (shell, hardening, osquery etc.)"}
   base (into #{'re-cipes.osquery 're-cipes.monitoring} lean))
-
 ```
 
 And use this profile when creating a Re-core type inside the Repl:
