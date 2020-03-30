@@ -1,6 +1,7 @@
 (ns re-cipes.k8s
   "k8s setup"
   (:require
+   [re-cipes.access :refer (permissions)]
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
@@ -9,12 +10,12 @@
 
 (require-recipe)
 
-(def-inline minikube
+(def-inline {:depends #'re-cipes.access/permissions} minikube
   "Setting minikube"
   []
   (let [version "0.9.1"
         release (<< "restic_~{version}_linux_amd64")
-        expected "eabd027438953d29a4b0f7b810c801919cc13bef3ebe7aff08c9534ac2b091ab"
+        expected "81d77d1babe63be393e0a3204aac7825eb35e0fdf58ffefd9f66508a43864866"
         url "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"]
     (download url "/usr/bin/minikube" expected)
     (chmod "/usr/bin/minikube" "0755")))
