@@ -42,9 +42,3 @@
   "Setting up rclone"
   []
   (package "rclone" :present))
-
-#_(defn dropbox
-    [{:keys [home]}]
-    (if (ubuntu-desktop?)
-      (dropbox-desktop)
-      (dropbox-headless home)))
