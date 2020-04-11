@@ -1,5 +1,6 @@
 (ns re-cipes.backup
   (:require
+   [re-cipes.access :refer (permissions)]
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
@@ -8,7 +9,7 @@
 
 (require-recipe)
 
-(def-inline restic
+(def-inline {:depends #'re-cipes.access/permissions} restic
   "Setting up restic"
   []
   (let [version "0.9.1"
