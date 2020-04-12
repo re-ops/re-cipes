@@ -22,7 +22,7 @@
     (rename (<< "/tmp/~{release}") "/usr/bin/restic")
     (chmod "/usr/bin/restic" "0755")))
 
-(def-inline octo
+(def-inline {:depends #'re-cipes.access/permissions} octo
   "Setting up octo"
   []
   (let [version "0.8.1"
