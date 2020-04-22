@@ -29,6 +29,9 @@
 (def ^{:doc "Backup tools"}
   backup (into #{'re-cipes.backup} base))
 
+(def ^{:doc "Restore instance"}
+  restore (into #{'re-cipes.restore} base))
+
 (def ^{:doc "Cloud tools (gcloud, doctl, awscli)"}
   cloud (into #{'re-cipes.cloud} base))
 
