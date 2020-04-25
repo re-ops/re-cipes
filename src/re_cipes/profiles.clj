@@ -30,7 +30,7 @@
   backup (into #{'re-cipes.backup} base))
 
 (def ^{:doc "Restore instance"}
-  restore (into #{'re-cipes.restore} base))
+  restore (into #{'re-cipes.restore 're-cipes.backup} base))
 
 (def ^{:doc "Cloud tools (gcloud, doctl, awscli)"}
   cloud (into #{'re-cipes.cloud} base))
