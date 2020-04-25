@@ -16,4 +16,5 @@
     (partition- device)
     (set-file-acl "re-ops" "rwX" root)
     (directory (<< "~{root}/~{target}") :present)
-    (mount device (<< "~{root}/~{target}"))))
+    (mount device (<< "~{root}/~{target}"))
+    (set-file-acl "re-ops" "rwX" (<< "~{root}/~{target}"))))
