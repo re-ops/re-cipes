@@ -27,13 +27,12 @@
 (def-inline networking
   "Hardening network"
   []
-  (letfn [(sysctl-reload [target]
-            (fn []
-              (script ("/sbin/sysctl" "-e" "-p" ~target))))]
+  (letfn [(sysctl-reload []
+            (script ("sudo" "/usr/sbin/sysctl" "--system")))]
     (let [target "/etc/sysctl.d/10-network-hardening.conf"]
       (set-file-acl "re-ops" "rwX" "/etc/sysctl.d")
       (copy "/tmp/resources/networking/harden.conf" target)
-      (run (sysctl-reload target)))))
+      (run sysctl-reload))))
 
 (def-inline disable-bluetooth
   "Disabling bluetooth on desktop machines"
