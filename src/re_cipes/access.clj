@@ -14,3 +14,19 @@
                   "/usr/share/keyrings/" "/etc/apt/sources.list.d"]]
       (when (= user "re-ops")
         (set-file-acl "re-ops" "rwX" path)))))
+
+(def-inline repo
+  "Allow repo access"
+  []
+  (let [{:keys [user]} (configuration)]
+    (doseq [path ["/usr/share/keyrings/" "/etc/apt/sources.list.d/"]]
+      (when (= user "re-ops")
+        (set-file-acl "re-ops" "rwX" path)))))
+
+(def-inline wireguard
+  "Wireguard permissions"
+  []
+  (let [{:keys [user]} (configuration)]
+    (doseq [path ["/etc/wireguard/"]]
+      (when (= user "re-ops")
+        (set-file-acl "re-ops" "rwX" path)))))

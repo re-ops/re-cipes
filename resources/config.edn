@@ -1,4 +1,9 @@
 {
  :user "re-ops"
  :home "/home/re-ops"
+
+ :elastic {
+   :cluster #include "elastic/cluster.edn"
+   :nginx #include "elastic/nginx/nginx.edn"
+ }
 }

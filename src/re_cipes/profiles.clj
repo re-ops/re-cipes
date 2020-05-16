@@ -80,3 +80,7 @@
 (def ^{:doc "Clojure dev desktop"}
   clj-desktop (into base-desktop clj-dev))
 
+; Elastic
+
+(def ^{:doc "Elasticsearch database"}
+  elastic ['re-cipes.elastic])

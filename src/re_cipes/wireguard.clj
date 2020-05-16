@@ -1,6 +1,7 @@
 (ns re-cipes.wireguard
   "Wireguard client/server setup"
   (:require
+   [re-cipes.access :refer (wireguard)]
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
@@ -17,7 +18,7 @@
   (update-)
   (package "wireguard" :present))
 
-(def-inline configure
+(def-inline {:depends #'re-cipes.access/wireguard} configure
   "Configure wireguard"
   []
   (let [private "/etc/wireguard/private-key"]
@@ -29,5 +30,4 @@
       (run private-key)
       (let [pk (clojure.string/trim (slurp private))
             args {:ifc "eth1" :port "51820" :address "10.10.0.1/24" :private-key pk}]
-        (set-file-acl "re-ops" "rwX" "/etc/wireguard/")
         (template "/tmp/resources/wireguard/wg0.conf.mustache" "/etc/wireguard/wg.conf" args)))))
