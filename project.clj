@@ -36,4 +36,12 @@
         :main re-cipes.main
     }
   }
-  :repl-options {:init-ns re-cipes.core})
+
+  :repl-options {
+    :init-ns user
+    :prompt (fn [ns] (str "\u001B[35m[\u001B[34m" "re-cipes" "\u001B[35m]\u001B[33mλ:\u001B[m " ))
+    :welcome (println "Welcome to re-cipes!" )
+  }
+
+
+)
