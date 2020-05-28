@@ -3,7 +3,6 @@
   (:require
    [re-cipes.access :refer (permissions)]
    [re-cog.resources.git :refer (clone)]
-   [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.download :refer (download)]
