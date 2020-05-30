@@ -64,6 +64,9 @@
 (def ^{:doc "A Vuepress documentation instance"}
   vuepress (into #{'re-cipes.node 're-cipes.nvim} lean))
 
+(def ^{:doc "3d printing"}
+  print3d (into #{'re-cipes.3dprint} base-dev))
+
 (def ^{:doc "IoT development instance"}
   iot-dev (into #{'re-cipes.platformio 're-cipes.3dprint} base-dev))
 

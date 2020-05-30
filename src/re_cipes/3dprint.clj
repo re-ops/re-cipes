@@ -15,6 +15,4 @@
 (def-inline slicing
   "Slicing tools"
   []
-  (repository "ppa:thopiekar/cura" :present)
-  (update-)
   (package "cura" :present))
