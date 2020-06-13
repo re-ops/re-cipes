@@ -1,6 +1,7 @@
 (ns re-cipes.docker
   "Docker setup"
   (:require
+   [re-cipes.access :refer (permissions)]
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [clojure.core.strint :refer (<<)]
@@ -18,7 +19,7 @@
   (doseq [p ["apt-transport-https" "ca-certificates" "gnupg-agent" "software-properties-common"]]
     (package p :present)))
 
-(def-inline {:depends #'re-cipes.docker/prequisits} install
+(def-inline {:depends [#'re-cipes.docker/prequisits #'re-cipes.access/permissions]} install
   "install docker"
   []
   (let [sources "/etc/apt/sources.list.d"
