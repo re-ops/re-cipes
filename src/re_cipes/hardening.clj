@@ -4,7 +4,7 @@
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
-   [re-cog.resources.file :refer (line line-set uncomment copy)]
+   [re-cog.resources.file :refer (line line-set copy)]
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.resources.service :refer (service on-boot)]))
 
@@ -16,9 +16,9 @@
   (package "openssh-server" :present)
   (package "rng-tools" :present)
   (set-file-acl "re-ops" "rwX" "/etc/ssh/sshd_config")
-  (uncomment "/etc/ssh/sshd_config" "PermitRootLogin" "#")
+  (line "/etc/ssh/sshd_config" "PermitRootLogin" :uncomment :with "#")
   (line-set "/etc/ssh/sshd_config" "PermitRootLogin" "no" " ")
-  (uncomment "/etc/ssh/sshd_config" "PasswordAuthentication" "#")
+  (line "/etc/ssh/sshd_config" "PasswordAuthentication" :uncomment :with "#")
   (line-set "/etc/ssh/sshd_config" "PasswordAuthentication" "no" " ")
   (line-set "/etc/ssh/sshd_config" "X11Forwarding" "no" " ")
   (line "/etc/ssh/sshd_config" "\nUseDns no" :present)
