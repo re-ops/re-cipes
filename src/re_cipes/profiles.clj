@@ -15,9 +15,6 @@
 
 (def wireguard #{'re-cipes.hardening 're-cipes.wireguard})
 
-(def ^{:doc "Pfsense monitoring"}
-  pfsense #{'re-cipes.hardening 're-cipes.docker 're-cipes.pfsense})
-
 ; Container/Virtualization
 
 (def ^{:doc "Virtualization tools (KVM, LXC)"}
@@ -85,4 +82,8 @@
 
 (def ^{:doc "Clojure dev desktop"}
   clj-desktop (into base-desktop clj-dev))
+
+; Servers
+(def ^{:doc "Pfsense monitoring"}
+  pfelk #{'re-cipes.hardening 're-cipes.docker 're-cipes.pfelk})
 
