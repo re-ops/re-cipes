@@ -1,0 +1,24 @@
+# 05-firewall.conf
+filter {
+  if "pf" in [tags] and [labels] =~ /^filterlog$/ {
+    grok {
+      patterns_dir => ["/usr/share/logstash/etc/logstash/conf.d/patterns"]
+      match => ["pf_message", "%{PF_LOG_ENTRY}"]
+    }
+
+     {{#ifcs}}
+      if [interface][name] =~ /^{{name}}$/ {
+         mutate {
+           add_field => { "[interface][alias]" => "{{alias}}" }
+           add_field => { "[network][name]" => "{{description}}" }
+       }
+     }
+     {{/ifcs}}
+    }
+    mutate {
+      update => { "[network][direction]" => "%{[network][direction]}bound" }
+      update => { "[network][type]" => "ipv%{[network][type]}" }
+    }
+  }
+}
+

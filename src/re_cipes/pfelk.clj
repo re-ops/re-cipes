@@ -4,7 +4,7 @@
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
-   [re-cog.resources.file :refer (line-set)]
+   [re-cog.resources.file :refer (line-set template)]
    [re-cog.resources.sysctl :refer (reload)]
    [re-cog.resources.ufw :refer (set-state add-rule reset)]))
 
@@ -46,11 +46,22 @@
     (clone repo dest)
     (chown dest user user {:recursive true})))
 
-(def-inline {:depends #'re-cipes.pfelk/get-source} logstash-configure
+(def-inline {:depends #'re-cipes.pfelk/get-source} inputs-config
   "Configure logstash inputs"
   []
-  (let [{:keys [home user]} (configuration)
-        dest (<< "~{home}/docker-pfelk/logstash/conf.d/01-inputs.conf")]
-    (line dest "  if [host] =~ /172\\.22\\.33\\.1/ {" :replace :with "  if [host] =~ /192\\.168\\.3\\.1/ {")
+  (let [{:keys [home pfelk]} (configuration)
+        dest (<< "~{home}/docker-pfelk/logstash/conf.d/01-inputs.conf")
+        {:keys [ip]} pfelk
+        line "  if [host] =~ /172\\.22\\.33\\.1/ {"
+        with (<< "  if [host] =~ /~{ip}/ {")]
+    (line dest line :replace :with with)
     (line dest (fn [i _] (= i 33)) :uncomment :with "#")
     (line dest (fn [i _] (= i 30)) :comment :with "#")))
+
+(def-inline {:depends #'re-cipes.pfelk/get-source} firewall-config
+  "Configure logstash inputs"
+  []
+  (let [{:keys [home user pfelk]} (configuration)
+        file "05-firewall.conf"
+        dest (<< "~{home}/docker-pfelk/logstash/conf.d/~{file}")]
+    (template (<< "/tmp/resources/pfelk/~{file}.mustache") dest pfelk)))

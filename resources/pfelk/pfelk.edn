@@ -1,0 +1,9 @@
+{
+ :ip "192\\.168\\.1\\.1"
+ :ifcs [
+   {:name "igb1" :alias "WAN" :description "Ingress WEB"} 
+   {:name "igb2" :alias "LAN" :description "Internal network"} 
+   {:name "igb3" :alias "Guest" :description "Guest network"} 
+   {:name "lo0" :alias "Link-Local" :description "Local link"} 
+ ]
+}
