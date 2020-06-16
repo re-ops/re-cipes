@@ -52,9 +52,9 @@
   (let [{:keys [home pfelk]} (configuration)
         dest (<< "~{home}/docker-pfelk/logstash/conf.d/01-inputs.conf")
         {:keys [ip]} pfelk
-        line "  if [host] =~ /172\\.22\\.33\\.1/ {"
+        target "  if [host] =~ /172\\.22\\.33\\.1/ {"
         with (<< "  if [host] =~ /~{ip}/ {")]
-    (line dest line :replace :with with)
+    (line dest target :replace :with with)
     (line dest (fn [i _] (= i 33)) :uncomment :with "#")
     (line dest (fn [i _] (= i 30)) :comment :with "#")))
 
