@@ -6,4 +6,8 @@
    {:name "igb3" :alias "Guest" :description "Guest network"} 
    {:name "lo0" :alias "Link-Local" :description "Local link"} 
  ]
+ :geoip {
+   :license-key "1234"
+   :account-id "1235"
+ }
 }
