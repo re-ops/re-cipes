@@ -1,2 +1,2 @@
 LEIN_SNAPSHOTS_IN_RELEASE=1 lein with-profile package do uberjar
-cat bin/stub.sh target/re-cipes-0.1.18-standalone.jar > target/re-cipes && chmod +x target/re-cipes
+cat bin/stub.sh target/re-cipes-0.1.19-standalone.jar > target/re-cipes && chmod +x target/re-cipes
