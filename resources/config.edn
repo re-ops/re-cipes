@@ -1,5 +1,9 @@
 {
  :user "re-ops"
- :home "/home/re-ops" 
- :pfelk #include #join [#profile "/pfelk.edn"]
+ :home "/home/re-ops"
+
+ :pfelk #profile {
+    :prod #include "prod/pfelk.edn"
+    :dev #include "dev/pfelk.edn"
+  }
 }
