@@ -77,4 +77,4 @@
   (let [{:keys [home user pfelk]} (configuration)
         file "05-firewall.conf"
         dest (<< "~{home}/docker-pfelk/logstash/conf.d/~{file}")]
-    (template (<< "/tmp/resources/pfelk/~{file}.mustache") dest pfelk)))
+    (template (<< "/tmp/resources/templates/pfelk/~{file}.mustache") dest pfelk)))

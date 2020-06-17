@@ -31,7 +31,7 @@
             (script ("sudo" "/usr/sbin/sysctl" "--system")))]
     (let [target "/etc/sysctl.d/10-network-hardening.conf"]
       (set-file-acl "re-ops" "rwX" "/etc/sysctl.d")
-      (copy "/tmp/resources/networking/harden.conf" target)
+      (copy "/tmp/resources/templates/networking/harden.conf" target)
       (run sysctl-reload))))
 
 (def-inline disable-bluetooth

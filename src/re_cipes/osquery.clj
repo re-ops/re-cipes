@@ -22,7 +22,7 @@
   "Configure osquery"
   []
   (set-file-acl "re-ops" "rwX" "/etc/osquery")
-  (copy "/tmp/resources/osquery.conf" "/etc/osquery/osquery.conf")
+  (copy "/tmp/resources/templates/osquery/osquery.conf" "/etc/osquery/osquery.conf")
   (set-file-acl "re-ops" "rwX" "/usr/share/osquery/packs")
-  (copy "/tmp/resources/fim.conf" "/usr/share/osquery/packs/fim.conf")
+  (copy "/tmp/resources/templates/osquery/fim.conf" "/usr/share/osquery/packs/fim.conf")
   (service "osqueryd" :restart))
