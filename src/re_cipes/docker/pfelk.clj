@@ -1,12 +1,12 @@
-(ns re-cipes.pfelk
+(ns re-cipes.docker.pfelk
   "Utilities for setting up pfsense ELK"
   (:require
+   [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
-   [re-cog.resources.file :refer (line line-set template)]
    [re-cog.resources.sysctl :refer (reload)]
-   [re-cog.resources.ufw :refer (set-state add-rule reset)]))
+   [re-cog.resources.file :refer (line line-set template file)]))
 
 (require-recipe)
 
@@ -20,7 +20,7 @@
     (download url (<< "/tmp/~{deb}") sum)
     (package (<< "/tmp/~{deb}") :present)))
 
-(def-inline {:depends #'re-cipes.pfelk/geoipupdate} geoip-config
+(def-inline {:depends #'re-cipes.docker.pfelk/geoipupdate} geoip-config
   "Configure logstash inputs"
   []
   (let [{:keys [home pfelk]} (configuration)
@@ -32,14 +32,6 @@
     (line-set dest "AccountID" account-id " ")
     (line-set dest "LicenseKey" license-key " ")
     (line dest target :replace :with with)))
-
-(def-inline firewall
-  "Enabling firewall"
-  []
-  (reset)
-  (add-rule 5601 :allow {})
-  (add-rule 22 :allow {})
-  (set-state :enable))
 
 (def-inline limits
   "Enabling ELK limits"
@@ -59,7 +51,7 @@
     (clone repo dest)
     (chown dest user user {:recursive true})))
 
-(def-inline {:depends #'re-cipes.pfelk/get-source} inputs-config
+(def-inline {:depends #'re-cipes.docker.pfelk/get-source} inputs-config
   "Configure logstash inputs"
   []
   (let [{:keys [home pfelk]} (configuration)
@@ -71,7 +63,7 @@
     (line dest (fn [i _] (= i 33)) :uncomment :with "#")
     (line dest (fn [i _] (= i 30)) :comment :with "#")))
 
-(def-inline {:depends #'re-cipes.pfelk/get-source} firewall-config
+(def-inline {:depends #'re-cipes.docker.pfelk/get-source} firewall-config
   "Configure logstash inputs"
   []
   (let [{:keys [home user pfelk]} (configuration)

@@ -3,10 +3,10 @@
   (:require
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
-   [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.file :refer (line line-set copy)]
    [re-cog.resources.permissions :refer (set-file-acl)]
-   [re-cog.resources.service :refer (service on-boot)]))
+   [re-cog.resources.service :refer (service on-boot)]
+   [re-cog.resources.ufw :refer (set-state add-rule reset)]))
 
 (require-recipe)
 
@@ -40,3 +40,10 @@
   (if (ubuntu-desktop?)
     (on-boot "bluetooth" :disable)
     {}))
+
+(def-inline firewall
+  "Enabling firewall"
+  []
+  (reset)
+  (add-rule 22 :allow {})
+  (set-state :enable))

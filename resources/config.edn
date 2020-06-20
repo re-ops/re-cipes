@@ -5,5 +5,10 @@
  :pfelk #profile {
     :prod #include "prod/pfelk.edn"
     :dev #include "dev/pfelk.edn"
-  }
+ }
+
+ :nginx #profile {
+    :prod #include "prod/nginx.edn"
+    :dev #include "dev/nginx.edn"
+ }
 }

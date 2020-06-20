@@ -85,5 +85,5 @@
 
 ; Servers
 (def ^{:doc "Pfsense monitoring"}
-  pfelk #{'re-cipes.hardening 're-cipes.docker 're-cipes.pfelk})
+  pfelk #{'re-cipes.hardening 're-cipes.docker 're-cipes.docker.pfelk 're-cipes.docker.nginx})
 
