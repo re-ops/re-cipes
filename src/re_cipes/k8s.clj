@@ -2,11 +2,9 @@
   "k8s setup"
   (:require
    [re-cipes.access :refer (permissions)]
-   [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
-   [re-cog.resources.file :refer (rename symlink chmod)]
-   [re-cog.resources.archive :refer (untar bzip2)]))
+   [re-cog.resources.file :refer (rename symlink chmod)]))
 
 (require-recipe)
 
