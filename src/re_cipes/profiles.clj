@@ -21,10 +21,10 @@
   virtual (into #{'re-cipes.virtualization} base))
 
 (def ^{:doc "minikube"}
-  minikube #{'re-cipes.k8s 're-cipes.docker})
+  minikube #{'re-cipes.k8s 're-cipes.docker.server})
 
 (def ^{:doc "Docker server"}
-  docker (into #{'re-cipes.docker} base))
+  docker (into #{'re-cipes.docker.server} base))
 
 (def ^{:doc "Backup tools"}
   backup (into #{'re-cipes.backup} base))
@@ -85,5 +85,5 @@
 
 ; Servers
 (def ^{:doc "Pfsense monitoring"}
-  pfelk #{'re-cipes.hardening 're-cipes.docker 're-cipes.docker.pfelk 're-cipes.docker.nginx})
+  pfelk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.pfelk 're-cipes.docker.nginx})
 

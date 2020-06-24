@@ -6,6 +6,7 @@
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
    [re-cog.resources.sysctl :refer (reload)]
+   [re-cog.resources.service :refer (on-boot)]
    [re-cog.resources.file :refer (line line-set template file)]))
 
 (require-recipe)
@@ -23,7 +24,7 @@
 (def-inline {:depends #'re-cipes.docker.pfelk/geoipupdate} geoip-config
   "Configure logstash inputs"
   []
-  (let [{:keys [home pfelk]} (configuration)
+  (let [{:keys [pfelk]} (configuration)
         dest (<< "/etc/GeoIP.conf")
         {:keys [account-id license-key]} (pfelk :geoip)
         target "EditionIDs GeoLite2-Country GeoLite2-City"
@@ -42,20 +43,20 @@
     (line target "vm.max_map_count=262144" :present)
     (reload target)))
 
-(def-inline get-source
+(def-inline {:depends #'re-cipes.docker.server/services} get-source
   "Setting up pfelk"
   []
-  (let [{:keys [home user]} (configuration)
+  (let [{:keys [user]} (configuration)
         repo "https://github.com/3ilson/docker-pfelk.git"
-        dest (<< "~{home}/docker-pfelk")]
+        dest (<< "/etc/docker/compose/docker-pfelk")]
     (clone repo dest)
-    (chown dest user user {:recursive true})))
+    (on-boot "docker-compose@pfelk-docker.service" :enable)))
 
 (def-inline {:depends #'re-cipes.docker.pfelk/get-source} inputs-config
   "Configure logstash inputs"
   []
-  (let [{:keys [home pfelk]} (configuration)
-        dest (<< "~{home}/docker-pfelk/logstash/conf.d/01-inputs.conf")
+  (let [{:keys [pfelk]} (configuration)
+        dest (<< "/etc/docker/compose/docker-pfelk/logstash/conf.d/01-inputs.conf")
         {:keys [ip]} pfelk
         target "  if [host] =~ /172\\.22\\.33\\.1/ {"
         with (<< "  if [host] =~ /~{ip}/ {")]
@@ -66,7 +67,7 @@
 (def-inline {:depends #'re-cipes.docker.pfelk/get-source} firewall-config
   "Configure logstash inputs"
   []
-  (let [{:keys [home user pfelk]} (configuration)
+  (let [{:keys [user pfelk]} (configuration)
         file "05-firewall.conf"
-        dest (<< "~{home}/docker-pfelk/logstash/conf.d/~{file}")]
+        dest (<< "/etc/docker/compose/docker-pfelk/logstash/conf.d/~{file}")]
     (template (<< "/tmp/resources/templates/pfelk/~{file}.mustache") dest pfelk)))

@@ -1,11 +1,11 @@
-(ns re-cipes.docker
-  "Docker setup"
+(ns re-cipes.docker.server
+  "Docker server setup"
   (:require
-   [re-cipes.access :refer (permissions)]
-   [re-cog.resources.exec :refer [run]]
+   [re-cipes.access]
+   [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.common.recipe :refer (require-recipe)]
    [clojure.core.strint :refer (<<)]
-   [re-cog.resources.file :refer (file line)]
+   [re-cog.resources.file :refer (file line directory copy)]
    [re-cog.resources.package :refer (package key-file update-)]
    [re-cog.resources.user :refer (group-add)]
    [re-cog.resources.download :refer (download)]
@@ -19,7 +19,7 @@
   (doseq [p ["apt-transport-https" "ca-certificates" "gnupg-agent" "software-properties-common"]]
     (package p :present)))
 
-(def-inline {:depends [#'re-cipes.docker/prequisits #'re-cipes.access/permissions]} install
+(def-inline {:depends [#'re-cipes.docker.server/prequisits #'re-cipes.access/permissions]} install
   "install docker"
   []
   (let [sources "/etc/apt/sources.list.d"
@@ -36,8 +36,16 @@
     (doseq [p ["docker-ce" "docker-ce-cli" "containerd.io" "docker-compose"]]
       (package p :present))))
 
-(def-inline {:depends #'re-cipes.docker/install} passwordless
+(def-inline {:depends #'re-cipes.docker.server/install} passwordless
   "Enable passwordless docker"
   []
   (let [{:keys [user]} (configuration)]
     (group-add "docker" user)))
+
+(def-inline {:depends #'re-cipes.docker.server/install} services
+  "System setup for docker-compose services"
+  []
+  (set-file-acl "re-ops" "rwX" "/etc/docker")
+  (directory "/etc/docker/compose" :present)
+  (set-file-acl "re-ops" "rwX" "/etc/systemd/system/")
+  (copy "/tmp/resources/templates/docker/docker-compose@.service" "/etc/systemd/system/docker-compose@.service"))

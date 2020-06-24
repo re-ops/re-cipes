@@ -1,6 +1,7 @@
 (ns re-cipes.docker.nginx
   "Dockerized nginx revese proxy support"
   (:require
+   [re-cipes.docker.server]
    [re-cipes.hardening]
    [re-cog.facts.datalog :refer (fqdn)]
    [re-cog.resources.permissions :refer (set-file-acl)]
@@ -11,14 +12,12 @@
 
 (require-recipe)
 
-(def-inline get-source
+(def-inline {:depends #'re-cipes.docker.server/services} get-source
   "Grabbing source"
   []
-  (let [{:keys [home user]} (configuration)
-        repo "https://github.com/narkisr/nginx-proxy.git"
-        dest (<< "~{home}/nginx-proxy")]
-    (clone repo dest)
-    (chown dest user user {:recursive true})))
+  (let [repo "https://github.com/narkisr/nginx-proxy.git"
+        dest "/etc/docker/compose/nginx-proxy"]
+    (clone repo dest)))
 
 (def-inline {:depends #'re-cipes.docker.nginx/get-source} cert-generation
   "Generating ssl certs"
@@ -36,9 +35,8 @@
                    (let [pem (<< "~{dest}/dhparam.pem")]
                      (script
                       (~openssl "dhparam" "-dsaparam" "-out" ~pem "4096")))))]
-      (let [{:keys [home]} (configuration)
-            host (fqdn)
-            dest (<< "~{home}/nginx-proxy/certs")]
+      (let [host (fqdn)
+            dest (<< "/etc/docker/compose/nginx-proxy/certs")]
         (package "openssl" :present)
         (directory dest :present)
         (run (certs host dest))
@@ -47,8 +45,8 @@
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} enabled-sites
   "Configuration of nginx sites"
   []
-  (let [{:keys [home nginx]} (configuration)
-        sites-enabled (<< "~{home}/nginx-proxy/sites-enabled")]
+  (let [{:keys [nginx]} (configuration)
+        sites-enabled (<< "/etc/docker/compose/nginx-proxy/sites-enabled")]
     (directory sites-enabled :present)
     (doseq [{:keys [name external-port] :as m} (nginx :sites)
             :let [site (assoc m :fqdn (fqdn))]]
@@ -64,8 +62,8 @@
                (set! H @("/usr/bin/openssl" "passwd" "-crypt" ~pass))
                (set! U ~user)
                ("/usr/bin/printf" (quoted "$H:$U\n") ">>" ~dest))))]
-    (let [{:keys [home nginx]} (configuration)
+    (let [{:keys [nginx]} (configuration)
           {:keys [user pass]}  (nginx :htpasswd)
-          dest (<< "~{home}/nginx-proxy/htpasswd")]
+          dest "/etc/docker/compose/nginx-proxy/htpasswd"]
       (directory dest :present)
       (run (hash- user pass (<< "~{dest}/~(fqdn)"))))))
