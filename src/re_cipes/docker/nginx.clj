@@ -61,7 +61,7 @@
               (script
                (set! H @("/usr/bin/openssl" "passwd" "-crypt" ~pass))
                (set! U ~user)
-               ("/usr/bin/printf" (quoted "$H:$U\n") ">>" ~dest))))]
+               ("/usr/bin/printf" (quoted "$U:$H\n") ">>" ~dest))))]
     (let [{:keys [nginx]} (configuration)
           {:keys [user pass]}  (nginx :htpasswd)
           dest "/etc/docker/compose/nginx-proxy/htpasswd"]
