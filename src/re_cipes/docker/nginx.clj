@@ -3,10 +3,9 @@
   (:require
    [re-cipes.docker.server]
    [re-cipes.hardening]
+   [re-cog.facts.config :refer (configuration)]
    [re-cog.facts.datalog :refer (fqdn)]
-   [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.common.recipe :refer (require-recipe)]
-   [re-cog.resources.download :refer (download)]
    [re-cog.resources.ufw :refer (set-state add-rule reset)]
    [re-cog.resources.file :refer (line line-set template)]))
 
