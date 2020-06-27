@@ -87,6 +87,8 @@
 (def ^{:doc "Pfsense monitoring"}
   pfelk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.pfelk 're-cipes.docker.nginx})
 
-(def ^{:doc "Re-dock"}
-  re-dock #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.re-dock 're-cipes.docker.nginx})
+(def ^{:doc "ELK stack"}
+  elk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.elk-stack 're-cipes.docker.nginx})
 
+(def ^{:doc "Elastisearch instance"}
+  elasticsearch #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.elasticsearch 're-cipes.docker.nginx})

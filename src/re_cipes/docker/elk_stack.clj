@@ -1,5 +1,5 @@
-(ns re-cipes.docker.re-dock
-  "Dockerized nginx revese proxy support"
+(ns re-cipes.docker.elk-stack
+  "Dockerized ELK OSS full stack"
   (:require
    [re-cipes.docker.server]
    [re-cog.common.recipe :refer (require-recipe)]))
