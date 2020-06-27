@@ -3,6 +3,7 @@
   (:require
    [re-cipes.docker.server]
    [re-cipes.hardening]
+   [re-cog.resources.service :refer (on-boot)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.facts.datalog :refer (fqdn)]
    [re-cog.common.recipe :refer (require-recipe)]
@@ -16,7 +17,8 @@
   []
   (let [repo "https://github.com/narkisr/nginx-proxy.git"
         dest "/etc/docker/compose/nginx-proxy"]
-    (clone repo dest)))
+    (clone repo dest)
+    (on-boot "docker-compose@nginx-proxy" :enable)))
 
 (def-inline {:depends #'re-cipes.docker.nginx/get-source} cert-generation
   "Generating ssl certs"
