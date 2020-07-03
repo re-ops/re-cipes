@@ -1,4 +1,4 @@
-(defproject re-cipes "0.1.23"
+(defproject re-cipes "0.1.24"
   :description "Recipes for provioning Linux machines"
   :url "https://github.com/re-ops/re-cipes"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
