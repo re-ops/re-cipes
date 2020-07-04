@@ -1,7 +1,7 @@
 {
  :sites [
-   {:basic-auth true :name "kibana" :internal-port 5601 :external-port 5602}
-   {:basic-auth true :name "elasticsearch" :internal-port 9200 :external-port 9201}
+   {:basic-auth false :name "kibana" :internal-port 5601 :external-port 5602}
+   {:basic-auth false :name "elasticsearch" :internal-port 9200 :external-port 9201}
    {:basic-auth false :name "grafana" :internal-port 3000 :external-port 3001}
  ]
  :htpasswd {
