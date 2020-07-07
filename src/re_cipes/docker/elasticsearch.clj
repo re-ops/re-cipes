@@ -14,7 +14,7 @@
   []
   (set-file-acl "re-ops" "rwX" "/var/")
   (directory "/var/data" :present)
-  (chmod "/var/data" "a+wrx"))
+  (chmod "/var/data" "a+wrx" {}))
 
 (def-inline {:depends [#'re-cipes.docker.server/services re-cipes.docker.elasticsearch/volume]} get-source
   "Grabbing source"

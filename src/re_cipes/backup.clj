@@ -20,7 +20,7 @@
     (download url tmp expected)
     (bzip2 tmp)
     (rename (<< "/tmp/~{release}") "/usr/bin/restic")
-    (chmod "/usr/bin/restic" "0755")))
+    (chmod "/usr/bin/restic" "0755" {})))
 
 (def-inline {:depends #'re-cipes.access/permissions} octo
   "Setting up octo"
@@ -31,7 +31,7 @@
         url (<< "https://github.com/narkisr/octo/releases/download/~{version}/octo")]
     (download url tmp expected)
     (rename tmp "/usr/bin/octo")
-    (chmod "/usr/bin/octo" "0755")))
+    (chmod "/usr/bin/octo" "0755" {})))
 
 (def-inline zbackup
   "Setting up zbackup"

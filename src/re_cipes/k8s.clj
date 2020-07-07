@@ -16,7 +16,7 @@
         expected "81d77d1babe63be393e0a3204aac7825eb35e0fdf58ffefd9f66508a43864866"
         url "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"]
     (download url "/usr/bin/minikube" expected)
-    (chmod "/usr/bin/minikube" "0755")))
+    (chmod "/usr/bin/minikube" "0755" {})))
 
 (def-inline kubectl
   "Setting minikube"
@@ -25,4 +25,4 @@
         url (<< "https://storage.googleapis.com/kubernetes-release/release/~{version}/bin/linux/amd64/kubectl")
         expected "6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c"]
     (download url "/usr/bin/kubectl" expected)
-    (chmod "/usr/bin/kubectl" "0755")))
+    (chmod "/usr/bin/kubectl" "0755" {})))

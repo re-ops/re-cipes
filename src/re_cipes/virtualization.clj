@@ -2,9 +2,7 @@
   "Setting up hypervisors"
   (:require
    [re-cog.resources.exec :refer [run]]
-   [re-cog.common.recipe :refer (require-recipe)]
-   [re-cog.facts.config :refer (configuration)]
-   [re-cog.resources.file :refer (symlink directory chmod)]))
+   [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
 

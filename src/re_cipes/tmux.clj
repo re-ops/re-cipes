@@ -30,4 +30,4 @@
         url (<< "https://github.com/narkisr/tmx/releases/download/~{version}/tmx")
         dest "/usr/local/bin/tmx"]
     (download url dest sum)
-    (chmod dest "+x")))
+    (chmod dest "+x" {})))

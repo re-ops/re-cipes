@@ -4,7 +4,7 @@
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
-   [re-cog.resources.file :refer (chmod template)]
+   [re-cog.resources.file :refer (template)]
    [re-cog.resources.package :refer (package repository update-)]
    [re-cog.resources.permissions :refer (set-file-acl)]))
 

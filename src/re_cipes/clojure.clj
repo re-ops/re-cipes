@@ -25,7 +25,7 @@
       (download url (<< "/tmp/~{ins}") sum)
       (package "curl" :present)
       (package "rlwrap" :present)
-      (chmod (<< "/tmp/~{ins}") "+x")
+      (chmod (<< "/tmp/~{ins}") "+x" {})
       (run (install-fn (<< "/tmp/~{ins}") prefix))
       (directory (<< "~{home}/bin/") :present)
       (symlink (<< "~{home}/bin/clj") (<< "~{prefix}/bin/clj"))
@@ -43,7 +43,7 @@
         dot-lein (<< "~{home}/.lein")]
     (directory (<< "~{home}/bin") :present)
     (download url dest sum)
-    (chmod dest "+x")
+    (chmod dest "+x" {})
     (directory dot-lein :present)
     (symlink (<< "~{dot-lein}/profiles.clj") (<< "~{home}/.dots/profiles.clj"))))
 
@@ -67,4 +67,4 @@
         dest (<< "~{home}/bin/cljfmt")]
     (directory (<< "~{home}/bin") :present)
     (download url dest "290872ee18769995b3a2e8e5b12711586fdfcf5dca26b78b79b87d8fc8eab495")
-    (chmod dest "+x")))
+    (chmod dest "+x" {})))

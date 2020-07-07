@@ -7,7 +7,7 @@
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.download :refer (download)]
-   [re-cog.resources.file :refer (symlink directory chmod)]))
+   [re-cog.resources.file :refer (symlink directory)]))
 
 (require-recipe)
 
