@@ -8,14 +8,14 @@ It is a part of the [Re-ops](https://re-ops.github.io/re-ops/) project that offe
 
 # Usage
 
-Ad-hoc execution:
+One of the key benefits of Re-ops is the ability to run and test your provisioning logic directly from the REPL, we can test a single function:
 
 ```clojure
 ; mainly useful during development
 (run-hosts (hosts ip :hostname) re-cipes.python/python-3.7 [] [5 :minute])
 ```
 
-Provisioning a system using a [profile](https://github.com/re-ops/re-cipes/blob/master/src/re_cipes/profiles.clj) (collection of recipe namespaces):
+Or provisioning an system using a [profile](https://github.com/re-ops/re-cipes/blob/master/src/re_cipes/profiles.clj) (collection of recipe namespaces):
 
 ```clojure
 ; Basic profiles
@@ -37,6 +37,13 @@ We now use this profile to creating a Re-core type inside the REPL:
 (deploy (hosts (matching (*1)) :ip) "/home/user/code/re-ops/re-gent/target/re-gent")
 ; Provision the system using the profile
 (provision (matching (*1)))
+```
+
+Lastly we can also provision a profile using the standalone binary:
+
+```bash
+$ wget -q https://github.com/re-ops/re-cipes/releases/download/0.1.26/re-cipes -P /tmp
+$ sudo /tmp/re-cipes prov -p 're-cipes.profiles/elasticsearch
 ```
 
 # Copyright and license
