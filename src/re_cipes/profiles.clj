@@ -92,3 +92,6 @@
 
 (def ^{:doc "Elastisearch instance"}
   elasticsearch #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.elasticsearch 're-cipes.docker.nginx})
+
+(def ^{:doc "Grafana instance"}
+  grafana #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.grafana 're-cipes.docker.nginx})

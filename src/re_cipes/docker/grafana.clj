@@ -1,4 +1,4 @@
-(ns re-cipes.docker.elasticsearch
+(ns re-cipes.docker.grafana
   "Dockerized Elastisearch only"
   (:require
    [re-cog.resources.permissions :refer (set-file-acl)]
@@ -16,11 +16,11 @@
   (directory "/var/data" :present)
   (chmod "/var/data" "a+wrx" {:recursive true}))
 
-(def-inline {:depends [#'re-cipes.docker.server/services re-cipes.docker.elasticsearch/volume]} get-source
+(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.grafana/volume]} get-source
   "Grabbing source"
   []
   (let [repo "https://github.com/re-ops/re-dock.git"
-        dest "/etc/docker/compose/elasticsearch"]
+        dest "/etc/docker/compose/grafana"]
     (clone repo dest)
-    (copy (<< "~{dest}/elasticsearch.yml") (<< "~{dest}/docker-compose.yml"))
-    (on-boot "docker-compose@elasticsearch" :enable)))
+    (copy (<< "~{dest}/grafana.yml") (<< "~{dest}/docker-compose.yml"))
+    (on-boot "docker-compose@grafana" :enable)))
