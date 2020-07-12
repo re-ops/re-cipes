@@ -39,7 +39,7 @@ We now use this profile to create a Re-core type inside the REPL and provision a
 (provision (matching (*1)))
 ```
 
-Lastly we can also provision a profile using the standalone binary:
+Lastly we can also provision a profile using the standalone binary when we don't want to use Re-core:
 
 ```bash
 $ wget -q https://github.com/re-ops/re-cipes/releases/download/0.1.26/re-cipes -P /tmp
