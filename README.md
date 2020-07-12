@@ -26,7 +26,7 @@ Or provision a system using a [profile](https://github.com/re-ops/re-cipes/blob/
   base (into #{'re-cipes.osquery 're-cipes.monitoring} lean))
 ```
 
-We now use this profile to creating a Re-core type inside the REPL:
+We now use this profile to create a Re-core type inside the REPL and provision a kvm instance:
 
 ```clojure
 ; Define a type
