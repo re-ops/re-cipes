@@ -15,7 +15,7 @@ One of the key benefits of Re-ops is the ability to run and test your provisioni
 (run-hosts (hosts ip :hostname) re-cipes.python/python-3.7 [] [5 :minute])
 ```
 
-Or provisioning an system using a [profile](https://github.com/re-ops/re-cipes/blob/master/src/re_cipes/profiles.clj) (collection of recipe namespaces):
+Or provision a system using a [profile](https://github.com/re-ops/re-cipes/blob/master/src/re_cipes/profiles.clj) (collection of recipe namespaces):
 
 ```clojure
 ; Basic profiles
