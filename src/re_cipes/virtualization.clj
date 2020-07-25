@@ -18,14 +18,10 @@
 (def-inline kvm
   "Installing KVM"
   []
-  (let [version (ubuntu-version)]
-    (cond
-      (<= version 18.04) (package "libvirt-bin" :present)
-      (>= version 18.10) (do
-                           (package "libvirt-daemon-system" :present)
-                           (package "libvirt-clients" :present)))
-    (package "qemu-kvm" :present)
-    (package "virtinst" :present)
-    (package "bridge-utils" :present)
-    (if (ubuntu-desktop?)
-      (package "virt-manager" :present))))
+  (package "libvirt-daemon-system" :present)
+  (package "libvirt-clients" :present)
+  (package "qemu-kvm" :present)
+  (package "virtinst" :present)
+  (package "bridge-utils" :present)
+  (if (ubuntu-desktop?)
+    (package "virt-manager" :present)))
