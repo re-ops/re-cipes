@@ -7,10 +7,14 @@
 (def ^{:doc "Base setup common to all plans (shell, hardening, osquery etc.)"}
   base (into #{'re-cipes.monitoring} lean))
 
-; Infra profiles
-(def ^{:doc "re-core ready instances"}
+; Re-core
+(def ^{:doc "Re-core instance"}
   core #{'re-cipes.clojure 're-cipes.packer 're-cipes.nvim 're-cipes.shell 're-cipes.hardening})
 
+(def ^{:doc "Re-core standlone development instance"}
+  core-standalone (into #{'re-cipes.lxd 're-cipes.docker.server} core))
+
+; Infra profiles
 (def nas (into #{'re-cipes.backup 're-cipes.zfs} base))
 
 (def wireguard #{'re-cipes.hardening 're-cipes.wireguard})
