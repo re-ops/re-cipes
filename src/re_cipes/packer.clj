@@ -1,4 +1,4 @@
-(ns re-cipes.build
+(ns re-cipes.packer
   "Build tools"
   (:require
    [re-cipes.access :refer (permissions)]

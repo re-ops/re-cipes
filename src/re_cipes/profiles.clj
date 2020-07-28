@@ -9,7 +9,7 @@
 
 ; Infra profiles
 (def ^{:doc "re-core ready instances"}
-  core #{'re-cipes.clojure 're-cipes.build 're-cipes.nvim 're-cipes.shell 're-cipes.hardening})
+  core #{'re-cipes.clojure 're-cipes.packer 're-cipes.nvim 're-cipes.shell 're-cipes.hardening})
 
 (def nas (into #{'re-cipes.backup 're-cipes.zfs} base))
 
@@ -18,7 +18,10 @@
 ; Container/Virtualization
 
 (def ^{:doc "Virtualization tools (KVM, LXC)"}
-  virtual (into #{'re-cipes.virtualization} base))
+  virtual (into #{'re-cipes.kvm 're-cipes.lxd 're-cipes.packer} base))
+
+(def ^{:doc "Container virtualization support"}
+  conatiner (into #{'re-cipes.lxd 're-cipes.packer} base))
 
 (def ^{:doc "minikube"}
   minikube #{'re-cipes.k8s 're-cipes.docker.server})
@@ -26,6 +29,7 @@
 (def ^{:doc "Docker server"}
   docker (into #{'re-cipes.docker.server} base))
 
+; Single purpose instance
 (def ^{:doc "Backup tools"}
   backup (into #{'re-cipes.backup} base))
 
@@ -44,7 +48,7 @@
 ; Development profiles
 
 (def ^{:doc "Base dev support"}
-  base-dev (into #{'re-cipes.build 're-cipes.nvim} lean))
+  base-dev (into #{'re-cipes.nvim} lean))
 
 (def ^{:doc "Clojure development instance"}
   clj-dev (into #{'re-cipes.clojure} base-dev))
@@ -59,7 +63,7 @@
   jvm-dev (into #{'re-cipes.intellij} clj-dev))
 
 (def ^{:doc "Development machine with Clojure and deep learning utils"}
-  learning (into #{'re-cipes.clojure 're-cipes.build 're-cipes.nvim 're-cipes.deep} lean))
+  learning (into #{'re-cipes.clojure 're-cipes.nvim 're-cipes.deep} lean))
 
 (def ^{:doc "A Vuepress documentation instance"}
   vuepress (into #{'re-cipes.node 're-cipes.nvim} lean))
