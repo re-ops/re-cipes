@@ -8,11 +8,11 @@
   base (into #{'re-cipes.monitoring} lean))
 
 ; Re-core
-(def ^{:doc "Re-core instance"}
-  core #{'re-cipes.clojure 're-cipes.packer 're-cipes.nvim 're-cipes.shell 're-cipes.hardening})
+(def ^{:doc "Re-ops instance"}
+  re-ops #{'re-cipes.ops 're-cipes.clojure 're-cipes.packer 're-cipes.nvim 're-cipes.shell 're-cipes.hardening})
 
-(def ^{:doc "Re-core standlone development instance"}
-  core-standalone (into #{'re-cipes.lxd 're-cipes.docker.server} core))
+(def ^{:doc "Re-ops standlone development instance with Docker and LXC enabled"}
+  re-ops-standalone (into #{'re-cipes.lxd 're-cipes.docker.server} re-ops))
 
 ; Infra profiles
 (def nas (into #{'re-cipes.backup 're-cipes.zfs} base))

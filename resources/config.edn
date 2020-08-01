@@ -11,4 +11,9 @@
     :prod #include "prod/nginx.edn"
     :dev #include "dev/nginx.edn"
  }
+
+ :lxd #profile {
+    :prod #include "prod/lxd.edn"
+    :dev #include "dev/lxd.edn"
+ }
 }
