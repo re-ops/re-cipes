@@ -12,8 +12,10 @@
   "Setting up Re-ops repositories"
   []
   (let [{:keys [home user]} (configuration)
-        root (<< "~{home}/re-ops")
+        code (<< "~{home}/code")
+        root (<< "~{home}/code/re-ops")
         repos ["re-core" "re-pack" "re-dock" "re-cipes" "re-gent"]]
+    (directory code :present)
     (directory root :present)
     (doseq [repo repos]
       (let [dest (<< "~{root}/~{repo}")]
