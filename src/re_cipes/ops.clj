@@ -34,7 +34,8 @@
   []
   (letfn [(generate [dest]
             (fn []
-              (script "ssh-keygen" "-t" "rsa" "-f" ~dest "-q" "-P" "")))]
+              (script
+               ("ssh-keygen" "-t" "rsa" "-f" ~dest "-q" "-P" "''"))))]
     (let [{:keys [home user lxd]} (configuration)
           dot-ssh (<< "~{home}/.ssh")
           dest (<< "~{dot-ssh}/config")
