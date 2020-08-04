@@ -29,6 +29,17 @@
     (copy (<< "~{home}/code/re-ops/re-core/resources/re-ops.edn") (<< "~{home}/.re-ops.edn"))
     (copy (<< "~{home}/code/re-ops/re-core/resources/secrets.edn") "/tmp/secrets.edn")))
 
+(def-inline ssh
+  "Configuring ssh access for Re-ops instances"
+  []
+  (let [{:keys [home user lxd]} (configuration)
+        dot-ssh (<< "~{home}/.ssh")
+        dest (<< "~{dot-ssh}/config")
+        network (first (re-find (re-pattern "(\\d+\\.\\d+\\.\\d+)") (lxd :ipv4-range)))
+        args {:user user :key (<< "~{dot-ssh}/id_rsa") :network (<< "~{network}.*")}]
+    (directory dest :present)
+    (template "/tmp/resources/templates/ssh/config.mustache" dest args)))
+
 (def-inline {:depends #'re-cipes.ops/repositories} keyz
   "Generate gpg keys"
   []

@@ -6,7 +6,7 @@ networks:
 - name: lxdbr0
   type: bridge
   config:
-    ipv4.address: auto
+    ipv4.address: {{ipv4-range}}
     ipv6.address: none
 storage_pools:
 - name: default
