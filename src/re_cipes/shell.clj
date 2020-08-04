@@ -17,8 +17,7 @@
   (letfn [(chsh [user]
             (fn []
               (script ("sudo" "/usr/bin/chsh" "-s" "/usr/bin/zsh" ~user))))]
-    (let [{:keys [home user]} (configuration)
-          dest (<< "~{home}/.tmux")]
+    (let [{:keys [home user]} (configuration)]
       (package "zsh" :present)
       (when-not  (clojure.string/includes? (<< "~{user}:/bin/zsh") (slurp "/etc/passwd"))
         (run (chsh user))))))
