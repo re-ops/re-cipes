@@ -1,0 +1,6 @@
+{
+  :name "Re-ops" 
+  :comment "Re-ops gpg key used locally"
+  :email "re-ops@local.com"
+  :pass "foobar123!"
+}

@@ -16,4 +16,9 @@
     :prod #include "prod/lxd.edn"
     :dev #include "dev/lxd.edn"
  }
+
+ :gpg #profile {
+    :prod #include "prod/gpg.edn"
+    :dev #include "dev/gpg.edn"
+ }
 }

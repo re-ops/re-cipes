@@ -2,6 +2,7 @@
   "Setting up Re-ops"
   (:require
    [re-cog.resources.git :refer (clone)]
+   [re-cog.resources.file :refer (template directory)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.file :refer (directory copy)]))
@@ -25,5 +26,28 @@
   "Set basic Re-ops configuraion files"
   []
   (let [{:keys [home]} (configuration)]
-    (copy (<< "~{home}/re-ops/re-core/resources/re-ops.edn") (<< "~{home}/.re-ops.edn"))
-    (copy (<< "~{home}/re-ops/re-core/resources/secrets.edn") "/tmp/secrets.edn")))
+    (copy (<< "~{home}/code/re-ops/re-core/resources/re-ops.edn") (<< "~{home}/.re-ops.edn"))
+    (copy (<< "~{home}/code/re-ops/re-core/resources/secrets.edn") "/tmp/secrets.edn")))
+
+(def-inline {:depends #'re-cipes.ops/repositories} keyz
+  "Generate gpg keys"
+  []
+  (let [gpg-bin "/usr/bin/gpg"]
+    (letfn [(generate [input]
+              (fn []
+                (script
+                 (~gpg-bin "--no-default-keyring" "--keyring" "trustedkeys.gpg" "--fingerprint")
+                 (~gpg-bin "--no-default-keyring" "--keyring" "trustedkeys.gpg" "--gen-key" "--batch" ~input))))
+            (export [passphrase public secret]
+                    (fn []
+                      (script
+                       (~gpg-bin "--no-default-keyring" "--keyring" "trustedkeys.gpg" "--export" ">>" ~public)
+                       (~gpg-bin "--no-default-keyring" "--keyring" "trustedkeys.gpg" "--export-secret-keys" "--batch" "--yes" ~passphrase "--pinentry-mode" "loopback" ">>" ~secret))))]
+      (let [{:keys [home user gpg]} (configuration)
+            input "/tmp/resources/gpg-input"
+            dest (<< "~{home}/code/re-ops/re-core/keys")
+            passphrase (<< "--passphrase='~(gpg :pass)'")]
+        (template "/tmp/resources/templates/gpg/batch.mustache" input gpg)
+        (run (generate input))
+        (directory dest :present)
+        (run (export passphrase (<< "~{dest}/public.gpg") (<< "~{dest}/secret.gpg")))))))
