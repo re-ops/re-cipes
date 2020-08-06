@@ -12,7 +12,7 @@
   re-ops (into #{'re-cipes.ops 're-cipes.clojure 're-cipes.packer 're-cipes.nvim} lean))
 
 (def ^{:doc "Re-ops standlone development instance with Docker and LXC enabled"}
-  re-ops-standalone (into #{'re-cipes.lxd 're-cipes.docker.server} re-ops))
+  re-ops-standalone (into #{'re-cipes.lxd 're-cipes.docker.server 're-cipes.docker.elasticsearch} re-ops))
 
 ; Infra profiles
 (def nas (into #{'re-cipes.backup 're-cipes.zfs} base))
