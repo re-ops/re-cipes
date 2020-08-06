@@ -16,7 +16,7 @@
   (directory "/var/data" :present)
   (chmod "/var/data" "a+wrx" {:recursive true}))
 
-(def-inline {:depends [#'re-cipes.docker.server/services re-cipes.docker.elasticsearch/volume]} get-source
+(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.elasticsearch/volume]} get-source
   "Grabbing source"
   []
   (let [repo "https://github.com/re-ops/re-dock.git"
