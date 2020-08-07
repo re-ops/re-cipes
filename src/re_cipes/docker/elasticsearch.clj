@@ -12,9 +12,9 @@
 (def-inline volume
   "Setting up data volume"
   []
-  (set-file-acl "re-ops" "rwX" "/var/")
-  (directory "/var/data" :present)
-  (chmod "/var/data" "a+wrx" {:recursive true}))
+  (set-file-acl "re-ops" "rwx" "/var/local/")
+  (directory "/var/local/data" :present)
+  (chmod "/var/local/data" "a+wrx" {:recursive true}))
 
 (def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.elasticsearch/volume]} get-source
   "Grabbing source"
