@@ -45,19 +45,21 @@
     (download url dest sum)
     (chmod dest "+x" {})
     (directory dot-lein :present)
-    (symlink (<< "~{dot-lein}/profiles.clj") (<< "~{home}/.dots/profiles.clj"))))
+    (symlink (<< "~{dot-lein}/profiles.clj") (<< "~{home}/.dots/profiles.clj"))
+    (chown dot-lein user user {:recursive true})))
 
 (def-inline joker
   "Setting up Joker linter"
   []
-  (let [{:keys [home]} (configuration)
+  (let [{:keys [home user]} (configuration)
         version "0.12.7"
         archive (<< "joker-~{version}-linux-amd64.zip")
         url (<< "https://github.com/candid82/joker/releases/download/v~{version}/~{archive}")
         sum "25ba334d68044971e556e9aa0ce6c1994610a464c399adf0e0357fd2e23b6c36"]
     (download url (<< "/tmp/~{archive}") sum)
     (directory (<< "~{home}/bin/") :present)
-    (unzip (<< "/tmp/~{archive}") (<< "~{home}/bin/"))))
+    (unzip (<< "/tmp/~{archive}") (<< "~{home}/bin/"))
+    (chown (<< "~{home}/bin/joker") user user {})))
 
 (def-inline cljfmt
   "Single binary code format for Clojure"
@@ -67,4 +69,5 @@
         dest (<< "~{home}/bin/cljfmt")]
     (directory (<< "~{home}/bin") :present)
     (download url dest "290872ee18769995b3a2e8e5b12711586fdfcf5dca26b78b79b87d8fc8eab495")
-    (chmod dest "+x" {})))
+    (chmod dest "+x" {})
+    (chown dest user user {})))

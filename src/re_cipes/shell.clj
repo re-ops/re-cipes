@@ -29,7 +29,8 @@
         dest (<< "~{home}/.minimal-zsh")]
     (clone "git://github.com/narkisr/minimal-zsh.git" dest)
     (chown dest user user {})
-    (symlink (<< "~{home}/.zshrc") (<< "~{dest}/.zshrc"))))
+    (symlink (<< "~{home}/.zshrc") (<< "~{dest}/.zshrc"))
+    (chown (<< "~{home}/.zshrc") user user {})))
 
 (def-inline {:depends #'re-cipes.access/permissions} z
   "rupa z"
@@ -42,23 +43,25 @@
   (let [{:keys [home user]} (configuration)
         dest (<< "~{home}/.dots")]
     (clone "git://github.com/narkisr/dots.git" dest)
-    (chown dest user user {})))
+    (chown dest user user {:recursive true})))
 
 (def-inline {:depends #'re-cipes.shell/dot-files} ack
   "ack grep setup"
   []
-  (let [{:keys [home]} (configuration)
+  (let [{:keys [home user]} (configuration)
         dots (<< "~{home}/.dots")]
     (package "ack" :present)
-    (symlink (<< "~{home}/.ackrc") (<< "~{dots}/.ackrc"))))
+    (symlink (<< "~{home}/.ackrc") (<< "~{dots}/.ackrc"))
+    (chown (<< "~{home}/.ackrc") user user {})))
 
 (def-inline {:depends #'re-cipes.shell/dot-files} rlwrap
   "rlwrap setup"
   []
-  (let [{:keys [home]} (configuration)
+  (let [{:keys [home user]} (configuration)
         dots (<< "~{home}/.dots")]
     (package "rlwrap" :present)
-    (symlink  (<< "~{home}/.inputrc") (<< "~{dots}/.inputrc"))))
+    (symlink  (<< "~{home}/.inputrc") (<< "~{dots}/.inputrc"))
+    (chown (<< "~{home}/.inputrc") user user {})))
 
 (def-inline fd
   "fd a friendly alternative to find"

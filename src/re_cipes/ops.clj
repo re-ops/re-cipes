@@ -2,7 +2,7 @@
   "Setting up Re-ops"
   (:require
    [re-cog.resources.git :refer (clone)]
-   [re-cog.resources.file :refer (template directory edn-set)]
+   [re-cog.resources.file :refer (template directory edn-set chown)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.file :refer (directory copy)]))
@@ -20,16 +20,19 @@
     (directory root :present)
     (doseq [repo repos]
       (let [dest (<< "~{root}/~{repo}")]
-        (clone (<< "git://github.com/re-ops/~{repo}.git") dest)))))
+        (clone (<< "git://github.com/re-ops/~{repo}.git") dest)
+        (chown dest user user {:recursive true})))))
 
 (def-inline {:depends #'re-cipes.ops/repositories} configure
   "Set basic Re-ops configuraion files"
   []
-  (let [{:keys [home lxd gpg]} (configuration)]
+  (let [{:keys [home user lxd gpg]} (configuration)]
     (copy (<< "~{home}/code/re-ops/re-core/resources/re-ops.edn") (<< "~{home}/.re-ops.edn"))
     (copy (<< "~{home}/code/re-ops/re-core/resources/secrets.edn") "/tmp/secrets.edn")
     (edn-set "/tmp/secrets.edn" [:pgp :pass] (gpg :pass))
-    (edn-set "/tmp/secrets.edn" [:lxc :pass] (lxd :password))))
+    (edn-set "/tmp/secrets.edn" [:lxc :pass] (lxd :password))
+    (chown "/tmp/secrets.edn" user user {})
+    (chown (<< "~{home}/.re-ops.edn") user user {})))
 
 (def-inline ssh
   "Configuring ssh access for Re-ops instances"
@@ -46,7 +49,8 @@
       (directory dot-ssh :present)
       (when-not (exists? private)
         (run generate))
-      (template "/tmp/resources/templates/ssh/config.mustache" dest args))))
+      (template "/tmp/resources/templates/ssh/config.mustache" dest args)
+      (chown dot-ssh user user {:recursive true}))))
 
 (def-inline {:depends #'re-cipes.ops/repositories} keyz
   "Generate gpg keys"
@@ -71,5 +75,6 @@
           (template "/tmp/resources/templates/gpg/batch.mustache" input gpg)
           (run generate)
           (directory dest :present)
-          (run export))
+          (run export)
+          (chown dest user user {:recursive true}))
         {}))))

@@ -19,8 +19,9 @@
     (clone "git://github.com/narkisr/.tmux.git" dest)
     (directory (<< "~{dest}/plugins/") :present)
     (clone "git://github.com/tmux-plugins/tpm" (<< "~{dest}/plugins/tpm"))
+    (chown dest user user {:recursive true})
     (symlink (<< "~{home}/.tmux.conf") (<< "~{dest}/.tmux.conf"))
-    (chown dest user user {})))
+    (chown (<< "~{home}/.tmux.conf") user user {})))
 
 (def-inline {:depends #'re-cipes.access/permissions} tmx
   "Setting up tmx https://github.com/narkisr/tmx"
