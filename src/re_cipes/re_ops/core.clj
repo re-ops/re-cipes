@@ -2,7 +2,7 @@
   "Setting up Re-core"
   (:require
    [re-cog.resources.git :refer (clone)]
-   [re-cog.resources.file :refer (template directory edn-set chown)]
+   [re-cog.resources.file :refer (template directory edn-set chown chmod)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.file :refer (directory copy)]))
@@ -30,6 +30,8 @@
     (copy (<< "~{home}/code/re-ops/re-core/resources/re-ops.edn") (<< "~{home}/.re-ops.edn"))
     (copy (<< "~{home}/code/re-ops/re-core/resources/secrets.edn") "/tmp/secrets.edn")
     (edn-set "/tmp/secrets.edn" [:pgp :pass] (gpg :pass))
+    (when (lxd :password)
+      (edn-set "/tmp/secrets.edn" [:lxc :pass] (lxd :password)))
     (chown "/tmp/secrets.edn" user user {})
     (chown (<< "~{home}/.re-ops.edn") user user {})))
 
