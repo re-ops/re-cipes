@@ -7,7 +7,6 @@
    [re-share.log :as log]
    [taoensso.timbre  :as timbre :refer (set-level! refer-timbre)]
    [cli-matic.core :refer [run-cmd]]
-   [progrock.core :as pr]
    [re-cog.facts.datalog :refer (populate)]
    [re-cog.scripts.common :refer (bind-bash)]))
 
@@ -32,13 +31,16 @@
   (let [namespaces (resolve- plan)]
       (doseq [n namespaces]
         (require n))
-      (let [fs (re-cog.plan/execution-plan namespaces)
-            bar (pr/progress-bar (count fs))]
-        (doseq [[i f] (map-indexed vector fs)]
-          (pr/print (pr/tick bar i))
-          (info "Running" f)
-          (f))
-        (pr/print (pr/done bar)))))
+      (let [fs (re-cog.plan/execution-plan namespaces) ]
+        (println "Starting to execute" (count fs) "functions from the selected plan" plan)
+        (doseq [f fs]
+          (let [{:keys [doc file name] :as m} (meta f)
+                 source (clojure.string/replace file #".clj" "") ]
+            (print (str source "/" name) ":" doc  "..")
+            (info m)
+            (f)
+            (println " [ok]")
+            )))))
 
 
 (def CONFIGURATION {
