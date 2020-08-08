@@ -1,5 +1,5 @@
-(ns re-cipes.ops
-  "Setting up Re-ops"
+(ns re-cipes.re-ops.core
+  "Setting up Re-core"
   (:require
    [re-cog.resources.git :refer (clone)]
    [re-cog.resources.file :refer (template directory edn-set chown)]
@@ -23,14 +23,13 @@
         (clone (<< "git://github.com/re-ops/~{repo}.git") dest)
         (chown dest user user {:recursive true})))))
 
-(def-inline {:depends #'re-cipes.ops/repositories} configure
+(def-inline {:depends #'re-cipes.re-ops.core/repositories} configure
   "Set basic Re-ops configuraion files"
   []
   (let [{:keys [home user lxd gpg]} (configuration)]
     (copy (<< "~{home}/code/re-ops/re-core/resources/re-ops.edn") (<< "~{home}/.re-ops.edn"))
     (copy (<< "~{home}/code/re-ops/re-core/resources/secrets.edn") "/tmp/secrets.edn")
     (edn-set "/tmp/secrets.edn" [:pgp :pass] (gpg :pass))
-    (edn-set "/tmp/secrets.edn" [:lxc :pass] (lxd :password))
     (chown "/tmp/secrets.edn" user user {})
     (chown (<< "~{home}/.re-ops.edn") user user {})))
 
@@ -52,7 +51,7 @@
       (template "/tmp/resources/templates/ssh/config.mustache" dest args)
       (chown dot-ssh user user {:recursive true}))))
 
-(def-inline {:depends #'re-cipes.ops/repositories} keyz
+(def-inline {:depends #'re-cipes.re-ops.core/repositories} keyz
   "Generate gpg keys"
   []
   (let [gpg-bin "/usr/bin/gpg"
