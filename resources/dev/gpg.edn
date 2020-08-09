@@ -1,6 +1,6 @@
 {
-  :name "Re-ops" 
-  :comment "Re-ops gpg key used locally"
+  :name "Re-ops"
+  :comment "Re-ops gpg key used locally during development"
   :email "re-ops@local.com"
-  :pass "foobar123!"
+  :pass "cahc7Eiw!"
 }
