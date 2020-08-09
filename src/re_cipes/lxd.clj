@@ -17,7 +17,7 @@
     (letfn [(init []
               (script
                (pipe
-                ("/usr/bin/cat" "/tmp/preseed.yaml")
+                (~cat-bin "/tmp/preseed.yaml")
                 ("/usr/bin/lxd" "init" "--preseed"))))]
       (package "lxd" :present)
       (package "zfsutils-linux" :present)
@@ -34,23 +34,32 @@
 (def-inline {:depends #'re-cipes.lxd/server} remote
   "add local lxd instance locally"
   []
-  (let [{:keys [lxd home]} (configuration)
+  (let [{:keys [lxd home user]} (configuration)
         root (<< "~{home}/snap/lxd/current/.config/lxc")
         certfile (<< "~{root}/servercerts/127.0.0.1.crt")
         out (<< "~{root}/certificate.p12")
         key (<< "~{root}/client.key")
         crt (<< "~{root}/client.crt")
-        pass (<< "pass:~(lxd :password)")]
-    (letfn [(remove-remote [{:keys [bind]}]
-              (fn []
-                (script (pipe ("/usr/bin/lxc" "remote" "remove" ~bind) "true"))))
-            (add-remote [{:keys [password bind]}]
-                        (fn []
-                          (script
+        {:keys [password bind]} lxd
+        pass (<< "pass:~{password}")]
+    (letfn [(remove-remote []
+              (script
+               (set! ID @("id" "-u"))
+               (if (= "0" $ID)
+                 (pipe ("sudo" "-u" ~user "/usr/bin/lxc" "remote" "remove" ~bind) "true")
+                 (pipe ("/usr/bin/lxc" "remote" "remove" ~bind) "true"))))
+            (add-remote []
+                        (script
+                         (set! ID @("id" "-u"))
+                         (if (= "0" $ID)
+                           ("sudo" "-u" ~user "/usr/bin/lxc" "remote" "add" ~bind "--password" ~password "--accept-certificate")
                            ("/usr/bin/lxc" "remote" "add" ~bind "--password" ~password "--accept-certificate"))))
             (export []
                     (script
-                     ("/usr/bin/openssl" "pkcs12" "-export" "-out" ~out "-inkey" ~key "-in" ~crt "-certfile" ~certfile "-passout" ~pass)))]
-      (run (remove-remote lxd))
-      (run (add-remote lxd))
+                     (set! ID @("id" "-u"))
+                     (if (= "0" $ID)
+                       ("sudo" "-u" ~user ~openssl-bin "pkcs12" "-export" "-out" ~out "-inkey" ~key "-in" ~crt "-certfile" ~certfile "-passout" ~pass)
+                       (~openssl-bin "pkcs12" "-export" "-out" ~out "-inkey" ~key "-in" ~crt "-certfile" ~certfile "-passout" ~pass))))]
+      (run remove-remote)
+      (run add-remote)
       (run export))))
