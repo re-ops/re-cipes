@@ -42,7 +42,7 @@ We now use this profile to create a Re-core type inside the REPL and provision a
 Lastly we can also provision a profile using the standalone binary when we don't want to use Re-core:
 
 ```bash
-$ wget -q https://github.com/re-ops/re-cipes/releases/download/0.1.27/re-cipes -P /tmp
+$ wget -q https://github.com/re-ops/re-cipes/releases/download/0.1.28/re-cipes -P /tmp
 $ sudo /tmp/re-cipes prov -p 're-cipes.profiles/elasticsearch
 ```
 
