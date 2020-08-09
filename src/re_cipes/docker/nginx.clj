@@ -23,25 +23,24 @@
 (def-inline {:depends #'re-cipes.docker.nginx/get-source} cert-generation
   "Generating ssl certs"
   []
-  (let [openssl "/usr/bin/openssl"]
-    (letfn [(certs [host dest]
-              (fn []
-                (let [subj (<< "'/C=pp/ST=pp/L=pp/O=pp Inc/OU=DevOps/CN=~{host}/emailAddress=dev@~{host}'")
-                      keyout (<< "~{dest}/~{host}.key")
-                      crt (<< "~{dest}/~{host}.crt")]
-                  (script
-                   (~openssl "req" "-x509" "-nodes" "-days" "365" "-newkey" "rsa:2048" "-keyout" ~keyout "-out" ~crt "-subj" ~subj)))))
-            (dht [dest]
-                 (fn []
-                   (let [pem (<< "~{dest}/dhparam.pem")]
-                     (script
-                      (~openssl "dhparam" "-dsaparam" "-out" ~pem "4096")))))]
-      (let [host (fqdn)
-            dest (<< "/etc/docker/compose/nginx-proxy/certs")]
-        (package "openssl" :present)
-        (directory dest :present)
-        (run (certs host dest))
-        (run (dht dest))))))
+  (letfn [(certs [host dest]
+            (fn []
+              (let [subj (<< "'/C=pp/ST=pp/L=pp/O=pp Inc/OU=DevOps/CN=~{host}/emailAddress=dev@~{host}'")
+                    keyout (<< "~{dest}/~{host}.key")
+                    crt (<< "~{dest}/~{host}.crt")]
+                (script
+                 (~openssl-bin "req" "-x509" "-nodes" "-days" "365" "-newkey" "rsa:2048" "-keyout" ~keyout "-out" ~crt "-subj" ~subj)))))
+          (dht [dest]
+               (fn []
+                 (let [pem (<< "~{dest}/dhparam.pem")]
+                   (script
+                    (~openssl-bin "dhparam" "-dsaparam" "-out" ~pem "4096")))))]
+    (let [host (fqdn)
+          dest (<< "/etc/docker/compose/nginx-proxy/certs")]
+      (package "openssl" :present)
+      (directory dest :present)
+      (run (certs host dest))
+      (run (dht dest)))))
 
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} enabled-sites
   "Configuration of nginx sites"
@@ -60,7 +59,7 @@
   (letfn [(hash- [user pass dest]
             (fn []
               (script
-               (set! H @("/usr/bin/openssl" "passwd" "-crypt" ~pass))
+               (set! H @(~openssl-bin "passwd" "-crypt" ~pass))
                (set! U ~user)
                ("/usr/bin/printf" (quoted "$U:$H\n") ">>" ~dest))))]
     (let [{:keys [nginx]} (configuration)
