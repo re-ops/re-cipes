@@ -21,6 +21,9 @@
 
 ; Container/Virtualization
 
+(def ^{:doc "KVM hypervisor ready"}
+  kvm (into #{'re-cipes.kvm} base))
+
 (def ^{:doc "Virtualization tools (KVM, LXC)"}
   virtual (into #{'re-cipes.kvm 're-cipes.lxd 're-cipes.packer} base))
 
