@@ -1,5 +1,5 @@
-(ns re-cipes.node
-  "Setting up nodejs and some utlities"
+(ns re-cipes.apps.vuepress
+  "Setting up vuepress"
   (:require
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
@@ -8,13 +8,13 @@
 
 (require-recipe)
 
-(def-inline install
+(def-inline node
   "Setting up nodejs"
   []
   (package "nodejs" :present)
   (package "npm" :present))
 
-(def-inline {:depends #'re-cipes.node/install} vuepress
+(def-inline {:depends #'re-cipes.apps.vuepress/node} vuepress
   "Setting up vuepress"
   []
   (letfn [(install []

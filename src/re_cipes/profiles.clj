@@ -72,8 +72,11 @@
 (def ^{:doc "Development machine with Clojure and deep learning utils"}
   learning (into #{'re-cipes.clojure 're-cipes.nvim 're-cipes.deep} lean))
 
-(def ^{:doc "A Vuepress documentation instance"}
-  vuepress (into #{'re-cipes.node 're-cipes.nvim} lean))
+(def ^{:doc "Vuepress documentation"}
+  vuepress (into #{'re-cipes.apps.vuepress 're-cipes.nvim} lean))
+
+(def ^{:doc "Tiddlywiki"}
+  tiddlywiki (into #{'re-cipes.apps.tiddlywiki 're-cipes.nvim} lean))
 
 (def ^{:doc "3d printing"}
   print3d (into #{'re-cipes.3dprint} base-dev))

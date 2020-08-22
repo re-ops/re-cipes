@@ -4,6 +4,7 @@
    [re-cipes.docker.server]
    [re-cipes.hardening]
    [re-cog.resources.service :refer (on-boot)]
+   [re-cog.resources.openssl :refer (generate-cert)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.facts.datalog :refer (fqdn)]
    [re-cog.common.recipe :refer (require-recipe)]
@@ -23,24 +24,9 @@
 (def-inline {:depends #'re-cipes.docker.nginx/get-source} cert-generation
   "Generating ssl certs"
   []
-  (letfn [(certs [host dest]
-            (fn []
-              (let [subj (<< "'/C=pp/ST=pp/L=pp/O=pp Inc/OU=DevOps/CN=~{host}/emailAddress=dev@~{host}'")
-                    keyout (<< "~{dest}/~{host}.key")
-                    crt (<< "~{dest}/~{host}.crt")]
-                (script
-                 (~openssl-bin "req" "-x509" "-nodes" "-days" "365" "-newkey" "rsa:2048" "-keyout" ~keyout "-out" ~crt "-subj" ~subj)))))
-          (dht [dest]
-               (fn []
-                 (let [pem (<< "~{dest}/dhparam.pem")]
-                   (script
-                    (~openssl-bin "dhparam" "-dsaparam" "-out" ~pem "4096")))))]
-    (let [host (fqdn)
-          dest (<< "/etc/docker/compose/nginx-proxy/certs")]
-      (package "openssl" :present)
-      (directory dest :present)
-      (run (certs host dest))
-      (run (dht dest)))))
+  (let [host (fqdn) dest (<< "/etc/docker/compose/nginx-proxy/certs")]
+    (directory dest :present)
+    (generate-cert host dest)))
 
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} enabled-sites
   "Configuration of nginx sites"
