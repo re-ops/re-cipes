@@ -1,8 +1,12 @@
 (ns re-cipes.apps.tiddlywiki
   (:require
-   [re-cog.resources.exec :refer [run]]
+   [re-cipes.hardening]
+   [re-cipes.docker.nginx]
+   [re-cog.resources.exec :refer (run)]
+   [re-cog.resources.systemd :refer (user-service)]
+   [re-cog.resources.nginx :refer (site-enabled)]
+   [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.common.recipe :refer (require-recipe)]
-   [re-cog.resources.openssl :refer (generate-cert)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.file :refer (symlink directory)]))
 
@@ -17,12 +21,26 @@
 (def-inline {:depends #'re-cipes.apps.tiddlywiki/node} tiddlywiki
   "Setting up tiddlywiki"
   []
-  (letfn [(install []
-            (script ("/usr/bin/npm" "install" "tiddlywiki")))]
-    (let [{:keys [home]} (configuration)
-          dest (<< "~{home}/certs")]
+  (let [{:keys [home user]} (configuration)
+        bin (<< "~{home}/bin/tiddlywiki")
+        wiki (<< "~{home}/~{user}")
+        exec (<< "~{bin} ~{wiki} --listen host=0.0.0.0")]
+    (letfn [(install []
+              (script ("/usr/bin/npm" "install" "tiddlywiki")))
+            (init []
+                  (script
+                   (~bin ~wiki "--init" "server")))]
       (run install)
       (directory (<< "~{home}/bin/") :present)
-      (directory dest :present)
-      (generate-cert (fqdn) dest)
-      (symlink (<< "~{home}/bin/tiddlywiki") (<< "~{home}/node_modules/tiddlywiki/tiddlywiki.js")))))
+      (symlink bin (<< "~{home}/node_modules/tiddlywiki/tiddlywiki.js"))
+      (when-not (fs/exists? wiki)
+        (run init))
+      (user-service home "Tiddlywiki" exec "tiddlywiki"))))
+
+(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
+  "Nginx site enable"
+  []
+  (let [external-port 8443
+        {:keys [nginx]} (configuration)]
+    (site-enabled nginx "tiddlywiki" external-port 8080 true)
+    (add-rule external-port :allow {})))

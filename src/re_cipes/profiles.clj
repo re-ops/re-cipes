@@ -76,7 +76,7 @@
   vuepress (into #{'re-cipes.apps.vuepress 're-cipes.nvim} lean))
 
 (def ^{:doc "Tiddlywiki"}
-  tiddlywiki (into #{'re-cipes.apps.tiddlywiki 're-cipes.nvim} lean))
+  tiddlywiki (into #{'re-cipes.apps.tiddlywiki 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.nvim} lean))
 
 (def ^{:doc "3d printing"}
   print3d (into #{'re-cipes.3dprint} base-dev))
