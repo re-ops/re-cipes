@@ -8,7 +8,7 @@
    [re-cog.facts.config :refer (configuration)]
    [re-cog.facts.datalog :refer (fqdn)]
    [re-cog.common.recipe :refer (require-recipe)]
-   [re-cog.resources.ufw :refer (set-state add-rule reset)]
+   [re-cog.resources.ufw :refer (set-state reset)]
    [re-cog.resources.file :refer (line line-set template)]))
 
 (require-recipe)
@@ -19,6 +19,7 @@
   (let [repo "https://github.com/narkisr/nginx-proxy.git"
         dest "/etc/docker/compose/nginx-proxy"]
     (clone repo dest)
+    (directory (<< "/etc/docker/compose/nginx-proxy/sites-enabled") :present)
     (on-boot "docker-compose@nginx-proxy" :enable)))
 
 (def-inline {:depends #'re-cipes.docker.nginx/get-source} cert-generation
@@ -27,17 +28,6 @@
   (let [host (fqdn) dest (<< "/etc/docker/compose/nginx-proxy/certs")]
     (directory dest :present)
     (generate-cert host dest)))
-
-(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} enabled-sites
-  "Configuration of nginx sites"
-  []
-  (let [{:keys [nginx]} (configuration)
-        sites-enabled (<< "/etc/docker/compose/nginx-proxy/sites-enabled")]
-    (directory sites-enabled :present)
-    (doseq [{:keys [name external-port] :as m} (nginx :sites)
-            :let [site (assoc m :fqdn (fqdn))]]
-      (template "/tmp/resources/templates/nginx/site.conf" (<< "~{sites-enabled}/~{name}.conf") site)
-      (add-rule external-port :allow {}))))
 
 (def-inline {:depends #'re-cipes.docker.nginx/get-source} htpasswd
   "Creating htpasswd"
