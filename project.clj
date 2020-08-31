@@ -1,10 +1,10 @@
-(defproject re-cipes "0.1.30"
+(defproject re-cipes "0.1.31"
   :description "Provioning re-cipes for Linux machines"
   :url "https://github.com/re-ops/re-cipes"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [
       [org.clojure/clojure "1.10.1"]
-      [re-cog "0.4.22"]
+      [re-cog "0.5.0"]
   ]
 
   :plugins [
