@@ -18,9 +18,9 @@
   "Setting up Intellij Idea community edition"
   []
   (let [{:keys [home]} (configuration)
-        version "ideaIC-2019.3.1"
+        version "ideaIC-2020.2.1"
         tmp (<< "/tmp/~{version}.tar.gz")
-        expected "b67cc055d7ab18b2a864d05956407ae1f910eb295e2a73e6a6aa813260930509"
+        expected "a107f09ae789acc1324fdf8d22322ea4e4654656c742e4dee8a184e265f1b014"
         url (<< "https://download-cf.jetbrains.com/idea/~{version}.tar.gz")]
     (download url tmp expected)
     (untar tmp "/opt/")
@@ -31,7 +31,7 @@
   []
   (letfn [(sysctl-reload [target]
             (fn []
-              (script ("/sbin/sysctl" "-e" "-p" ~target))))]
+              (script ("sudo" "/usr/sbin/sysctl" "-e" "-p" ~target))))]
     (let [target "/etc/sysctl.d/10-notify-watch.conf"]
       (set-file-acl "re-ops" "rwX" "/etc/sysctl.d")
       (file target :present)

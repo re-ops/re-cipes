@@ -18,9 +18,9 @@
             (fn []
               (script (~ins "--prefix" ~prefix))))]
     (let [{:keys [home user]} (configuration)
-          ins "linux-install-1.10.1.469.sh"
+          ins "linux-install-1.10.1.561.sh"
           url (<< "https://download.clojure.org/install/~{ins}")
-          sum "265e46d492b682cecc346ef018076a3181203dfe5e3dbe455b0f7feab51df70f"
+          sum "7f9e4e7c5a8171db4e4edf5ce78e5b8f453bae641a4c6b7f3dda36c3128d2ff7"
           prefix (<< "~{home}/.clojure")]
       (download url (<< "/tmp/~{ins}") sum)
       (package "curl" :present)
