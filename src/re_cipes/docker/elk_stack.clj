@@ -1,9 +1,11 @@
 (ns re-cipes.docker.elk-stack
   "Dockerized ELK OSS full stack"
   (:require
+   [re-cipes.hardening]
    [re-cipes.docker.server]
-   [re-cog.resources.permissions :refer (set-file-acl)]
-   [re-cog.resources.file :refer (directory chmod)]
+   [re-cipes.docker.common]
+   [re-cipes.docker.nginx]
+   [re-cog.resources.file :refer (symlink)]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.service :refer (on-boot)]
    [re-cog.resources.nginx :refer (site-enabled)]
@@ -11,21 +13,13 @@
 
 (require-recipe)
 
-(def-inline volume
-  "Setting up data volume"
+(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.common/volume #'re-cipes.docker.common/re-dock]}
+  get-source
+  "Setting up service"
   []
-  (set-file-acl "re-ops" "rwX" "/var/")
-  (directory "/var/data" :present)
-  (directory "/var/data/elasticsearch" :present)
-  (directory "/var/data/grafana" :present)
-  (chmod "/var/data" "a+wrx" {:recursive true}))
-
-(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.elk-stack/volume]} get-source
-  "Grabbing source"
-  []
-  (let [repo "https://github.com/re-ops/re-dock.git"
+  (let [repo "/etc/docker/re-dock"
         dest "/etc/docker/compose/elk"]
-    (clone repo dest)
+    (symlink repo dest)
     (on-boot "docker-compose@elk" :enable)))
 
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx

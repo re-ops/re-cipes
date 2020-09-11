@@ -1,0 +1,42 @@
+{
+  :secrets #include "secrets.edn"
+
+  :user "re-ops"
+  :home "/home/re-ops"
+
+  :pfelk {
+    :ip "192\\.168\\.1\\.1"
+    :ifcs [
+       {:name "igb1" :alias "WAN" :description "Ingress WEB"}
+       {:name "igb2" :alias "LAN" :description "Internal network"}
+       {:name "igb3" :alias "Guest" :description "Guest network"}
+       {:name "lo0" :alias "Link-Local" :description "Local link"}
+    ]
+   :geoip {
+      :license-key "1234"
+      :account-id "1235"
+   }
+  }
+
+  :gpg {
+    :name "Re-ops"
+    :comment "Re-ops gpg key used locally during development"
+    :email "re-ops@local.com"
+    :pass #ref [:secrets :gpg :password]
+  }
+
+  :lxd {
+    :bind "127.0.0.1"
+    :ipv4-range "10.0.0.1/24"
+    :port 8443
+    :password #ref [:secrets :lxd :password]
+  }
+
+  :elasticsearch {
+    :password #ref [:secrets :elasticsearch :password]
+  }
+
+  :nginx {
+    :enabled "/etc/docker/compose/nginx-proxy/sites-enabled"
+  }
+}

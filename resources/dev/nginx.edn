@@ -1,8 +1,0 @@
-{
- :htpasswd {
-  :user "re-ops"
-  :pass "bar"
- }
-
- :enabled "/etc/docker/compose/nginx-proxy/sites-enabled"
-}
