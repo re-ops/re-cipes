@@ -1,13 +1,16 @@
 (ns re-cipes.docker.pfelk
   "Utilities for setting up pfsense ELK"
   (:require
+   [re-cipes.docker.nginx]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.permissions :refer (set-file-acl)]
-   [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
    [re-cog.resources.sysctl :refer (reload)]
+   [re-cog.resources.nginx :refer (site-enabled)]
+   [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.service :refer (on-boot)]
-   [re-cog.resources.file :refer (line line-set template file)]))
+   [re-cog.resources.file :refer (line line-set template file)]
+   [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
 
@@ -48,15 +51,15 @@
   []
   (let [{:keys [user]} (configuration)
         repo "https://github.com/3ilson/docker-pfelk.git"
-        dest (<< "/etc/docker/compose/docker-pfelk")]
+        dest (<< "/etc/docker/compose/pfelk")]
     (clone repo dest)
-    (on-boot "docker-compose@pfelk-docker.service" :enable)))
+    (on-boot "docker-compose@pfelk.service" :enable)))
 
 (def-inline {:depends #'re-cipes.docker.pfelk/get-source} inputs-config
   "Configure logstash inputs"
   []
   (let [{:keys [pfelk]} (configuration)
-        dest (<< "/etc/docker/compose/docker-pfelk/logstash/conf.d/01-inputs.conf")
+        dest (<< "/etc/docker/compose/pfelk/logstash/conf.d/01-inputs.conf")
         {:keys [ip]} pfelk
         target "  if [host] =~ /172\\.22\\.33\\.1/ {"
         with (<< "  if [host] =~ /~{ip}/ {")]
@@ -69,5 +72,13 @@
   []
   (let [{:keys [user pfelk]} (configuration)
         file "05-firewall.conf"
-        dest (<< "/etc/docker/compose/docker-pfelk/logstash/conf.d/~{file}")]
+        dest (<< "/etc/docker/compose/pfelk/logstash/conf.d/~{file}")]
     (template (<< "/tmp/resources/templates/pfelk/~{file}.mustache") dest pfelk)))
+
+(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
+  "Enabling site"
+  []
+  (let [external-port 5602
+        {:keys [nginx]} (configuration)]
+    (site-enabled nginx "pfelk" external-port 5601 false)
+    (add-rule external-port :allow {})))
