@@ -15,11 +15,12 @@ filter {
        }
      }
      {{/ifcs}}
-   }
 
    mutate {
       update => { "[network][direction]" => "%{[network][direction]}bound" }
       update => { "[network][type]" => "ipv%{[network][type]}" }
    }
+  }
+ }
 }
 
