@@ -1,6 +1,7 @@
 (ns re-cipes.docker.pfelk
   "Utilities for setting up pfsense ELK"
   (:require
+   [re-cipes.hardening]
    [re-cipes.docker.nginx]
    [re-cipes.docker.server]
    [re-cog.facts.config :refer (configuration)]
@@ -51,22 +52,42 @@
   "Setting up pfelk"
   []
   (let [{:keys [user]} (configuration)
-        repo "https://github.com/3ilson/docker-pfelk.git"
+        repo "https://github.com/narkisr/docker-pfelk.git"
         dest (<< "/etc/docker/compose/pfelk")]
     (clone repo dest)
     (on-boot "docker-compose@pfelk.service" :enable)))
+
+(def-inline {:depends [#'re-cipes.docker.pfelk/get-source]} auth
+  "Setting up Elastisearch auth"
+  []
+  (let [dest "/etc/docker/compose/pfelk"
+        conf (<< "~{dest}/logstash/conf.d/50-outputs.conf")
+        env (<< "~{dest}/.env")
+        {:keys [password]} (configuration :elasticsearch)]
+    (file env :present)
+    (line env (<< "ELASTIC_PASSWORD=~{password}") :present)
+    (line conf "      password => 'changeme'" :replace :with (<< "      password => '~{password}'"))))
 
 (def-inline {:depends #'re-cipes.docker.pfelk/get-source} inputs-config
   "Configure logstash inputs"
   []
   (let [{:keys [pfelk]} (configuration)
-        dest (<< "/etc/docker/compose/pfelk/logstash/conf.d/01-inputs.conf")
+        dest (<< "/etc/docker/compose/pfelk/logstash/conf.d/02-types.conf")
         {:keys [ip]} pfelk
-        target "  if [host] =~ /172\\.22\\.33\\.1/ {"
-        with (<< "  if [host] =~ /~{ip}/ {")]
+        target "#    if [host] == \"10.0.0.1\" { ### Adjust to match the IP address of pfSense or OPNSense ###"
+        with (<< "    if [host] == \"/~{ip}/\" {")]
     (line dest target :replace :with with)
-    (line dest (fn [i _] (= i 33)) :uncomment :with "#")
-    (line dest (fn [i _] (= i 30)) :comment :with "#")))
+    (line dest (fn [i _] (= i 4)) :uncomment :with "#")
+    (line dest (fn [i _] (= i 9)) :comment :with "#")))
+
+(def-inline {:depends #'re-cipes.docker.pfelk/get-source} ports
+  "Configure logstash inputs"
+  []
+  (let [{:keys [pfelk]} (configuration)
+        dest (<< "/etc/docker/compose/pfelk/docker-compose.yml")
+        {:keys [ip]} pfelk]
+    (line dest "      - \"9200:9200\"" :replace :with "      - \"127.0.0.1:9200:9200\"")
+    (line dest "      - \"5601:5601\"" :replace :with "      - \"127.0.0.1:5601:5601\"")))
 
 (def-inline {:depends #'re-cipes.docker.pfelk/get-source} firewall-config
   "Configure logstash inputs"
@@ -79,7 +100,9 @@
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
   "Enabling site"
   []
-  (let [external-port 5602
+  (let [kibana-port 5602
+        logstash-tcp-port 5141
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "pfelk" external-port 5601 false)
-    (add-rule external-port :allow {})))
+    (site-enabled nginx "pfelk" kibana-port 5601 false)
+    (add-rule kibana-port :allow {})
+    (add-rule logstash-tcp-port :allow {})))
