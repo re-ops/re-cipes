@@ -2,6 +2,7 @@
   "Utilities for setting up pfsense ELK"
   (:require
    [re-cipes.docker.nginx]
+   [re-cipes.docker.server]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.resources.download :refer (download)]
