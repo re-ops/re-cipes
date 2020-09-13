@@ -75,7 +75,7 @@
         dest (<< "/etc/docker/compose/pfelk/logstash/conf.d/02-types.conf")
         {:keys [ip]} pfelk
         target "#    if [host] == \"10.0.0.1\" { ### Adjust to match the IP address of pfSense or OPNSense ###"
-        with (<< "    if [host] == \"/~{ip}/\" {")]
+        with (<< "    if [host] == \"~{ip}\" {")]
     (line dest target :replace :with with)
     (line dest (fn [i _] (= i 4)) :uncomment :with "#")
     (line dest (fn [i _] (= i 9)) :comment :with "#")))
