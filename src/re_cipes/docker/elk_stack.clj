@@ -19,7 +19,7 @@
   []
   (let [repo "/etc/docker/re-dock"
         dest "/etc/docker/compose/elk"]
-    (symlink repo dest)
+    (symlink dest repo)
     (on-boot "docker-compose@elk" :enable)))
 
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
