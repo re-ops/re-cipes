@@ -1,6 +1,7 @@
 (ns re-cipes.docker.common
   "Common docker elastic setup"
   (:require
+   [re-cipes.docker.server]
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.resources.file :refer (directory chmod chown line file)]
    [re-cog.common.recipe :refer (require-recipe)]))
@@ -18,7 +19,7 @@
     (chmod "/var/data/" "a+wrx" {:recursive true})
     (chown "/var/data/" user user {:recursive true})))
 
-(def-inline re-dock
+(def-inline {:depends [#'re-cipes.docker.server/install]} re-dock
   "Grabbing source"
   []
   (let [repo "https://github.com/re-ops/re-dock.git"
