@@ -98,14 +98,17 @@
   clj-desktop (into base-desktop clj-dev))
 
 ; Servers
-(def ^{:doc "Pfsense monitoring"}
-  pfelk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.pfelk 're-cipes.docker.nginx})
+(def ^{:doc "base docker elk"} base-elk
+  #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.docker.common})
 
 (def ^{:doc "ELK stack"}
-  elk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.elk-stack 're-cipes.docker.nginx})
+  elk (into #{'re-cipes.docker.elk-stack} base-elk))
 
 (def ^{:doc "Elastisearch instance"}
-  elasticsearch #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.elasticsearch 're-cipes.docker.nginx})
+  elasticsearch (into #{'re-cipes.docker.elasticsearch} base-elk))
 
 (def ^{:doc "Grafana instance"}
-  grafana #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.grafana 're-cipes.docker.nginx})
+  grafana (into #{'re-cipes.docker.grafana} base-elk))
+
+(def ^{:doc "Pfsense monitoring"}
+  pfelk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.pfelk 're-cipes.docker.nginx})
