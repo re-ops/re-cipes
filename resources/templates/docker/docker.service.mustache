@@ -1,0 +1,10 @@
+[Unit]
+Description={{description}}
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStart=/usr/bin/docker run -p {{port}}:{{port}} {{image}}
+
+[Install]
+WantedBy=local.target

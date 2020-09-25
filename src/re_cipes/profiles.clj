@@ -110,5 +110,8 @@
 (def ^{:doc "Grafana instance"}
   grafana (into #{'re-cipes.docker.grafana} base-elk))
 
+(def ^{:doc "Grafana instance"}
+  mosquitto (into #{'re-cipes.docker.mosquitto 're-cipes.hardening 're-cipes.docker.server}))
+
 (def ^{:doc "Pfsense monitoring"}
   pfelk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.pfelk 're-cipes.docker.nginx})
