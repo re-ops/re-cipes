@@ -1,4 +1,4 @@
-(ns re-cipes.docker.mosquitto
+(ns re-cipes.apps.mosquitto
   (:require
    [re-cipes.docker.server]
    [re-cipes.hardening]

@@ -1,4 +1,4 @@
-(ns re-cipes.docker.grafana
+(ns re-cipes.apps.grafana
   "Dockerized Elastisearch only"
   (:require
    [re-cipes.hardening]
@@ -25,7 +25,7 @@
     (symlink dest repo)
     (on-boot "docker-compose@grafana" :enable)))
 
-(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall #'re-cipes.docker.grafana/setup]} nginx
+(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall #'re-cipes.apps.grafana/setup]} nginx
   "Enabling site"
   []
   (let [external-port 3001

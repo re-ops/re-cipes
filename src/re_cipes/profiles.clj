@@ -12,7 +12,7 @@
   re-ops (into #{'re-cipes.re-ops.core 're-cipes.clojure 're-cipes.packer 're-cipes.nvim} lean))
 
 (def ^{:doc "Re-ops standlone development instance with Docker and LXC enabled"}
-  re-ops-standalone (into #{'re-cipes.re-ops.standalone 're-cipes.lxd 're-cipes.docker.server 're-cipes.docker.elasticsearch} re-ops))
+  re-ops-standalone (into #{'re-cipes.re-ops.standalone 're-cipes.lxd 're-cipes.docker.server 're-cipes.apps.elasticsearch} re-ops))
 
 ; Infra profiles
 (def nas (into #{'re-cipes.backup 're-cipes.zfs} base))
@@ -75,9 +75,6 @@
 (def ^{:doc "Vuepress documentation"}
   vuepress (into #{'re-cipes.apps.vuepress 're-cipes.nvim} lean))
 
-(def ^{:doc "Tiddlywiki"}
-  tiddlywiki (into #{'re-cipes.apps.tiddlywiki 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.nvim} lean))
-
 (def ^{:doc "3d printing"}
   print3d (into #{'re-cipes.3dprint} base-dev))
 
@@ -97,7 +94,10 @@
 (def ^{:doc "Clojure dev desktop"}
   clj-desktop (into base-desktop clj-dev))
 
-; Servers
+; Apps
+(def ^{:doc "A letsencrypt certificate generation instance"} letsencrypt
+  #{'re-cipes.hardening 're-cipes.apps.letsencrypt})
+
 (def ^{:doc "base docker elk"} base-elk
   #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.docker.common})
 
@@ -105,13 +105,17 @@
   elk (into #{'re-cipes.docker.elk-stack} base-elk))
 
 (def ^{:doc "Elastisearch instance"}
-  elasticsearch (into #{'re-cipes.docker.elasticsearch} base-elk))
+  elasticsearch (into #{'re-cipes.apps.elasticsearch} base-elk))
 
 (def ^{:doc "Grafana instance"}
-  grafana (into #{'re-cipes.docker.grafana} base-elk))
+  grafana (into #{'re-cipes.apps.grafana} base-elk))
 
 (def ^{:doc "Grafana instance"}
-  mosquitto (into #{'re-cipes.docker.mosquitto 're-cipes.hardening 're-cipes.docker.server}))
+  mosquitto #{'re-cipes.docker.mosquitto 're-cipes.hardening 're-cipes.docker.server})
 
 (def ^{:doc "Pfsense monitoring"}
   pfelk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.pfelk 're-cipes.docker.nginx})
+
+(def ^{:doc "Tiddlywiki"}
+  tiddlywiki (into #{'re-cipes.apps.tiddlywiki 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.nvim} lean))
+
