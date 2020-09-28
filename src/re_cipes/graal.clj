@@ -18,11 +18,11 @@
             (fn []
               (script (~bin "install" ~pkg))))]
     (let [{:keys [home]} (configuration)
-          version "20.1.0"
+          version "20.2.0"
           release (<< "graalvm-ce-java8-linux-amd64-~{version}")
           dest (<< "graalvm-ce-java8-~{version}")
           tmp (<< "/tmp/~{release}.tar.gz")
-          expected "4fac212b37cd548831fd6587dd4d59dc068068815aa20323b47fde9529d6bb6e"
+          expected "60951c774c708caeebd1fa3886c05aa1260d81c7595ede0c9c3e689be7fcc4e8"
           url (<< "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-~{version}/~{release}.tar.gz")]
       (download url tmp expected)
       (untar tmp "/opt/")
