@@ -3,7 +3,7 @@
    [re-cipes.hardening]
    [re-cipes.docker.nginx]
    [re-cog.resources.exec :refer (run)]
-   [re-cog.resources.systemd :refer (user-service)]
+   [re-cog.resources.systemd :refer (set-service)]
    [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.common.recipe :refer (require-recipe)]
@@ -35,7 +35,9 @@
       (symlink bin (<< "~{home}/node_modules/tiddlywiki/tiddlywiki.js"))
       (when-not (fs/exists? wiki)
         (run init))
-      (user-service home "Tiddlywiki" exec "tiddlywiki"))))
+      (set-service "tiddlywiki" "Tiddlywiki service" exec
+                   {:restart true :user user :cwd home
+                    :hardening {:private-tmp 1 :no-new-privileges 1 :private-users 1}}))))
 
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
   "Nginx site enable"
