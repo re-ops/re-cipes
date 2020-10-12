@@ -14,6 +14,9 @@
 (def ^{:doc "Re-ops standlone development instance with Docker and LXC enabled"}
   re-ops-standalone (into #{'re-cipes.re-ops.standalone 're-cipes.lxd 're-cipes.docker.server 're-cipes.apps.elasticsearch} re-ops))
 
+(def ^{:doc "Re-ops packer image basic setup"}
+  re-ops-image #{'re-cipes.hardening 're-cipes.re-ops.re-gent})
+
 ; Infra profiles
 (def nas (into #{'re-cipes.backup 're-cipes.zfs} base))
 
