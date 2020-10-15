@@ -1,6 +1,7 @@
 (ns re-cipes.profiles)
 
 ; Basic profiles
+
 (def ^{:doc "Minimal set of recipes"}
   lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.hardening 're-cipes.desktop})
 
@@ -8,6 +9,7 @@
   base (into #{'re-cipes.monitoring} lean))
 
 ; Re-core
+
 (def ^{:doc "Re-ops instance"}
   re-ops (into #{'re-cipes.re-ops.core 're-cipes.clojure 're-cipes.packer 're-cipes.nvim} lean))
 
@@ -18,6 +20,7 @@
   re-ops-image #{'re-cipes.hardening 're-cipes.re-ops.re-gent})
 
 ; Infra profiles
+
 (def nas (into #{'re-cipes.backup 're-cipes.zfs} base))
 
 (def wireguard #{'re-cipes.hardening 're-cipes.wireguard})
@@ -40,6 +43,7 @@
   docker (into #{'re-cipes.docker.server} base))
 
 ; Single purpose instance
+
 (def ^{:doc "Backup tools"}
   backup (into #{'re-cipes.backup} base))
 
@@ -98,6 +102,7 @@
   clj-desktop (into base-desktop clj-dev))
 
 ; Apps
+
 (def ^{:doc "A letsencrypt certificate generation instance"} letsencrypt
   #{'re-cipes.hardening 're-cipes.apps.letsencrypt})
 
@@ -122,3 +127,5 @@
 (def ^{:doc "Tiddlywiki"}
   tiddlywiki (into #{'re-cipes.apps.tiddlywiki 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.nvim} lean))
 
+(def ^{:doc "apt-cache-ng"}
+  apt-cache (into #{'re-cipes.apps.aptcache} lean))
