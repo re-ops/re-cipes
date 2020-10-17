@@ -129,3 +129,6 @@
 
 (def ^{:doc "apt-cache-ng"}
   apt-cache (into #{'re-cipes.apps.aptcache} lean))
+
+(def ^{:doc "squid-deb-proxy server"}
+  squid-deb-proxy (into #{'re-cipes.apps.squiddebproxy} lean))
