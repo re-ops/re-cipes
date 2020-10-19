@@ -78,7 +78,7 @@
         with (<< "    if [host] == \"~{ip}\" {")]
     (line dest target :replace :with with)
     (line dest (fn [i _] (= i 4)) :uncomment :with "#")
-    (line dest (fn [i _] (= i 9)) :comment :with "#")))
+    (line dest (fn [i _] (= i 9)) :uncomment :with "#")))
 
 (def-inline {:depends #'re-cipes.docker.pfelk/get-source} ports
   "Configure logstash inputs"
