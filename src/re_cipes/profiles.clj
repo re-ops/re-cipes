@@ -104,8 +104,6 @@
 (def ^{:doc "Zoom instance"}
   zoom (into #{'re-cipes.zoom} base-desktop))
 
-
-
 ; Apps
 
 
