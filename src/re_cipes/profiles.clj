@@ -101,7 +101,13 @@
 (def ^{:doc "Clojure dev desktop"}
   clj-desktop (into base-desktop clj-dev))
 
+(def ^{:doc "Zoom instance"}
+  zoom (into #{'re-cipes.zoom} base-desktop))
+
+
+
 ; Apps
+
 
 (def ^{:doc "A letsencrypt certificate generation instance"} letsencrypt
   #{'re-cipes.hardening 're-cipes.apps.letsencrypt})
