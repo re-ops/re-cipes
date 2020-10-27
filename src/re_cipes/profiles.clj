@@ -67,6 +67,9 @@
 (def ^{:doc "Clojure development instance"}
   clj-dev (into #{'re-cipes.clojure} base-dev))
 
+(def ^{:doc "Browser automation instance"}
+  browser-drive (into #{'re-cipes.chromedriver} clj-dev))
+
 (def ^{:doc "Development machine with Clojure and Graal"}
   native-clj (into #{'re-cipes.graal} clj-dev))
 
