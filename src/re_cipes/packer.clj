@@ -4,7 +4,6 @@
    [re-cipes.access :refer (permissions)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.download :refer (download)]
-   [re-cog.resources.exec :refer (run)]
    [re-cog.resources.file :refer (symlink directory chmod)]
    [re-cog.resources.archive :refer (unzip)]))
 
