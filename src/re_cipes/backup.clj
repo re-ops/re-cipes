@@ -12,10 +12,10 @@
 (def-inline {:depends #'re-cipes.access/permissions} restic
   "Setting up restic"
   []
-  (let [version "0.9.6"
+  (let [version "0.11.0"
         release (<< "restic_~{version}_linux_amd64")
         tmp (<< "/tmp/~{release}.bz2")
-        expected "a88ca09d1dd051d470965667a224a2b81930c6628a0566b7b17868be40207dc8"
+        expected "f559e774c91f1201ffddba74d5758dec8342ad2b50a3bcd735ccb0c88839045c"
         url (<< "https://github.com/restic/restic/releases/download/v~{version}/~{release}.bz2")]
     (download url tmp expected)
     (bzip2 tmp)
