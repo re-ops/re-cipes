@@ -13,8 +13,8 @@
 (def-inline install
   "Installing osquery"
   []
-  (let [archive "osquery_3.3.2_1.linux.amd64.deb"
-        sum "6c54a55df1feaf410064bc87696f9829d0787fb5b9c7beabeb4f5cca7ce6c3fb"]
+  (let [archive "osquery_4.5.1_1.linux.amd64.deb"
+        sum "9efe2e7bb6be2de5a89b121ff0f23c60615275b854644f59a8382e79385fffd1"]
     (download (<< "https://pkg.osquery.io/deb/~{archive}") (<< "/tmp/~{archive}") sum)
     (package (<< "/tmp/~{archive}") :present)))
 
