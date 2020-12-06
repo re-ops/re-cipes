@@ -3,15 +3,15 @@
 ; Basic profiles
 
 (def ^{:doc "Minimal set of recipes"}
-  lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.hardening 're-cipes.desktop})
+  lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.desktop})
 
-(def ^{:doc "Base setup common to all plans (shell, hardening, osquery etc.)"}
-  base (into #{'re-cipes.monitoring} lean))
+(def ^{:doc "A secure Base setup common to all plans (hardening, osquery etc.)"}
+  base (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.osquery} lean))
 
 ; Re-core
 
 (def ^{:doc "Re-ops instance"}
-  re-ops (into #{'re-cipes.re-ops.core 're-cipes.clojure 're-cipes.packer 're-cipes.nvim} lean))
+  re-ops (into #{'re-cipes.re-ops.core 're-cipes.clojure 're-cipes.packer 're-cipes.nvim} base))
 
 (def ^{:doc "Re-ops standlone development instance with Docker and LXC enabled"}
   re-ops-standalone (into #{'re-cipes.re-ops.standalone 're-cipes.lxd 're-cipes.docker.server 're-cipes.apps.elasticsearch} re-ops))
@@ -62,7 +62,7 @@
 ; Development profiles
 
 (def ^{:doc "Base dev support"}
-  base-dev (into #{'re-cipes.nvim} lean))
+  base-dev (into #{'re-cipes.nvim} base))
 
 (def ^{:doc "Clojure development instance"}
   clj-dev (into #{'re-cipes.clojure} base-dev))
@@ -74,16 +74,16 @@
   native-clj (into #{'re-cipes.graal} clj-dev))
 
 (def ^{:doc "Python development machine"}
-  python-dev (into #{'re-cipes.nvim 're-cipes.python} lean))
+  python-dev (into #{'re-cipes.nvim 're-cipes.python} base))
 
 (def ^{:doc "Support for Java/Kotlin and Clojure development"}
   jvm-dev (into #{'re-cipes.intellij} clj-dev))
 
 (def ^{:doc "Development machine with Clojure and deep learning utils"}
-  learning (into #{'re-cipes.clojure 're-cipes.nvim 're-cipes.deep} lean))
+  learning (into #{'re-cipes.clojure 're-cipes.nvim 're-cipes.deep} base))
 
 (def ^{:doc "Vuepress documentation"}
-  vuepress (into #{'re-cipes.apps.vuepress 're-cipes.nvim} lean))
+  vuepress (into #{'re-cipes.apps.vuepress 're-cipes.nvim} base))
 
 (def ^{:doc "3d printing"}
   print3d (into #{'re-cipes.3dprint} base-dev))
@@ -109,14 +109,16 @@
 
 ; Apps
 
+(def ^{:doc "An app running within docker"} base-docker-app
+  #{'re-cipes.hardening 're-cipes.docker.nginx 're-cipes.docker.server})
 
-(def ^{:doc "A letsencrypt certificate generation instance"} letsencrypt
-  #{'re-cipes.hardening 're-cipes.apps.letsencrypt})
+(def ^{:doc "A webapp running on docker"} base-docker-webapp
+  (into #{'re-cipes.docker.nginx} base-docker-app))
 
-(def ^{:doc "base docker elk"} base-elk
-  #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.docker.common})
+(def ^{:doc "An ELK based app"} base-elk
+  (into #{'re-cipes.docker.common} base-docker-webapp))
 
-(def ^{:doc "ELK stack"}
+(def ^{:doc "Full ELK stack"}
   elk (into #{'re-cipes.docker.elk-stack} base-elk))
 
 (def ^{:doc "Elastisearch instance"}
@@ -125,17 +127,25 @@
 (def ^{:doc "Grafana instance"}
   grafana (into #{'re-cipes.apps.grafana} base-elk))
 
-(def ^{:doc "Grafana instance"}
+(def ^{:doc "Mosquitto instance"}
   mosquitto #{'re-cipes.docker.mosquitto 're-cipes.hardening 're-cipes.docker.server})
 
 (def ^{:doc "Pfsense monitoring"}
-  pfelk #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.docker.pfelk 're-cipes.docker.nginx})
+  pfelk (into #{'re-cipes.docker.pfelk} base-docker-webapp))
 
 (def ^{:doc "Tiddlywiki"}
-  tiddlywiki (into #{'re-cipes.apps.tiddlywiki 're-cipes.docker.server 're-cipes.docker.nginx 're-cipes.nvim} lean))
+  tiddlywiki (into #{'re-cipes.apps.tiddlywiki} base-docker-webapp))
+
+(def ^{:doc "Artifactory instance"}
+  artifactory (into #{'re-cipes.apps.artifactory} base-docker-webapp))
+
+; Non docker based apps
+
+(def ^{:doc "A letsencrypt cert generation instance"} letsencrypt
+  #{'re-cipes.hardening 're-cipes.apps.letsencrypt})
 
 (def ^{:doc "apt-cache-ng"}
-  apt-cache (into #{'re-cipes.apps.aptcache} lean))
+  apt-cache (into #{'re-cipes.apps.aptcache} base))
 
 (def ^{:doc "squid-deb-proxy server"}
-  squid-deb-proxy (into #{'re-cipes.apps.squiddebproxy} lean))
+  squid-deb-proxy (into #{'re-cipes.apps.squiddebproxy} base))
