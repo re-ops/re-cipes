@@ -29,7 +29,7 @@
   []
   (let [{:keys [home user]} (configuration)
         config (<< "~{home}/.config/nvim")]
-    (clone "git://github.com/narkisr/nvim.git" config)
+    (clone "git://github.com/narkisr/nvim.git" config {})
     (chown config user user {:recursive true})))
 
 (def-inline powerline
@@ -39,5 +39,5 @@
         fonts (<< "~{home}/.fonts")
         repo "git://github.com/scotu/ubuntu-mono-powerline.git"]
     (directory fonts :present)
-    (clone repo (<< "~{fonts}/ubuntu-mono-powerline"))
+    (clone repo (<< "~{fonts}/ubuntu-mono-powerline") {})
     (chown fonts user user {:recursive true})))

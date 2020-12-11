@@ -28,6 +28,6 @@
         env (<< "~{dest}/.env")
         {:keys [password]} (configuration :elasticsearch)]
     (directory "/etc/docker/compose" :present)
-    (clone repo dest)
+    (clone repo dest {})
     (file env :present)
     (line env (<< "ELASTIC_PASSWORD=~{password}") :present)))

@@ -27,7 +27,7 @@
   []
   (let [{:keys [home user]} (configuration)
         dest (<< "~{home}/.minimal-zsh")]
-    (clone "git://github.com/narkisr/minimal-zsh.git" dest)
+    (clone "git://github.com/narkisr/minimal-zsh.git" dest {})
     (chown dest user user {})
     (symlink (<< "~{home}/.zshrc") (<< "~{dest}/.zshrc"))
     (chown (<< "~{home}/.zshrc") user user {})))
@@ -35,14 +35,14 @@
 (def-inline {:depends #'re-cipes.access/permissions} z
   "rupa z"
   []
-  (clone "git://github.com/rupa/z.git" "/opt/z"))
+  (clone "git://github.com/rupa/z.git" "/opt/z" {}))
 
 (def-inline dot-files
   "Setting up dot files from git://github.com/narkisr/dots.git"
   []
   (let [{:keys [home user]} (configuration)
         dest (<< "~{home}/.dots")]
-    (clone "git://github.com/narkisr/dots.git" dest)
+    (clone "git://github.com/narkisr/dots.git" dest {})
     (chown dest user user {:recursive true})))
 
 (def-inline {:depends #'re-cipes.shell/dot-files} ack

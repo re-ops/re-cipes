@@ -1,7 +1,6 @@
 (ns re-cipes.re-ops.standalone
   (:require
    [re-cipes.re-ops.core]
-   [re-cog.resources.git :refer (clone)]
    [re-cog.resources.file :refer (edn-set line chown copy)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]))

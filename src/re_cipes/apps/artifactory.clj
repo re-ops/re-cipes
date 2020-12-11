@@ -25,7 +25,7 @@
   []
   (let [repo "https://github.com/re-ops/re-dock.git"
         dest "/etc/docker/compose/artifactory"]
-    (clone repo dest)
+    (clone repo dest {})
     (copy (<< "~{dest}/artifactory.yml") (<< "~{dest}/docker-compose.yml"))
     (on-boot "docker-compose@artifactory" :enable)))
 

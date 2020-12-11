@@ -53,8 +53,8 @@
   []
   (let [{:keys [user]} (configuration)
         repo "https://github.com/narkisr/docker-pfelk.git"
-        dest (<< "/etc/docker/compose/pfelk")]
-    (clone repo dest)
+        dest "/etc/docker/compose/pfelk"]
+    (clone repo dest {})
     (on-boot "docker-compose@pfelk.service" :enable)))
 
 (def-inline {:depends [#'re-cipes.docker.pfelk/get-source]} auth

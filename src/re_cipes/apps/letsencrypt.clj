@@ -20,7 +20,7 @@
       (package dep :present))
     (set-file-acl "re-ops" "rwx" "/srv")
     (directory dest :present)
-    (clone repo dest)
+    (clone repo dest {})
     (chmod "/srv/dehydrated/dehydrated" "a+wrx" {})))
 
 (def-inline {:depends [#'re-cipes.access/permissions #'re-cipes.apps.letsencrypt/dehydrated]} dns-lexicon

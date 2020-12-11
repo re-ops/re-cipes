@@ -25,7 +25,7 @@
   []
   (let [repo "https://github.com/re-ops/re-dock.git"
         dest "/etc/docker/compose/elasticsearch"]
-    (clone repo dest)
+    (clone repo dest {})
     (copy (<< "~{dest}/elasticsearch.yml") (<< "~{dest}/docker-compose.yml"))
     (on-boot "docker-compose@elasticsearch" :enable)))
 

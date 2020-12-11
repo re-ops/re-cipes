@@ -15,7 +15,7 @@
   []
   (let [repo "https://github.com/narkisr/nginx-proxy.git"
         dest "/etc/docker/compose/nginx-proxy"]
-    (clone repo dest)
+    (clone repo dest {})
     (directory (<< "/etc/docker/compose/nginx-proxy/sites-enabled") :present)
     (on-boot "docker-compose@nginx-proxy" :enable)))
 

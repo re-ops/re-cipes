@@ -110,7 +110,7 @@
 ; Apps
 
 (def ^{:doc "An app running within docker"} base-docker-app
-  #{'re-cipes.hardening 're-cipes.docker.nginx 're-cipes.docker.server})
+  #{'re-cipes.hardening 're-cipes.docker.server})
 
 (def ^{:doc "A webapp running on docker"} base-docker-webapp
   (into #{'re-cipes.docker.nginx} base-docker-app))
@@ -138,6 +138,9 @@
 
 (def ^{:doc "Artifactory instance"}
   artifactory (into #{'re-cipes.apps.artifactory} base-docker-webapp))
+
+(def ^{:doc "Wazuh server"}
+  wazuh (into #{'re-cipes.apps.wazuh} base-docker-app))
 
 ; Non docker based apps
 

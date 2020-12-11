@@ -20,7 +20,7 @@
     (directory root :present)
     (doseq [repo repos]
       (let [dest (<< "~{root}/~{repo}")]
-        (clone (<< "git://github.com/re-ops/~{repo}.git") dest)
+        (clone (<< "git://github.com/re-ops/~{repo}.git") dest {})
         (chown dest user user {:recursive true})))))
 
 (def-inline {:depends #'re-cipes.re-ops.core/repositories} configure
