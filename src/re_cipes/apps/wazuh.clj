@@ -15,7 +15,7 @@
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.service :refer (on-boot)]
    [re-cog.resources.git :refer (clone checkout)]
-   [re-cog.resources.file :refer (line line-set template file)]
+   [re-cog.resources.file :refer (line line-set file rename)]
    [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
@@ -27,7 +27,8 @@
         repo "https://github.com/wazuh/wazuh-docker.git"
         dest "/etc/docker/compose/wazuh"]
     (clone repo dest {})
-    (on-boot "docker-compose@pfelk.service" :enable)))
+    (rename (<< "~{dest}/production-cluster.yml") (<< "~{dest}/docker-compose.yml"))
+    (on-boot "docker-compose@wazuh.service" :enable)))
 
 (def-inline {:depends #'re-cipes.apps.wazuh/get-source} certs
   "Set up self signed certs"
@@ -50,3 +51,15 @@
       (download url (<< "/tmp/~{archive}") sum)
       (unzip (<< "/tmp/~{archive}") (<< "/opt/tlstool"))
       (run generate))))
+
+(def-inline max-map
+  "Increasing max-map count"
+  []
+  (letfn [(sysctl-reload [target]
+            (fn []
+              (script ("sudo" "/usr/sbin/sysctl" "-e" "-p" ~target))))]
+    (let [target "/etc/sysctl.d/10-max-count.conf"]
+      (set-file-acl "re-ops" "rwX" "/etc/sysctl.d")
+      (file target :present)
+      (line target "vm.max_map_count = 262144" :present)
+      (run (sysctl-reload target)))))
