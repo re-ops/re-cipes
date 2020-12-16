@@ -1,4 +1,4 @@
-(ns re-cipes.lxd
+(ns re-cipes.infra.lxd
   "Setting up lxd locally and adding it to the local lxc client"
   (:require
    re-cipes.hardening
@@ -31,7 +31,7 @@
   (add-interface "lxdbr0" :out :allow)
   (enable-forwarding))
 
-(def-inline {:depends #'re-cipes.lxd/server} remote
+(def-inline {:depends #'re-cipes.infra.lxd/server} remote
   "add local lxd instance locally"
   []
   (let [{:keys [lxd home user]} (configuration)

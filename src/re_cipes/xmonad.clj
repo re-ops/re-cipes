@@ -21,7 +21,7 @@
   (letfn [(recompile []
             (script ("xmonad" "--recompile")))]
     (let [{:keys [home user]} (configuration)
-          repo "git://github.com/narkisr/xmonad-config.git"
+          repo "https://github.com/narkisr/xmonad-config.git"
           config (<< "~{home}/.xmonad")]
       (clone repo config {})
       (chown config user user {:recursive true})

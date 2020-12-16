@@ -1,4 +1,4 @@
-(ns re-cipes.kvm
+(ns re-cipes.infra.kvm
   "Setting up hypervisors"
   (:require
    [re-cog.common.recipe :refer (require-recipe)]))

@@ -1,4 +1,4 @@
-(ns re-cipes.k8s
+(ns re-cipes.infra.k8s
   "k8s setup"
   (:require
    [re-cipes.access :refer (permissions)]

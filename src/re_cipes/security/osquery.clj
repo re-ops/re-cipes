@@ -1,4 +1,4 @@
-(ns re-cipes.osquery
+(ns re-cipes.security.osquery
   "Setting up osquery"
   (:require
    [re-cog.common.recipe :refer (require-recipe)]
@@ -18,7 +18,7 @@
     (download (<< "https://pkg.osquery.io/deb/~{archive}") (<< "/tmp/~{archive}") sum)
     (package (<< "/tmp/~{archive}") :present)))
 
-(def-inline {:depends #'re-cipes.osquery/install} configure
+(def-inline {:depends #'re-cipes.security.osquery/install} configure
   "Configure osquery"
   []
   (set-file-acl "re-ops" "rwX" "/etc/osquery")

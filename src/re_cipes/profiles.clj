@@ -6,7 +6,10 @@
   lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.desktop})
 
 (def ^{:doc "A secure Base setup common to all plans (hardening, osquery etc.)"}
-  base (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.osquery} lean))
+  base (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.osquery} lean))
+
+(def ^{:doc "A secure Base setup including EDM"}
+  base-edm (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.wazuh} lean))
 
 ; Re-core
 
@@ -14,30 +17,30 @@
   re-ops (into #{'re-cipes.re-ops.core 're-cipes.clojure 're-cipes.packer 're-cipes.nvim} base))
 
 (def ^{:doc "Re-ops standlone development instance with Docker and LXC enabled"}
-  re-ops-standalone (into #{'re-cipes.re-ops.standalone 're-cipes.lxd 're-cipes.docker.server 're-cipes.apps.elasticsearch} re-ops))
+  re-ops-standalone (into #{'re-cipes.re-ops.standalone 're-cipes.infra.lxd 're-cipes.docker.server 're-cipes.apps.elasticsearch} re-ops))
 
 (def ^{:doc "Re-ops packer image basic setup"}
   re-ops-image #{'re-cipes.hardening 're-cipes.re-ops.re-gent})
 
 ; Infra profiles
 
-(def nas (into #{'re-cipes.backup 're-cipes.zfs} base))
+(def nas (into #{'re-cipes.backup 're-cipes.infra.zfs} base))
 
 (def wireguard #{'re-cipes.hardening 're-cipes.wireguard})
 
 ; Container/Virtualization
 
 (def ^{:doc "KVM hypervisor ready"}
-  kvm (into #{'re-cipes.kvm 're-cipes.zfs} base))
+  kvm (into #{'re-cipes.infra.kvm 're-cipes.infra.zfs} base))
 
 (def ^{:doc "Virtualization tools (KVM, LXC)"}
-  virtual (into #{'re-cipes.kvm 're-cipes.lxd 're-cipes.packer} base))
+  virtual (into #{'re-cipes.infra.kvm 're-cipes.infra.lxd 're-cipes.packer} base))
 
 (def ^{:doc "Container virtualization support"}
-  conatiner (into #{'re-cipes.lxd 're-cipes.packer} base))
+  conatiner (into #{'re-cipes.infra.lxd 're-cipes.packer} base))
 
 (def ^{:doc "minikube"}
-  minikube #{'re-cipes.k8s 're-cipes.docker.server})
+  minikube #{'re-cipes.infra.k8s 're-cipes.docker.server})
 
 (def ^{:doc "Docker server"}
   docker (into #{'re-cipes.docker.server} base))

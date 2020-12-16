@@ -1,4 +1,4 @@
-(ns re-cipes.zfs
+(ns re-cipes.infra.zfs
   "Zfs setup"
   (:require
    [re-cog.common.recipe :refer (require-recipe)]
