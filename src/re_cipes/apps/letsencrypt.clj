@@ -36,7 +36,7 @@
           dest "/srv/dehydrated"
           sum "36fc962978becb696a0f0980a08ec09827440355f6c2c520f96bd5c64831a87f"]
       (download url (<< "~{dest}/~{hook}") sum)
-      (chmod  (<< "~{dest}/~{hook}") "a+wrx" {})
+      (chmod  (<< "~{dest}/~{hook}") "+x" {})
       (doseq [dep ["build-essential" "python-dev" "curl" "libffi-dev" "libssl-dev" "python3-pip"]]
         (package dep :present))
       (run pip)
