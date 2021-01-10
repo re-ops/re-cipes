@@ -1,17 +1,17 @@
 (ns re-cipes.security.wazuh
   "Setting up Wazuh agent"
   (:require
+   [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cipes.access :refer (permissions)]
    [re-cog.common.recipe :refer (require-recipe)]
    [clojure.core.strint :refer (<<)]
-   [re-cog.resources.archive :refer (untar)]
    [re-cog.resources.package :refer (package key-file update-)]
    [re-cog.resources.file :refer (file line)]
    [re-cog.resources.download :refer (download)]))
 
 (require-recipe)
 
-(def-inline {:depends #'re-cipes.access/permissions} agent-
+(def-inline {:depends #'re-cipes.access/permissions} install
   "Installing wazuh agent"
   []
   (let [listing "/etc/apt/sources.list.d/wazuh.list"
@@ -25,3 +25,17 @@
     (line listing repo :present)
     (update-)
     (package "wazuh-agent" :present)))
+
+(def-inline {:depends [#'re-cipes.security.wazuh/install #'re-cipes.access/permissions]} agent-
+  "Configure agent"
+  []
+  (let [{:keys [wazuh]} (configuration)
+        ip (-> wazuh :manager :ip)
+        parent "/var/ossec/"
+        config (<< "~{parent}/etc/")
+        file (<< "~{config}/ossec.conf")
+        initial  "      <address>MANAGER_IP</address>"
+        configured (<< "      <address>~{ip}</address>")]
+    (set-file-acl "re-ops" "rx" parent)
+    (set-file-acl "re-ops" "rw" file)
+    (line file initial :replace :with configured)))

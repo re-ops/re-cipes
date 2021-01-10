@@ -39,4 +39,10 @@
   :nginx {
     :enabled "/etc/docker/compose/nginx-proxy/sites-enabled"
   }
+
+  :wazuh {
+    :manager {
+      :ip "1.2.3.4"
+    }
+   }
 }

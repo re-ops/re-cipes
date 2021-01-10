@@ -30,6 +30,11 @@
     (rename (<< "~{dest}/production-cluster.yml") (<< "~{dest}/docker-compose.yml"))
     (on-boot "docker-compose@wazuh.service" :enable)))
 
+(def-inline {:depends #'re-cipes.apps.wazuh/get-source} auth
+  "set up manager auth see:
+     https://documentation.wazuh.com/4.0/user-manual/registering/password-authorization-registration.html"
+  [])
+
 (def-inline {:depends #'re-cipes.apps.wazuh/get-source} certs
   "Set up self signed certs"
   []
