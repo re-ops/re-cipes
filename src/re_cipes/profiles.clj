@@ -110,6 +110,9 @@
 (def ^{:doc "Zoom instance"}
   zoom (into #{'re-cipes.zoom} base-desktop))
 
+(def ^{:doc "Signal instance"}
+  signal (into #{'re-cipes.desktop.signal} base-desktop))
+
 ; Apps
 
 (def ^{:doc "An app running within docker"} base-docker-app
