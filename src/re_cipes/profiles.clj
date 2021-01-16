@@ -6,10 +6,10 @@
   lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.desktop})
 
 (def ^{:doc "A secure Base setup common to all plans (hardening, osquery etc.)"}
-  base (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.osquery} lean))
+  base (into #{'re-cipes.monitoring 're-cipes.hardening} lean))
 
 (def ^{:doc "A secure Base setup including EDM"}
-  base-edm (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.wazuh} lean))
+  base-edm (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.wazuh 're-cipes.security.osquery} lean))
 
 ; Re-core
 
@@ -96,7 +96,9 @@
 
 ; Desktop profiles
 
-(def base-desktop #{'re-cipes.xmonad 're-cipes.chrome})
+(def base-desktop #{'re-cipes.chrome})
+
+(def base-tilled (into base-desktop #{'re-cipes.xmonad}))
 
 (def ^{:doc "JVM dev desktop"}
   jvm-desktop (into base-desktop jvm-dev))
@@ -122,7 +124,7 @@
   (into #{'re-cipes.docker.nginx} base-docker-app))
 
 (def ^{:doc "An ELK based app"} base-elk
-  (into #{'re-cipes.docker.common} base-docker-webapp))
+  (into #{'re-cipes.docker.re-dock} base-docker-webapp))
 
 (def ^{:doc "Full ELK stack"}
   elk (into #{'re-cipes.docker.elk-stack} base-elk))
@@ -137,10 +139,13 @@
   mosquitto #{'re-cipes.docker.mosquitto 're-cipes.hardening 're-cipes.docker.server})
 
 (def ^{:doc "Pfsense monitoring"}
-  pfelk (into #{'re-cipes.docker.pfelk} base-docker-webapp))
+  pfelk (into #{'re-cipes.apps.pfelk} base-docker-webapp))
 
 (def ^{:doc "Tiddlywiki"}
   tiddlywiki (into #{'re-cipes.apps.tiddlywiki} base-docker-webapp))
+
+(def ^{:doc "Tiddlywiki"}
+  photoprism (into #{'re-cipes.apps.photoprism} base-docker-webapp))
 
 (def ^{:doc "Artifactory instance"}
   artifactory (into #{'re-cipes.apps.artifactory} base-docker-webapp))

@@ -43,9 +43,9 @@
     (group-add "docker" user)))
 
 (def-inline {:depends #'re-cipes.docker.server/install} services
-  "System setup for docker-compose services"
+  "System setup for docker-compose based services"
   []
-  (set-file-acl "re-ops" "rwX" "/etc/docker")
+  (set-file-acl "re-ops" "rwx" "/etc/docker")
   (directory "/etc/docker/compose" :present)
-  (set-file-acl "re-ops" "rwX" "/etc/systemd/system/")
+  (set-file-acl "re-ops" "rwx" "/etc/systemd/system/")
   (copy "/tmp/resources/templates/docker/docker-compose@.service" "/etc/systemd/system/docker-compose@.service"))

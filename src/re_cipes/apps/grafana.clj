@@ -4,7 +4,7 @@
    [re-cipes.hardening]
    [re-cipes.docker.nginx]
    [re-cipes.docker.server]
-   [re-cipes.docker.common]
+   [re-cipes.docker.re-dock]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.service :refer (on-boot)]
@@ -13,7 +13,7 @@
 
 (require-recipe)
 
-(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.common/volume #'re-cipes.docker.common/re-dock]}
+(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.re-dock/volume #'re-cipes.docker.re-dock/repo]}
   setup
   "setup grafana"
   []
@@ -30,5 +30,5 @@
   []
   (let [external-port 3001
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "grafana" external-port 3000 false)
+    (site-enabled nginx "grafana" external-port 3000 {})
     (add-rule external-port :allow {})))

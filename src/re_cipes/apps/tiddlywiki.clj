@@ -44,5 +44,5 @@
   []
   (let [external-port 8443
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "tiddlywiki" external-port 8080 true)
+    (site-enabled nginx "tiddlywiki" external-port 8080 {:basic-auth true})
     (add-rule external-port :allow {})))

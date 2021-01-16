@@ -3,7 +3,7 @@
   (:require
    [re-cipes.hardening]
    [re-cipes.docker.server]
-   [re-cipes.docker.common]
+   [re-cipes.docker.re-dock]
    [re-cipes.docker.nginx]
    [re-cog.resources.file :refer (symlink line)]
    [re-cog.resources.ufw :refer (add-rule)]
@@ -13,7 +13,7 @@
 
 (require-recipe)
 
-(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.common/volume #'re-cipes.docker.common/re-dock]}
+(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.docker.re-dock/volume #'re-cipes.docker.re-dock/repo]}
   get-source
   "Setting up service"
   []
@@ -27,10 +27,10 @@
   []
   (let [external-port 5602
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "kibana" external-port 5601 false)
+    (site-enabled nginx "kibana" external-port 5601 {})
     (add-rule external-port :allow {})))
 
-(def-inline {:depends [#'re-cipes.docker.common/re-dock]} logstash-pipeline
+(def-inline {:depends [#'re-cipes.docker.re-dock/repo]} logstash-pipeline
   "Setting up logstash pipeline"
   []
   (let [conf "/etc/docker/re-dock/logstash/pipeline/logstash.conf"

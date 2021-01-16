@@ -1,5 +1,5 @@
-(ns re-cipes.docker.common
-  "Common docker elastic setup"
+(ns re-cipes.docker.re-dock
+  "Common re-dock based elastic setup"
   (:require
    [re-cipes.docker.server]
    [re-cipes.access]
@@ -20,7 +20,7 @@
     (chmod "/var/data/" "a+wrx" {:recursive true})
     (chown "/var/data/" user user {:recursive true})))
 
-(def-inline {:depends [#'re-cipes.docker.server/install #'re-cipes.access/permissions]} re-dock
+(def-inline {:depends [#'re-cipes.docker.server/install #'re-cipes.access/permissions]} repo
   "Grabbing source"
   []
   (let [repo "https://github.com/re-ops/re-dock.git"

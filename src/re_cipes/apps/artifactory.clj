@@ -34,5 +34,5 @@
   []
   (let [external-port 8443
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "artifactory" external-port 8081 false)
+    (site-enabled nginx "artifactory" external-port 8081 {})
     (add-rule external-port :allow {})))

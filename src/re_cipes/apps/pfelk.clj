@@ -1,4 +1,4 @@
-(ns re-cipes.docker.pfelk
+(ns re-cipes.apps.pfelk
   "Utilities for setting up pfsense ELK"
   (:require
    [re-cipes.hardening]
@@ -26,7 +26,7 @@
     (download url (<< "/tmp/~{deb}") sum)
     (package (<< "/tmp/~{deb}") :present)))
 
-(def-inline {:depends #'re-cipes.docker.pfelk/geoipupdate} geoip-config
+(def-inline {:depends #'re-cipes.apps.pfelk/geoipupdate} geoip-config
   "Configure logstash inputs"
   []
   (let [{:keys [pfelk]} (configuration)
@@ -57,7 +57,7 @@
     (clone repo dest {})
     (on-boot "docker-compose@pfelk.service" :enable)))
 
-(def-inline {:depends [#'re-cipes.docker.pfelk/get-source]} auth
+(def-inline {:depends [#'re-cipes.apps.pfelk/get-source]} auth
   "Setting up Elastisearch auth"
   []
   (let [dest "/etc/docker/compose/pfelk"
@@ -68,7 +68,7 @@
     (line env (<< "ELASTIC_PASSWORD=~{password}") :present)
     (line conf "      password => 'changeme'" :replace :with (<< "      password => '~{password}'"))))
 
-(def-inline {:depends #'re-cipes.docker.pfelk/get-source} inputs-config
+(def-inline {:depends #'re-cipes.apps.pfelk/get-source} inputs-config
   "Configure logstash inputs"
   []
   (let [{:keys [pfelk]} (configuration)
@@ -80,7 +80,7 @@
     (line dest (fn [i _] (= i 4)) :uncomment :with "#")
     (line dest (fn [i _] (= i 9)) :uncomment :with "#")))
 
-(def-inline {:depends #'re-cipes.docker.pfelk/get-source} ports
+(def-inline {:depends #'re-cipes.apps.pfelk/get-source} ports
   "Configure logstash inputs"
   []
   (let [{:keys [pfelk]} (configuration)
@@ -89,7 +89,7 @@
     (line dest "      - \"9200:9200\"" :replace :with "      - \"127.0.0.1:9200:9200\"")
     (line dest "      - \"5601:5601\"" :replace :with "      - \"127.0.0.1:5601:5601\"")))
 
-(def-inline {:depends #'re-cipes.docker.pfelk/get-source} firewall-config
+(def-inline {:depends #'re-cipes.apps.pfelk/get-source} firewall-config
   "Configure logstash inputs"
   []
   (let [{:keys [user pfelk]} (configuration)
@@ -103,6 +103,6 @@
   (let [kibana-port 5602
         logstash-tcp-port 5141
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "pfelk" kibana-port 5601 false)
+    (site-enabled nginx "pfelk" kibana-port 5601 {})
     (add-rule kibana-port :allow {})
     (add-rule logstash-tcp-port :allow {})))

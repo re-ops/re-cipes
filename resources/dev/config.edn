@@ -45,4 +45,15 @@
       :ip "1.2.3.4"
     }
    }
+
+  :photoprism {
+    :passwords {
+      :admin #ref [:secrets :photoprism :password :admin]
+      :db #ref [:secrets :photoprism :password :db]
+    }
+    :volumes {
+      :foo "/home/re-ops/foo"
+      :bar "/home/re-ops/bar"
+    }
+  }
 }

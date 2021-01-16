@@ -11,7 +11,6 @@
    [re-cog.resources.download :refer (download)]
    [re-cog.resources.archive :refer (unzip)]
    [re-cog.resources.sysctl :refer (reload)]
-   [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.service :refer (on-boot)]
    [re-cog.resources.git :refer (clone checkout)]
