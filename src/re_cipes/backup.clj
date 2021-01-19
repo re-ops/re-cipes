@@ -30,8 +30,8 @@
         expected "c53abdfd81fc5eb48ff138faf3cdcd11acd7a089a44d0d82c05a63a56ef691ee"
         url (<< "https://github.com/narkisr/octo/releases/download/~{version}/octo")]
     (download url tmp expected)
-    (rename tmp "/usr/bin/octo")
-    (chmod "/usr/bin/octo" "0755" {})))
+    (rename tmp "/usr/local/bin/octo")
+    (chmod "/usr/local/bin/octo" "0755" {})))
 
 (def-inline zbackup
   "Setting up zbackup"

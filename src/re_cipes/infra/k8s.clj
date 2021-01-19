@@ -24,5 +24,5 @@
   (let [version "v1.17.0"
         url (<< "https://storage.googleapis.com/kubernetes-release/release/~{version}/bin/linux/amd64/kubectl")
         expected "6e0aaaffe5507a44ec6b1b8a0fb585285813b78cc045f8804e70a6aac9d1cb4c"]
-    (download url "/usr/bin/kubectl" expected)
-    (chmod "/usr/bin/kubectl" "0755" {})))
+    (download url "/usr/local/bin/kubectl" expected)
+    (chmod "/usr/local/bin/kubectl" "0755" {})))
