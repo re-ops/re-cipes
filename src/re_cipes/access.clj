@@ -10,7 +10,7 @@
   "Enabling re-ops folder access"
   []
   (let [{:keys [user]} (configuration)]
-    (doseq [path ["/opt/" "/usr/bin/" "/usr/local/bin/" "/usr/src"
-                  "/usr/share/keyrings/" "/etc/apt/sources.list.d"]]
+    (doseq [path ["/opt/" "/usr/local/bin/" "/usr/src/"
+                  "/usr/share/keyrings/" "/etc/apt/sources.list.d/"]]
       (when (= user "re-ops")
-        (set-file-acl "re-ops" "rwX" path)))))
+        (set-file-acl "re-ops" "rwx" path)))))
