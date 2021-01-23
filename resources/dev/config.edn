@@ -42,9 +42,13 @@
 
   :wazuh {
     :manager {
-      :ip "1.2.3.4"
+      :ip "192.168.122.122"
     }
-   }
+    :passwords {
+      :api #ref [:secrets :wazuh :api]
+      :elasticsearch #ref [:secrets :wazuh :elasticsearch]
+    }
+  }
 
   :photoprism {
     :passwords {

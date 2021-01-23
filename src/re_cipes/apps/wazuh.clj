@@ -1,5 +1,5 @@
 (ns re-cipes.apps.wazuh
-  "Wazuh single server on docker using:
+  "Wazuh server on docker using:
      https://documentation.wazuh.com/4.0/docker/wazuh-container.html#production-deployment"
   (:require
    [re-cog.resources.exec :refer (run)]
@@ -14,7 +14,7 @@
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.service :refer (on-boot)]
    [re-cog.resources.git :refer (clone checkout)]
-   [re-cog.resources.file :refer (line line-set file rename)]
+   [re-cog.resources.file :refer (line file copy yaml-set)]
    [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
@@ -26,13 +26,8 @@
         repo "https://github.com/wazuh/wazuh-docker.git"
         dest "/etc/docker/compose/wazuh"]
     (clone repo dest {})
-    (rename (<< "~{dest}/production-cluster.yml") (<< "~{dest}/docker-compose.yml"))
+    (copy (<< "~{dest}/production-cluster.yml") (<< "~{dest}/docker-compose.yml"))
     (on-boot "docker-compose@wazuh.service" :enable)))
-
-(def-inline {:depends #'re-cipes.apps.wazuh/get-source} auth
-  "set up manager auth see:
-     https://documentation.wazuh.com/4.0/user-manual/registering/password-authorization-registration.html"
-  [])
 
 (def-inline {:depends #'re-cipes.apps.wazuh/get-source} certs
   "Set up self signed certs"
@@ -67,3 +62,21 @@
       (file target :present)
       (line target "vm.max_map_count = 262144" :present)
       (run (sysctl-reload target)))))
+
+(def-inline {:depends #'re-cipes.apps.wazuh/get-source} creds
+  "Setting up API/Elasticsearch creds"
+  []
+  (let [dest "/etc/docker/compose/wazuh/docker-compose.yml"
+        {:keys [api elasticsearch]} (configuration :wazuh :passwords)
+        sets {[:wazuh-master 2] (<< "ELASTIC_PASSWORD=~{elasticsearch}")
+              [:wazuh-master 8] (<< "API_PASSWORD=~{api}")
+              [:wazuh-worker 2] (<< "ELASTIC_PASSWORD=~{elasticsearch}")
+              [:kibana 1] (<< "ELASTICSEARCH_PASSWORD=~{elasticsearch}")
+              [:kibana 7] (<< "API_PASSWORD=~{api}")}]
+    (doseq [[[service k] v] sets]
+      (yaml-set dest [:services service :environment k] v))))
+
+#_(def-inline {:depends #'re-cipes.apps.wazuh/get-source} auth
+    "set up manager auth see:
+     https://documentation.wazuh.com/4.0/user-manual/registering/password-authorization-registration.html"
+    [])
