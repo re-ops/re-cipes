@@ -19,19 +19,21 @@
   []
   (let [parent "/etc/docker/compose/photoprism"
         dest (<< "~{parent}/docker-compose.yml")
-        sum "59b8d528eaf021569b7a3ff3048b022dd3fd426e0ae1fa124e7e746831332fcf"
+        sum "c006d5c97a9aa3682e979b63e6f46df975d9cfbad9505fa80010c0d5e6c5fa3f"
         url "https://dl.photoprism.org/docker/docker-compose.yml"
         {:keys [passwords volumes]} (configuration :photoprism)
+        {:keys [db admin]} passwords
         originals (mapv (fn [[k v]] (<< "~{v}:/photoprism/originals/~(name k)")) volumes)
         storage "./storage:/photoprism/storage"]
     (directory parent :present)
     (download url dest sum)
-    (yaml-set dest [:services :photoprism :environment :PHOTOPRISM_ADMIN_PASSWORD] (passwords :admin))
-    (yaml-set dest [:services :photoprism :environment :PHOTOPRISM_DATABASE_PASSWORD] (passwords :db))
-    (yaml-set dest [:services :mariadb    :environment :MYSQL_ROOT_PASSWORD] (passwords :db))
-    (yaml-set dest [:services :mariadb    :environment :MYSQL_PASSWORD] (passwords :db))
-    (yaml-set dest [:services :photoprism :environment :PHOTOPRISM_DISABLE_WEBDAV] "true")
-    (yaml-set dest [:services :photoprism :environment :PHOTOPRISM_DISABLE_SETTINGS] "true")
+    (doseq [[k v] {:PHOTOPRISM_ADMIN_PASSWORD admin
+                   :PHOTOPRISM_DATABASE_PASSWORD db
+                   :PHOTOPRISM_DISABLE_SETTINGS "true"
+                   :PHOTOPRISM_DISABLE_WEBDAV "true"}]
+      (yaml-set dest [:services :photoprism :environment k] v))
+    (yaml-set dest [:services :mariadb :environment :MYSQL_ROOT_PASSWORD] db)
+    (yaml-set dest [:services :mariadb :environment :MYSQL_PASSWORD] db)
     (yaml-set dest [:services :photoprism :volumes] (conj originals storage))
     (on-boot "docker-compose@photoprism" :enable)))
 
