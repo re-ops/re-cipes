@@ -63,7 +63,7 @@
       (line target "vm.max_map_count = 262144" :present)
       (run (sysctl-reload target)))))
 
-(def-inline {:depends #'re-cipes.apps.wazuh/get-source} creds
+(def-inline {:depends #'re-cipes.apps.wazuh/get-source} wazuh-creds
   "Setting up API/Elasticsearch creds"
   []
   (let [dest "/etc/docker/compose/wazuh/docker-compose.yml"
@@ -75,6 +75,25 @@
               [:kibana 7] (<< "API_PASSWORD=~{api}")}]
     (doseq [[[service k] v] sets]
       (yaml-set dest [:services service :environment k] v))))
+
+(def-inline {:depends #'re-cipes.apps.wazuh/get-source} elastic-creds
+  " Setup Elasticsearch password, the following method is used to generate the hash:
+
+     $ docker exec -it <container-id> chmod +x /usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh
+     $ docker exec -it <container-id> /usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh -p <password>
+
+    Once the password hass been chaged delete the existing volumes:
+
+     $ docker-compose down -v
+
+    See also https://aws.amazon.com/blogs/opensource/change-passwords-open-distro-for-elasticsearch/"
+  []
+  (let [dest "/etc/docker/compose/wazuh"
+        users (<< "~{dest}/production_cluster/elastic_opendistro/internal_users.yml")
+        {:keys [admin infra]} (configuration :wazuh :hashes)]
+    (yaml-set users [:admin :hash] admin)
+    (doseq [k [:kibanaserver :kibanaro :logstash :readall :snapshotrestore]]
+      (yaml-set users [k :hash] infra))))
 
 #_(def-inline {:depends #'re-cipes.apps.wazuh/get-source} auth
     "set up manager auth see:
