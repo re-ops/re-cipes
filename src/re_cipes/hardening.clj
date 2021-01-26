@@ -3,7 +3,7 @@
   (:require
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
-   [re-cog.resources.file :refer (line line-set copy template)]
+   [re-cog.resources.file :refer (file line line-set copy template)]
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.resources.service :refer (service on-boot)]
    [re-cog.resources.ufw :refer (set-state add-rule reset)]))
@@ -60,10 +60,22 @@
   []
   (let [source "/tmp/resources/templates/hardening/disable-fs.mustache"
         fs (map (fn [v] {:fs v}) ["freevxfs" "jffs2" "hfs" "hfsplus" "udf"])]
-    (template  source "/etc/modprobe.d/fs-disable.conf" {:filesystems fs})))
+    (template source "/etc/modprobe.d/fs-disable.conf" {:filesystems fs})))
 
 (def-inline auditing
   "Enabling auditd cis: 4.1.2"
   []
   (package "auditd" :present)
   (on-boot "auditd" :enable))
+
+(def-inline security-limits
+  "Disabling hard core dumps cis: 1.5.1"
+  []
+  (let [dest "/etc/security/limits.d/core_dump.conf"]
+    (file dest :present)
+    (line dest "* hard core 0" :present)))
+
+(def-inline package-purge
+  "Clearing unsafe packages"
+  []
+  (package "telnet" :absent))
