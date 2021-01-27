@@ -15,12 +15,13 @@
   (let [version "0.11.0"
         release (<< "restic_~{version}_linux_amd64")
         tmp (<< "/tmp/~{release}.bz2")
+        bin "/usr/local/bin/"
         expected "f559e774c91f1201ffddba74d5758dec8342ad2b50a3bcd735ccb0c88839045c"
         url (<< "https://github.com/restic/restic/releases/download/v~{version}/~{release}.bz2")]
     (download url tmp expected)
     (bzip2 tmp)
-    (rename (<< "/tmp/~{release}") "/usr/bin/restic")
-    (chmod "/usr/bin/restic" "0755" {})))
+    (rename (<< "/tmp/~{release}") (<< "~{bin}/restic"))
+    (chmod (<< "~{bin}/restic") "0755" {})))
 
 (def-inline {:depends #'re-cipes.access/permissions} octo
   "Setting up octo"
