@@ -1,6 +1,7 @@
 (ns re-cipes.security.wazuh
   "Setting up Wazuh agent"
   (:require
+   [re-cog.resources.exec :refer [run]]
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cipes.access :refer (permissions)]
    [re-cog.common.recipe :refer (require-recipe)]
@@ -39,3 +40,14 @@
     (set-file-acl "re-ops" "rx" parent)
     (set-file-acl "re-ops" "rw" file)
     (line file initial :replace :with configured)))
+
+(def-inline {:depends [#'re-cipes.security.wazuh/agent-]} registeration
+  "Configure agent"
+  []
+  (let [{:keys [wazuh]} (configuration)
+        ip (configuration :wazuh :manager :ip)
+        pass (configuration :wazuh :passwords :agent)]
+    (letfn [(register []
+              (script
+               ("sudo" "/var/ossec/bin/agent-auth" "-m" ~ip "-P" ~pass)))]
+      (run register))))
