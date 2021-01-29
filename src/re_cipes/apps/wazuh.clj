@@ -95,7 +95,37 @@
     (doseq [k [:kibanaserver :kibanaro :logstash :readall :snapshotrestore]]
       (yaml-set users [k :hash] infra))))
 
-#_(def-inline {:depends #'re-cipes.apps.wazuh/get-source} auth
-    "set up manager auth see:
-     https://documentation.wazuh.com/4.0/user-manual/registering/password-authorization-registration.html"
-    [])
+(def-inline {:depends #'re-cipes.apps.wazuh/get-source} local-volumes
+  " Setup Elasticsearch password, the following method is used to generate the hash:
+
+     $ docker exec -it <container-id> chmod +x /usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh
+     $ docker exec -it <container-id> /usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh -p <password>
+
+    Once the password hass been chaged delete the existing volumes:
+
+     $ docker-compose down -v
+
+    See also https://aws.amazon.com/blogs/opensource/change-passwords-open-distro-for-elasticsearch/"
+  []
+  (let [dest "/etc/docker/compose/wazuh"
+        users (<< "~{dest}/production_cluster/elastic_opendistro/internal_users.yml")
+        {:keys [admin infra]} (configuration :wazuh :hashes)]
+    (yaml-set users [:admin :hash] admin)
+    (doseq [k [:kibanaserver :kibanaro :logstash :readall :snapshotrestore]]
+      (yaml-set users [k :hash] infra))))
+
+(def-inline {:depends #'re-cipes.apps.wazuh/get-source} authd
+  "Setting up auth password for agents"
+  []
+  (let [compose "/etc/docker/compose/wazuh"
+        production (<< "~{compose}/production_cluster/wazuh_cluster")
+        authd (<< "~{production}/authd.pass")
+        conf (<< "~{production}/wazuh_manager.conf")
+        pass (configuration :wazuh :passwords :agent)
+        no-pass "    <use_password>no</use_password>"
+        yes-pass "    <use_password>yes</use_password>"
+        volume "./production_cluster/wazuh_cluster/authd.pass:/wazuh-config-mount/etc/authd.pass"]
+    (file authd :present)
+    (line authd pass :present)
+    (line conf no-pass :replace :with yes-pass)
+    (yaml-set (<< "~{compose}/docker-compose.yml") [:services :wazuh-master :volumes 15] volume)))
