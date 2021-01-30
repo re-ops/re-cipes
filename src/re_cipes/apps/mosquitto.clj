@@ -12,6 +12,8 @@
   service
   "Setup mosquitto docker service"
   []
-  (let [args {:description "Mosquitto Container" :port 1883 :image "eclipse-mosquitto"}]
-    (template "/tmp/resources/templates/docker/docker.service.mustache" "/etc/systemd/system/docker-mosquitto.service" args)
+  (let [args {:description "Mosquitto Container" :port 1883 :image "eclipse-mosquitto"}
+        source "/tmp/resources/templates/docker/docker.service.mustache"
+        dest "/etc/systemd/system/docker-mosquitto.service"]
+    (template source dest args)
     (on-boot "docker-mosquitto" :enable)))
