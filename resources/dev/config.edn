@@ -50,10 +50,14 @@
 
   :photoprism {
     :passwords #ref [:secrets :photoprism :passwords]
-    
+
     :volumes {
       :foo "/home/re-ops/foo"
       :bar "/home/re-ops/bar"
     }
+  }
+  :mosquitto {
+    :passwords #ref [:secrets :mosquitto :passwords]
+    :port 1883
   }
 }
