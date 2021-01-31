@@ -33,7 +33,7 @@
     (doseq [[option value] options]
       (line conf (<< "~(name option) ~{value}") :present))))
 
-(def-inline {:depends [#'re-cipes.apps.mosquitto/get-source]} configure
+(def-inline {:depends [#'re-cipes.apps.mosquitto/get-source]} passwd
   "Mosquitto password file"
   []
   (let [compose "/etc/docker/compose/mosquitto"
