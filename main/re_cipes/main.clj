@@ -47,7 +47,7 @@
     :app {
       :command     "re-cipes"
       :description "Re-cipes provisioning cli"
-      :version     "0.3.3"
+      :version     "0.3.4"
     }
     :commands [
       {:command "provision" :short "prov"
