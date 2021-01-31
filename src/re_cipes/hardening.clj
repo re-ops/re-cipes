@@ -10,7 +10,7 @@
 
 (require-recipe)
 
-(def-inline ssh-haredning
+(def-inline {:depends #'re-cipes.access/permissions} ssh-haredning
   "SSH server hardening"
   []
   (package "openssh-server" :present)
@@ -24,7 +24,7 @@
   (line "/etc/ssh/sshd_config" "\nUseDns no" :present)
   (service "ssh" :restart))
 
-(def-inline systcl-hardening
+(def-inline {:depends #'re-cipes.access/permissions} systcl-hardening
   "Hardening network, cis using sysctl"
   []
   (letfn [(sysctl-reload []
