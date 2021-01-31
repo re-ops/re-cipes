@@ -55,7 +55,7 @@
   []
   (package "aide" :present))
 
-(def-inline disable-fs
+(def-inline {:depends #'re-cipes.access/permissions} disable-fs
   "Disable loading of unused Filesystems cis 1.1.1.1-5"
   []
   (let [source "/tmp/resources/templates/hardening/disable-fs.mustache"
@@ -68,7 +68,7 @@
   (package "auditd" :present)
   (on-boot "auditd" :enable))
 
-(def-inline security-limits
+(def-inline {:depends #'re-cipes.access/permissions} security-limits
   "Disabling hard core dumps cis: 1.5.1"
   []
   (let [dest "/etc/security/limits.d/core_dump.conf"]
