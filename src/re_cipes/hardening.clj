@@ -1,6 +1,7 @@
 (ns re-cipes.hardening
   "Hardedning and security tools"
   (:require
+   [re-cipes.access]
    [re-cog.resources.exec :refer [run]]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.resources.file :refer (file line line-set copy template)]
