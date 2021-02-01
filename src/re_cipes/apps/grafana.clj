@@ -25,11 +25,19 @@
     (symlink dest repo)
     (on-boot "docker-compose@grafana" :enable)))
 
-(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall #'re-cipes.apps.grafana/setup]}
-  nginx
-  "Enabling site"
+(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]}
+  grafana-proxy
+  "Grafana proxy"
   []
-  (let [external-port 3001
+  (let [external-port 443
         {:keys [nginx]} (configuration)]
     (site-enabled nginx "grafana" external-port 3000 {})
+    (add-rule external-port :allow {})))
+
+(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
+  "Elasticsearch proxy"
+  []
+  (let [external-port 9201
+        {:keys [nginx]} (configuration)]
+    (site-enabled nginx "elasticsearch" external-port 9200)
     (add-rule external-port :allow {})))
