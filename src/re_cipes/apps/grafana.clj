@@ -39,5 +39,5 @@
   []
   (let [external-port 9201
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "elasticsearch" external-port 9200)
+    (site-enabled nginx "elasticsearch" external-port 9200 {})
     (add-rule external-port :allow {})))
