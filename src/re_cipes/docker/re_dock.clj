@@ -13,7 +13,7 @@
   "Setting up data volume"
   []
   (let [{:keys [user]} (configuration)]
-    (set-file-acl "re-ops" "rwX" "/var/")
+    (set-file-acl "re-ops" "rwx" "/var/")
     (directory "/var/data" :present)
     (directory "/var/data/elasticsearch" :present)
     (directory "/var/data/grafana" :present)
@@ -27,6 +27,7 @@
         dest "/etc/docker/re-dock/"
         env (<< "~{dest}/.env")
         {:keys [password]} (configuration :elasticsearch)]
+    (set-file-acl "re-ops" "rwx" "/etc/docker/")
     (directory "/etc/docker/compose" :present)
     (clone repo dest {})
     (file env :present)
