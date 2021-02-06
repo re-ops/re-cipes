@@ -19,7 +19,7 @@
     - log level
   "
   [& {:keys [interval level] :or {interval 10 level :info}}]
-  (log/setup "re-cog" ["oshi.*"] ["re-cog.plan"])
+  (log/setup "re-cog" ["oshi.*"])
   (set-level! level))
 
 (defn resolve- [s]
