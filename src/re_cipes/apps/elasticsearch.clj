@@ -30,9 +30,9 @@
     (on-boot "docker-compose@elasticsearch" :enable)))
 
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
-  "Enabling site"
+  "Enabling reverse proxy"
   []
   (let [external-port 9201
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "elasticsearch" external-port 9200)
+    (site-enabled nginx "elasticsearch" external-port 9200 {:tls-3 false})
     (add-rule external-port :allow {})))
