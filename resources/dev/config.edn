@@ -4,6 +4,10 @@
   :user "re-ops"
   :home "/home/re-ops"
 
+  :logstash {
+    :hosts ["192.168.122.188:5044"]            
+  }
+
   :pfelk {
     :ip "192.168.1.1"
     :ifcs [
