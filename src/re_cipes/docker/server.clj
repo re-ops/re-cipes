@@ -1,7 +1,7 @@
 (ns re-cipes.docker.server
   "Docker server setup"
   (:require
-   [re-cipes.access]
+   re-cipes.access
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.common.recipe :refer (require-recipe)]
    [clojure.core.strint :refer (<<)]
