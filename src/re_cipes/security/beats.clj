@@ -10,7 +10,7 @@
 
 (require-recipe)
 
-(def-inline install
+(def-inline {:depends #'re-cipes.access/permissions} install
   "Install beats"
   []
   (let [repo "deb https://packages.elastic.co/beats/apt stable main"
