@@ -6,7 +6,7 @@
   lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.desktop})
 
 (def ^{:doc "A secure Base setup common to all plans (hardening, osquery etc.)"}
-  base (into #{'re-cipes.monitoring 're-cipes.hardening} lean))
+  base (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.beats} lean))
 
 (def ^{:doc "A secure Base setup including EDM"}
   base-edm (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.wazuh 're-cipes.security.osquery} lean))
