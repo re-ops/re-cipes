@@ -29,5 +29,5 @@
       (run private-key)
       (let [pk (clojure.string/trim (slurp private))
             args {:ifc "eth1" :port "51820" :address "10.10.0.1/24" :private-key pk}]
-        (set-file-acl "re-ops" "rwX" "/etc/wireguard/")
+        (set-file-acl "re-ops" "rwx" "/etc/wireguard/")
         (template "/tmp/resources/templates/wireguard/wg0.conf.mustache" "/etc/wireguard/wg.conf" args)))))
