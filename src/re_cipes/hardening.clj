@@ -77,6 +77,7 @@
     (line dest "* hard core 0" :present)))
 
 (def-inline package-purge
-  "Clearing unsafe packages"
+  "Clearing unsafe/redundant packages"
   []
-  (package "telnet" :absent))
+  (package "telnet" :absent)
+  (package "popularity-contest" :absent))
