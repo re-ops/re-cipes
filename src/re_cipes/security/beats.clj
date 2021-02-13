@@ -31,7 +31,7 @@
   []
   (let [parent "/etc/filebeat/"
         dest (<< "~{parent}/filebeat.yml")
-        {:keys [hosts]} (configuration :logstash)]
+        {:keys [hosts]} (configuration :logstash :server)]
     (set-file-acl "re-ops" "rwx" "/etc/filebeat")
     (yaml-set dest [:output] {})
     (yaml-set dest [:output :logstash] {})

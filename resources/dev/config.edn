@@ -5,7 +5,10 @@
   :home "/home/re-ops"
 
   :logstash {
-    :hosts ["192.168.122.188:5044"]            
+    :server {
+      :hosts ["192.168.122.188:5044"]
+    }
+    :beats true
   }
 
   :pfelk {
