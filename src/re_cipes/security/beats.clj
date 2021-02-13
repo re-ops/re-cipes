@@ -2,6 +2,8 @@
   "Setting up beats agent for log forwarding"
   (:require
    re-cipes.access
+   [re-cog.resources.ufw :refer (add-rule)]
+   [re-cog.resources.service :refer (on-boot service)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.resources.file :refer (yaml-set file)]
@@ -38,4 +40,5 @@
     (yaml-set dest [:output :logstash :hosts] hosts)
     (yaml-set dest [:output :logstash :tls :insecure] true)
     (yaml-set dest [:filebeat :prospectors 0 :paths] ["/var/log/*.log" "/var/log/syslog"])
-    (service "filebeat" :restart)))
+    (service "filebeat" :restart)
+    (on-boot "filebeat" :enable)))

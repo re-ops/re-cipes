@@ -44,4 +44,5 @@
     (template (<< "/tmp/resources/templates/logstash/~{conf}") pipeline m)
     (when beats
       (yaml-set compose [:services :logstash :ports] ["5044:5044"])
-      (yaml-set compose [:services :logstash :volumes 2] "./logstash/certs:/opt/certs:ro"))))
+      (yaml-set compose [:services :logstash :volumes 2] "./logstash/certs:/opt/certs:ro")
+      (add-rule 5044 :allow {}))))
