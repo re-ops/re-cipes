@@ -9,4 +9,5 @@
 (def-inline system-monitoring
   "System monitoring tooling"
   []
-  (package "sysstat" :present))
+  (package "sysstat" :present)
+  (package "net-tools" :present))
