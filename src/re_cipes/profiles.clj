@@ -109,11 +109,14 @@
 (def ^{:doc "Clojure dev desktop"}
   clj-desktop (into base-desktop clj-dev))
 
-(def ^{:doc "Zoom instance"}
+(def ^{:doc "Zoom video"}
   zoom (into #{'re-cipes.zoom} base-desktop))
 
-(def ^{:doc "Signal instance"}
+(def ^{:doc "Signal messaging"}
   signal (into #{'re-cipes.desktop.signal} base-desktop))
+
+(def ^{:doc "Obsidian editor"}
+  obsidian (into #{'re-cipes.desktop.obsidian} base-desktop))
 
 ; Apps
 
