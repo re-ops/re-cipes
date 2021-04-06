@@ -3,10 +3,10 @@
 ; Basic profiles
 
 (def ^{:doc "Minimal set of recipes"}
-  lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.desktop})
+  lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.desktop 're-cipes.hardening})
 
 (def ^{:doc "A secure Base setup common to all plans (hardening, osquery etc.)"}
-  base (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.beats} lean))
+  base (into #{'re-cipes.monitoring 're-cipes.security.beats} lean))
 
 (def ^{:doc "A secure Base setup including EDM"}
   base-edm (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.wazuh 're-cipes.security.osquery} lean))
@@ -96,7 +96,9 @@
 
 ; Desktop profiles
 
-(def base-desktop #{'re-cipes.chrome})
+(def base-desktop (into #{'re-cipes.chrome} lean))
+
+(def lean-desktop #{'re-cipes.chrome})
 
 (def base-tilled (into base-desktop #{'re-cipes.xmonad}))
 
@@ -110,10 +112,10 @@
   clj-desktop (into base-desktop clj-dev))
 
 (def ^{:doc "Zoom video"}
-  zoom (into #{'re-cipes.zoom} base-desktop))
+  zoom (into #{'re-cipes.zoom} lean-desktop))
 
 (def ^{:doc "Signal messaging"}
-  signal (into #{'re-cipes.desktop.signal} base-desktop))
+  signal (into #{'re-cipes.desktop.signal} lean-desktop))
 
 (def ^{:doc "Obsidian editor"}
   obsidian (into #{'re-cipes.desktop.obsidian} base-desktop))
