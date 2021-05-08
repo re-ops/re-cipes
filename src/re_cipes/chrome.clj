@@ -15,7 +15,7 @@
   "Install google chrome"
   []
   (let [sources "/etc/apt/sources.list.d"
-        listing (<< "~{sources}/docker-ce.list")
+        listing (<< "~{sources}/google-chrome.list")
         url "https://dl-ssl.google.com/linux/linux_signing_key.pub"
         keyrings "/usr/share/keyrings"
         key "google-chrome-key"
