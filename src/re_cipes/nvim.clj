@@ -28,8 +28,9 @@
   "Configure nvim"
   []
   (let [{:keys [home user]} (configuration)
-        config (<< "~{home}/.config/nvim")]
-    (clone "https://github.com/narkisr/nvim.git" config {})
+        config (<< "~{home}/.config")]
+    (directory config :present)
+    (clone "https://github.com/narkisr/nvim.git" (<< "~{config}/nvim") {})
     (chown config user user {:recursive true})))
 
 (def-inline powerline
