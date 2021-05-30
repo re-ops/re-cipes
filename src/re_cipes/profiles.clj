@@ -158,6 +158,9 @@
 (def ^{:doc "Wazuh server"}
   wazuh (into #{'re-cipes.apps.wazuh} base-docker-app))
 
+(def ^{:doc "Influxdb server"}
+  influxdb (into #{'re-cipes.apps.influxdb} base-docker-app))
+
 ; Non docker based apps
 
 (def ^{:doc "A letsencrypt cert generation instance"} letsencrypt

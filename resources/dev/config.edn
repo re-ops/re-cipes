@@ -43,6 +43,12 @@
     :password #ref [:secrets :elasticsearch :password]
   }
 
+  :influxdb {
+    :username #ref [:secrets :influxdb :username]
+    :password #ref [:secrets :influxdb :password]
+    :bucket "testing"
+    :org "testing-org"
+  }
   :nginx {
     :enabled "/etc/docker/compose/nginx-proxy/sites-enabled"
   }
@@ -63,6 +69,7 @@
       :bar "/home/re-ops/bar"
     }
   }
+
   :mosquitto {
     :passwords #ref [:secrets :mosquitto :passwords]
     :port 1883
