@@ -137,6 +137,9 @@
 (def ^{:doc "Elastisearch instance"}
   elasticsearch (into #{'re-cipes.apps.elasticsearch} base-elk))
 
+(def ^{:doc "Influxdb server"}
+  influxdb (into #{'re-cipes.apps.influxdb} base-docker-webapp))
+
 (def ^{:doc "Grafana instance"}
   grafana (into #{'re-cipes.apps.grafana} base-elk))
 
@@ -157,9 +160,6 @@
 
 (def ^{:doc "Wazuh server"}
   wazuh (into #{'re-cipes.apps.wazuh} base-docker-app))
-
-(def ^{:doc "Influxdb server"}
-  influxdb (into #{'re-cipes.apps.influxdb} base-docker-app))
 
 ; Non docker based apps
 

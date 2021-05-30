@@ -3,6 +3,9 @@
   (:require
    [re-cipes.hardening]
    [re-cipes.docker.server]
+   [re-cipes.docker.nginx]
+   [re-cog.resources.nginx :refer (site-enabled)]
+   [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.resources.service :refer (on-boot)]
    [re-cog.resources.file :refer (copy directory chmod line file)]
@@ -32,3 +35,11 @@
     (line env (<< "USERNAME=~{username}") :present)
     (line env (<< "PASSWORD=~{password}") :present)
     (on-boot "docker-compose@influxdb" :enable)))
+
+(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
+  "Enabling reverse proxy"
+  []
+  (let [external-port 8087
+        {:keys [nginx]} (configuration)]
+    (site-enabled nginx "influxdb" external-port 8086 {:tls-3 true})
+    (add-rule external-port :allow {})))
