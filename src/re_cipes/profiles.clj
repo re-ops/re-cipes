@@ -120,7 +120,12 @@
 (def ^{:doc "Obsidian editor"}
   obsidian (into #{'re-cipes.desktop.obsidian} base-desktop))
 
+(def ^{:doc "novnc server"}
+  novnc (into #{'re-cipes.desktop.novnc} lean-desktop))
+
+
 ; Apps
+
 
 (def ^{:doc "An app running within docker"} base-docker-app
   #{'re-cipes.hardening 're-cipes.docker.server})
