@@ -28,10 +28,13 @@
 (def-inline config
   "Nebula configuration"
   []
-  (let [{:keys [port hosts]} (configuration :nebula)
-        light (first (filter :lighthouse? (vals hosts)))
-        host (hosts (hostname))
-        args {:lighthouse light :host host :port port :hostname (hostname)}]
+  (let [{:keys [hosts port]} (configuration :nebula)
+        hosts' (into {}
+                     (map (fn [[k {:keys [lighthouse?] :as m}]]
+                            [k (assoc m :port (if lighthouse? port 0))]) hosts))
+        lighthouse (first (filter :lighthouse? (vals hosts')))
+        host (hosts' (hostname))
+        args {:lighthouse lighthouse :host host :hostname (hostname)}]
     (directory "/etc/nebula/" :present)
     (template "/tmp/resources/templates/nebula/config.yml.mustache" "/etc/nebula/config.yml" args)))
 
