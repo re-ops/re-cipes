@@ -28,6 +28,8 @@
 
 (def wireguard #{'re-cipes.hardening 're-cipes.wireguard})
 
+(def nebula #{'re-cipes.hardening 're-cipes.networking.nebula})
+
 ; Container/Virtualization
 
 (def ^{:doc "KVM hypervisor ready"}
