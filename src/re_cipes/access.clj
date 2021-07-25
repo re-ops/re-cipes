@@ -10,7 +10,7 @@
   "Enabling re-ops folder access"
   []
   (let [{:keys [user]} (configuration)]
-    (doseq [path ["/opt/" "/usr/local/bin/" "/usr/src/"
+    (doseq [path ["/opt/" "/usr/local/bin/" "/usr/local/etc/" "/usr/src/"
                   "/usr/share/keyrings/" "/etc/apt/sources.list.d/"
                   "/etc/security/limits.d/" "/etc/modprobe.d/"]]
       (when (= user "re-ops")
