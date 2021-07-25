@@ -2,14 +2,15 @@
 
 ; Basic profiles
 
-(def ^{:doc "Minimal set of recipes"}
-  lean #{'re-cipes.access 're-cipes.shell 're-cipes.tmux 're-cipes.desktop 're-cipes.hardening})
+(def ^{:doc "Setting up access and hardening only"}
+  lean #{'re-cipes.access 're-cipes.hardening})
 
-(def ^{:doc "A secure Base setup common to all plans (hardening, osquery etc.)"}
-  base (into #{'re-cipes.monitoring 're-cipes.security.beats} lean))
+(def ^{:doc "A common base setup"}
+  base (into #{'re-cipes.monitoring 're-cipes.security.beats 're-cipes.networking.nebula
+               're-cipes.shell 're-cipes.tmux 're-cipes.desktop} lean))
 
 (def ^{:doc "A secure Base setup including EDM"}
-  base-edm (into #{'re-cipes.monitoring 're-cipes.hardening 're-cipes.security.wazuh 're-cipes.security.osquery} lean))
+  base-edm (into #{'re-cipes.security.wazuh 're-cipes.security.osquery} base))
 
 ; Re-core
 
@@ -24,11 +25,11 @@
 
 ; Infra profiles
 
-(def nas (into #{'re-cipes.backup 're-cipes.infra.zfs} base))
+(def nas (into #{'re-cipes.backup 're-cipes.infra.zfs} lean))
 
-(def wireguard #{'re-cipes.hardening 're-cipes.wireguard})
+(def wireguard (into #{'re-cipes.wireguard} lean))
 
-(def nebula #{'re-cipes.hardening 're-cipes.networking.nebula})
+(def nebula (into #{'re-cipes.networking.nebula} lean))
 
 ; Container/Virtualization
 
@@ -98,9 +99,9 @@
 
 ; Desktop profiles
 
-(def base-desktop (into #{'re-cipes.chrome} lean))
+(def base-desktop (into #{'re-cipes.chrome} base))
 
-(def lean-desktop #{'re-cipes.chrome})
+(def lean-desktop (into #{'re-cipes.chrome} lean))
 
 (def base-tilled (into base-desktop #{'re-cipes.xmonad}))
 
