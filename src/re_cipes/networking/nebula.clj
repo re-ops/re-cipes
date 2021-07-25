@@ -15,7 +15,7 @@
 
 (require-recipe)
 
-(def-inline setup
+(def-inline {:depends [#'re-cipes.access/permissions]} setup
   "Installing nebula binary"
   []
   (let [{:keys [home]} (configuration)
@@ -37,12 +37,11 @@
         host (if lighthouse?
                {:port port :tun-disable true}
                {:port 0 :tun-disable false})
-        args {:lighthouse lighthouse :host (assoc host :lighthouse? lighthouse) :hostname (hostname)}]
+        args {:lighthouse (assoc lighthouse :port port) :host (assoc host :lighthouse? lighthouse?) :hostname (hostname)}]
     (when lighthouse?
       (add-rule port :allow {}))
-    (set-file-acl "re-ops" "rwx" "/etc/")
-    (directory "/etc/nebula/" :present)
-    (template "/tmp/resources/templates/nebula/config.yml.mustache" "/etc/nebula/config.yml" args)))
+    (directory "/usr/local/etc/nebula/" :present)
+    (template "/tmp/resources/templates/nebula/config.yml.mustache" "/usr/local/etc/nebula/config.yml" args)))
 
 (def-inline service
   "Setting up nebula service"
@@ -53,4 +52,4 @@
               :stop "/bin/kill -HUP $MAINPID"
               :wanted-by "multi-user.target"}]
     (set-file-acl "re-ops" "rwx" "/etc/systemd/system/")
-    (set-service "nebula" "Nebula Mesh VPN" "/usr/local/bin/nebula -config /etc/nebula/config.yml" opts)))
+    (set-service "nebula" "Nebula Mesh VPN" "/usr/local/bin/nebula -config /usr/local/etc/nebula/config.yml" opts)))
