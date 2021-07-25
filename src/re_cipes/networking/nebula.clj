@@ -1,6 +1,8 @@
 (ns re-cipes.networking.nebula
   "Nebula setup"
   (:require
+   [re-cipes.hardening]
+   [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
    [re-cog.facts.datalog :refer (hostname)]
@@ -25,7 +27,7 @@
     (untar tmp "/opt/nebula/")
     (symlink (<< "/usr/local/bin/nebula") (<< "/opt/nebula/nebula"))))
 
-(def-inline config
+(def-inline {:depends [#'re-cipes.hardening/firewall]} config
   "Nebula configuration"
   []
   (let [{:keys [hosts port]} (configuration :nebula)
@@ -37,6 +39,8 @@
         lighthouse (first (filter :lighthouse? (vals hosts')))
         host (hosts' (hostname))
         args {:lighthouse lighthouse :host host :hostname (hostname)}]
+    (when (host :lighthouse?)
+      (add-rule port :allow {}))
     (directory "/etc/nebula/" :present)
     (template "/tmp/resources/templates/nebula/config.yml.mustache" "/etc/nebula/config.yml" args)))
 
