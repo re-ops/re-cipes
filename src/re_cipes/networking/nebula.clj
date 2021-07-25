@@ -31,7 +31,9 @@
   (let [{:keys [hosts port]} (configuration :nebula)
         hosts' (into {}
                      (map (fn [[k {:keys [lighthouse?] :as m}]]
-                            [k (assoc m :port (if lighthouse? port 0))]) hosts))
+                            (if lighthouse?
+                              [k (assoc m :port port :tun-disable true)]
+                              [k (assoc m :port port :tun-disable false)])) hosts))
         lighthouse (first (filter :lighthouse? (vals hosts')))
         host (hosts' (hostname))
         args {:lighthouse lighthouse :host host :hostname (hostname)}]
