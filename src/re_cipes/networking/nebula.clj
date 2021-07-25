@@ -30,16 +30,13 @@
 (def-inline {:depends [#'re-cipes.hardening/firewall]} config
   "Nebula configuration"
   []
-  (let [{:keys [hosts port]} (configuration :nebula)
-        hosts' (into {}
-                     (map (fn [[k {:keys [lighthouse?] :as m}]]
-                            (if lighthouse?
-                              [k (assoc m :port port :tun-disable true)]
-                              [k (assoc m :port port :tun-disable false)])) hosts))
-        lighthouse (first (filter :lighthouse? (vals hosts')))
-        host (hosts' (hostname))
-        args {:lighthouse lighthouse :host host :hostname (hostname)}]
-    (when (host :lighthouse?)
+  (let [{:keys [lighthouse port]} (configuration :nebula)
+        lighthouse? (= (lighthouse :hostname) (hostname))
+        host (if lighthouse?
+               {:port port :tun-disable true}
+               {:port 0 :tun-disable false})
+        args {:lighthouse lighthouse :host (assoc host :lighthouse? lighthouse) :hostname (hostname)}]
+    (when lighthouse?
       (add-rule port :allow {}))
     (directory "/etc/nebula/" :present)
     (template "/tmp/resources/templates/nebula/config.yml.mustache" "/etc/nebula/config.yml" args)))

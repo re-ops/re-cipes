@@ -77,10 +77,8 @@
 
   :nebula {
     :port 4242
-    :hosts {
-      "lighthouse" {:nebula-ip "192.168.100.1" :lighthouse? true :host-ip "192.168.122.194" :tun false}
-      "instance-1" {:lighthouse? false :tun true}
-      "instance-2" {:lighthouse? false :tun true}
+    :lighthouse {
+       :hostname "lighthouse" :host-ip "192.168.122.194" :nebula-ip "192.168.100.1"
     }
   }
 }
