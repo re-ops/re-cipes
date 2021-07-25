@@ -3,6 +3,7 @@
   (:require
    [re-cipes.hardening]
    [re-cipes.access]
+   [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
@@ -39,6 +40,7 @@
         args {:lighthouse lighthouse :host (assoc host :lighthouse? lighthouse) :hostname (hostname)}]
     (when lighthouse?
       (add-rule port :allow {}))
+    (set-file-acl "re-ops" "rwx" "/etc/")
     (directory "/etc/nebula/" :present)
     (template "/tmp/resources/templates/nebula/config.yml.mustache" "/etc/nebula/config.yml" args)))
 
@@ -50,4 +52,5 @@
               :restart "always"
               :stop "/bin/kill -HUP $MAINPID"
               :wanted-by "multi-user.target"}]
+    (set-file-acl "re-ops" "rwx" "/etc/systemd/system/")
     (set-service "nebula" "Nebula Mesh VPN" "/usr/local/bin/nebula -config /etc/nebula/config.yml" opts)))
