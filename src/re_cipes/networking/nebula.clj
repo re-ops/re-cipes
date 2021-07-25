@@ -2,6 +2,7 @@
   "Nebula setup"
   (:require
    [re-cipes.hardening]
+   [re-cipes.access]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
@@ -27,7 +28,7 @@
     (untar tmp "/opt/nebula/")
     (symlink (<< "/usr/local/bin/nebula") (<< "/opt/nebula/nebula"))))
 
-(def-inline {:depends [#'re-cipes.hardening/firewall]} config
+(def-inline {:depends [#'re-cipes.access/permissions #'re-cipes.hardening/firewall]} config
   "Nebula configuration"
   []
   (let [{:keys [lighthouse port]} (configuration :nebula)
