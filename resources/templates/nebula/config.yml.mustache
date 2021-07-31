@@ -1,7 +1,7 @@
 pki:
-  ca: /etc/nebula/ca.crt
-  cert: /etc/nebula/{{hostname}}.crt
-  key: /etc/nebula/{{hostname}}.key
+  ca: /usr/local/etc/nebula/ca.crt
+  cert: /usr/local/etc/nebula/{{hostname}}.crt
+  key: /usr/local/etc/nebula/{{hostname}}.key
 
 static_host_map:
   "{{lighthouse.nebula-ip}}": ["{{lighthouse.host-ip}}:{{lighthouse.port}}"]

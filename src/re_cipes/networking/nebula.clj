@@ -15,7 +15,7 @@
 
 (require-recipe)
 
-(def-inline {:depends [#'re-cipes.access/permissions]} setup
+(def-inline {:depends #'re-cipes.access/permissions} setup
   "Installing nebula binary"
   []
   (let [{:keys [home]} (configuration)
