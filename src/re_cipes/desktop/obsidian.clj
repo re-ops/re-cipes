@@ -25,12 +25,12 @@
   (let [{:keys [home]} (configuration)
         share (<< "~{home}/.local/share")
         applications (<< "~{share}/applications")
-        icon-url "https://pbs.twimg.com/profile_images/1269490744609341442/MaweGLMN_400x400.png"
-        icon (<< "~{home}/Pictures/obsidian.png")
+        icon-url "https://avatars.githubusercontent.com/u/65011256?s=200&v=4"
+        icon (<< "~{home}/.config/obsidian.png")
         obsidian {:name "Obsidian" :bin (<< "~{home}/bin/Obsidian %u") :icon icon :categories "Office"}]
     (directory share :present)
     (directory applications :present)
-    (download icon-url icon "7ed4b0c4eb7a4d3a42ac533f22f25e29ad7f9b42fde15b87e9928a6e1db2c8a3")
+    (download icon-url icon "7663d1284daafdbcd61ac9e6955bd3720961cf71cad6275aa8d696b47416cb02")
     (template "/tmp/resources/templates/desktop/desktop-entry.mustache" (<< "~{applications}/obsidian.desktop") obsidian)
     (copy (<< "~{applications}/obsidian.desktop") (<< "~{home}/Desktop/obsidian.desktop"))
     (chmod (<< "~{home}/Desktop/obsidian.desktop") "+x" {})))
