@@ -81,4 +81,8 @@
        :hostname "lighthouse" :host-ip "192.168.122.194" :nebula-ip "192.168.100.1"
     }
   }
+
+  :novnc {
+    :passwords #ref [:secrets :novnc :passwords]
+  }
 }
