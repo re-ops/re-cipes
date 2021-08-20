@@ -1,6 +1,7 @@
 (ns re-cipes.desktop.novnc
   "Setting up novnc"
   (:require
+   [re-cog.resources.ufw :refer (add-rule)]
    [re-cipes.access :refer (permissions)]
    [re-cog.resources.exec :refer [run]]
    [re-cog.resources.file :refer (copy directory)]
@@ -15,12 +16,13 @@
   "Installing websockify"
   []
   (let [{:keys [home user]} (configuration)
-        config {:user user :restart true}
+        config {:restart true}
         cli (<< "/usr/bin/websockify --web=~{home}/novnc --cert=/etc/ssl/cert.pem  --key=/etc/ssl/privkey.pem 443 localhost:5901")]
     (package "websockify" :present)
     (package "python-numpy" :present)
     (clone "https://github.com/novnc/noVNC.git" (<< "~{home}/novnc") {})
-    (set-service "websockitfy" "Launching novnc service" cli config)))
+    (set-service "websockitfy" "Launching novnc service" cli config)
+    (add-rule 443 :allow {})))
 
 (def-inline {:depends #'re-cipes.access/permissions} tightvnc
   "Setting up vnc server"
