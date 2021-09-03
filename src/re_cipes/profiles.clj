@@ -169,6 +169,9 @@
 (def ^{:doc "Wazuh server"}
   wazuh (into #{'re-cipes.apps.wazuh} base-docker-app))
 
+(def ^{:doc "Matrix and Element setup"}
+  matrix (into #{'re-cipes.apps.matrix} base-docker-webapp))
+
 ; Non docker based apps
 
 (def ^{:doc "A letsencrypt cert generation instance"} letsencrypt

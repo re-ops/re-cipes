@@ -1,0 +1,130 @@
+# Configuration file for Synapse.
+#
+# This is a YAML file: see [1] for a quick introduction. Note in particular
+# that *indentation is important*: all the elements of a list or dictionary
+# should have the same indentation.
+#
+# [1] https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
+
+
+## Modules ##
+modules:
+
+## Server ##
+
+server_name: "docker-58d04fa0bc"
+
+# When running as a daemon, the file to store the pid in
+#
+pid_file: /data/homeserver.pid
+
+
+presence:
+  presence_router:
+
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+
+    resources:
+      - names: [client, federation]
+        compress: false
+
+limit_remote_rooms:
+
+retention:
+
+caches:
+  per_cache_factors:
+
+## Database ##
+
+database:
+  name: psycopg2
+  args:
+    user: synapse_user
+    password: Tohki8Oh
+    database: synapse
+    host: postgres
+    port: 5432
+    cp_min: 5
+    cp_max: 10
+
+## Logging ##
+
+log_config: "/data/docker-58d04fa0bc.log.config"
+
+
+
+## Media Store ##
+
+
+media_store_path: "/data/media_store"
+
+
+url_preview_accept_language:
+
+# If set, allows registration of standard or admin accounts by anyone who
+# has the shared secret, even if registration is otherwise disabled.
+#
+registration_shared_secret: "wuP#,IW:K~1fK7W;ibEO+T7^zw~SMl6@g5KGw+8~,BvNd2V-4@"
+
+account_threepid_delegates:
+metrics_flags:
+report_stats: false
+
+
+room_prejoin_state:
+
+macaroon_secret_key: "5;c8m+~6PO9lQiAQIg-:Zu5~sah-5nfpm5Kk^#hg.CmzclAK&7"
+
+form_secret: "s.=RCOUlNVWnPgwsVuoE;dvKQrl&1^0lC#AG;ye,LB8z=&f+=s"
+
+## Signing Keys ##
+
+signing_key_path: "/data/docker-58d04fa0bc.signing.key"
+
+old_signing_keys:
+
+saml2_config:
+  sp_config:
+  user_mapping_provider:
+    config:
+   token_endpoint:
+
+oidc_providers:
+
+cas_config:
+
+sso:
+
+password_config:
+   policy:
+
+ui_auth:
+
+email:
+  password_providers:
+
+## Push ##
+
+push:
+
+
+# User Directory configuration
+
+user_directory:
+
+## Stats
+
+stats:
+
+## Opentracing ##
+
+opentracing:
+
+## Workers
+redis:
+# vim:ft=yaml

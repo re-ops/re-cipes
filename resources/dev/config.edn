@@ -49,6 +49,7 @@
     :bucket "testing"
     :org "testing-org"
   }
+
   :nginx {
     :enabled "/etc/docker/compose/nginx-proxy/sites-enabled"
   }
@@ -84,5 +85,9 @@
 
   :novnc {
     :passwords #ref [:secrets :novnc :passwords]
+  }
+
+  :matrix {
+    :postgres {:password #ref [:secrets :matrix :postgres :passwords]}
   }
 }
