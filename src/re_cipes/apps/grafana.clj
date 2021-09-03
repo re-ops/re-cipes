@@ -1,5 +1,5 @@
 (ns re-cipes.apps.grafana
-  "Dockerized Elastisearch only"
+  "Dockerized Grafana"
   (:require
    [re-cipes.hardening]
    [re-cipes.docker.nginx]
