@@ -136,20 +136,20 @@
 (def ^{:doc "A webapp running on docker"} base-docker-webapp
   (into #{'re-cipes.docker.nginx} base-docker-app))
 
-(def ^{:doc "An ELK based app"} base-elk
+(def ^{:doc "An app which uses re-dock repo"} base-re_dock
   (into #{'re-cipes.docker.re-dock} base-docker-webapp))
 
 (def ^{:doc "Full ELK stack"}
-  elk (into #{'re-cipes.docker.elk-stack} base-elk))
+  elk (into #{'re-cipes.docker.elk-stack} base-re_dock))
 
 (def ^{:doc "Elastisearch instance"}
-  elasticsearch (into #{'re-cipes.apps.elasticsearch} base-elk))
+  elasticsearch (into #{'re-cipes.apps.elasticsearch} base-re_dock))
 
 (def ^{:doc "Influxdb server"}
   influxdb (into #{'re-cipes.apps.influxdb} base-docker-webapp))
 
 (def ^{:doc "Grafana instance"}
-  grafana (into #{'re-cipes.apps.grafana} base-elk))
+  grafana (into #{'re-cipes.apps.grafana} base-re_dock))
 
 (def ^{:doc "Mosquitto instance"}
   mosquitto #{'re-cipes.apps.mosquitto 're-cipes.hardening 're-cipes.docker.server})
@@ -170,7 +170,7 @@
   wazuh (into #{'re-cipes.apps.wazuh} base-docker-app))
 
 (def ^{:doc "Matrix and Element setup"}
-  matrix (into #{'re-cipes.apps.matrix} base-docker-webapp))
+  matrix (into #{'re-cipes.apps.matrix} base-re_dock))
 
 ; Non docker based apps
 
