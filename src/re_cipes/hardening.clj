@@ -80,4 +80,17 @@
   "Clearing unsafe/redundant packages"
   []
   (package "telnet" :absent)
-  (package "popularity-contest" :absent))
+  (package "popularity-contest" :absent)
+  (package "apport" :absent)
+  (package "whoopsie" :absent)
+  (package "whoopsie-preferences" :absent))
+
+(def-inline purge-cups
+  "purging cups"
+  []
+  (package "cups" :absent)
+  (package "cups-browsed" :absent)
+  (package "cups-common" :absent)
+  (package "cups-server-common" :absent)
+  (package "cups-daemon" :absent)
+  (package "cups-ipp-utils" :absent))
