@@ -5,7 +5,7 @@
    [re-cog.common.recipe :refer (require-recipe)]
    [clojure.core.strint :refer (<<)]
    [re-cog.resources.package :refer (package key-file update-)]
-   [re-cog.resources.file :refer (file line template)]
+   [re-cog.resources.file :refer (file line template copy directory)]
    [re-cog.resources.download :refer (download)]))
 
 (require-recipe)
@@ -13,7 +13,9 @@
 (def-inline {:depends #'re-cipes.access/permissions} signal
   "Installing gcloud client"
   []
-  (let [listing "/etc/apt/sources.list.d/signal-xenial.list"
+  (let [{:keys [home]} (configuration)
+        listing "/etc/apt/sources.list.d/signal-xenial.list"
+        autostart (<< "~{home}/.config/autostart")
         key "signal.gpg"
         keyrings "/usr/share/keyrings/"
         repo (<< "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main")
@@ -23,15 +25,6 @@
     (file listing :present)
     (line listing repo :present)
     (update-)
-    (package "signal-desktop" :present)))
-
-(def-inline {:depends #'re-cipes.desktop.signal/signal} auto-start
-  "Enabling autostart"
-  []
-  (let [parent "/etc/xdg/autostart/"
-        file "signal.desktop"
-        input {:name "signal" :bin "/usr/bin/signal-desktop"}
-        mustache "/tmp/resources/templates/desktop/autostart.mustache"]
-    (set-file-acl "re-ops" "rwx" parent)
-    (template mustache (<< "~{parent}/~{file}") input)))
-
+    (package "signal-desktop" :present)
+    (directory autostart :present)
+    (copy "/usr/share/applications/signal-desktop.desktop" (<< "~{autostart}/signal-desktop.desktop"))))
