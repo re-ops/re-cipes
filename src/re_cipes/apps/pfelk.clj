@@ -11,7 +11,7 @@
    [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.service :refer (on-boot)]
-   [re-cog.resources.file :refer (line line-set template file)]
+   [re-cog.resources.file :refer (line uncomment-nth line-set template file)]
    [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
@@ -77,8 +77,8 @@
         target "#    if [host] == \"10.0.0.1\" { ### Adjust to match the IP address of pfSense or OPNSense ###"
         with (<< "    if [host] == \"~{ip}\" {")]
     (line dest target :replace :with with)
-    (line dest (fn [i _] (= i 4)) :uncomment :with "#")
-    (line dest (fn [i _] (= i 9)) :uncomment :with "#")))
+    (uncomment-nth dest "#" 4)
+    (uncomment-nth dest "#" 9)))
 
 (def-inline {:depends #'re-cipes.apps.pfelk/get-source} ports
   "Configure logstash inputs"
