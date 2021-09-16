@@ -7,7 +7,7 @@
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.service :refer (on-boot)]
-   [re-cog.resources.file :refer (copy symlink)]
+   [re-cog.resources.file :refer (copy symlink directory)]
    [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
@@ -44,17 +44,21 @@
     (site-enabled nginx "synapse" external-port 8008 {:http-2 true})
     (add-rule external-port :allow {})))
 
-(def-inline {:depends [#'re-cipes.apps.matrix/setup]} generate
-  "Config generation"
+(def-inline {:depends [#'re-cipes.apps.matrix/setup]} configure
+  "Configuration"
   []
-  (letfn [(generate [volume host]
-            (fn []
-              (script ("/usr/bin/docker" "run" "-i" "--rm"
-                                         "-v" ~volume
-                                         "-e" ~host
-                                         "-e" "SYNAPSE_REPORT_STATS=yes"
-                                         "matrixdotorg/synapse:latest"
-                                         "generate"))))]
-    (let [volume "/etc/docker/compose/matrix/matrix/synapse:/data"
-          host (<< "SYNAPSE_SERVER_NAME=~(fqdn)")]
-      (run (generate volume host)))))
+  (let [host (fqdn)
+        parent "/etc/docker/compose/matrix/matrix"
+        dest (<< "~{parent}/synapse")
+        config (<< "~{dest}/homeserver.yaml")]
+    (letfn [(pip []
+              (script
+               ("/usr/bin/pip3" "install" "matrix-synapse")))
+            (configure []
+                       (script ("/usr/bin/python3" "-m" "synapse.app.homeserver" "--server-name" ~host
+                                                   "--config-path" ~config "--config-directory" ~dest "--generate-config" "--report-stats=no")))]
+      (package "python3-pip" :present)
+      (directory parent :present)
+      (directory dest :present)
+      (run pip)
+      (run configure))))
