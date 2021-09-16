@@ -24,7 +24,7 @@
     (symlink dest repo)
     (on-boot "docker-compose@matrix" :enable)))
 
-(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]}
+(def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall #'re-cipes.apps.matrix/setup]}
   element
   "Element"
   []
