@@ -88,6 +88,6 @@
   }
 
   :matrix {
-    :postgres {:password #ref [:secrets :matrix :postgres :passwords]}
+    :postgres {:password #ref [:secrets :matrix :postgres :password]}
   }
 }
