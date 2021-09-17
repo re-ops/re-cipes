@@ -4,10 +4,11 @@
    [re-cipes.docker.re-dock]
    [re-cog.facts.datalog :refer (hostname fqdn)]
    [re-cog.resources.exec :refer [run]]
+   [re-cog.resources.permissions :refer (set-file-acl)]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.service :refer (on-boot)]
-   [re-cog.resources.file :refer (copy symlink directory file line)]
+   [re-cog.resources.file :refer (copy symlink directory file line yaml-set chmod)]
    [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
@@ -18,7 +19,6 @@
   []
   (let [repo "/etc/docker/re-dock/matrix"
         dest "/etc/docker/compose/matrix"
-        env (<< "~{dest}/.env")
         {:keys [password]} (configuration :matrix :postgres)]
     (copy (<< "~{repo}/matrix.yml") (<< "~{repo}/docker-compose.yml"))
     (symlink dest repo)
@@ -44,8 +44,8 @@
     (site-enabled nginx "synapse" external-port 8008 {:http-2 true})
     (add-rule external-port :allow {})))
 
-(def-inline {:depends [#'re-cipes.apps.matrix/setup]} configure
-  "Configuration"
+(def-inline {:depends [#'re-cipes.apps.matrix/setup]} generate
+  "Generate configuration"
   []
   (let [host (fqdn)
         parent "/etc/docker/compose/matrix/matrix"
@@ -61,7 +61,10 @@
       (directory parent :present)
       (directory dest :present)
       (run pip)
-      (run configure))))
+      (file config :absent)
+      (run configure)
+      (set-file-acl "re-ops" "rw" dest)
+      (chmod dest "o+rw" {:recursive true}))))
 
 (def-inline {:depends [#'re-cipes.apps.matrix/setup]} env
   "Docker env file"
@@ -71,3 +74,34 @@
         env (<< "~{parent}/.env")]
     (file env :present)
     (line env (<< "POSTGRES_PASSWORD=~{password}") :present)))
+
+(def-inline {:depends [#'re-cipes.apps.matrix/generate]} configure
+  "General Configuration"
+  []
+  (let [{:keys [password]} (configuration :matrix :postgres)
+        dest "/etc/docker/compose/matrix/matrix/synapse"
+        homeserver (<< "~{dest}/homeserver.yaml")]
+    (set-file-acl "re-ops" "rw" dest)
+    (chmod dest "o+rw" {:recursive true})
+    (yaml-set (<< "~{dest}/~(hostname).log.config") [:handlers :file :filename] (<< "/data/homeserver.log"))
+    (yaml-set homeserver [:log_config] (<< "/data/~(hostname).log.config"))
+    (yaml-set homeserver [:signing_key_path] (<< "/data/~(hostname).signing.key"))
+    (yaml-set homeserver [:media_store_path] (<< "/data/media_store"))
+    (yaml-set homeserver [:pid_file] (<< "/data/homeserver.pid"))
+    (yaml-set homeserver [:listeners 0 :bind_addresses] ["0.0.0.0"])))
+
+(def-inline {:depends [#'re-cipes.apps.matrix/generate]} database
+  "DB Configuration"
+  []
+  (let [{:keys [password]} (configuration :matrix :postgres)
+        dest "/etc/docker/compose/matrix/matrix/synapse"
+        homeserver (<< "~{dest}/homeserver.yaml")]
+    (yaml-set homeserver [:database :name] "psycopg2")
+    (yaml-set homeserver [:database :txn_limit] 10000)
+    (yaml-set homeserver [:database :args :user] "synapse_user")
+    (yaml-set homeserver [:database :args :password] password)
+    (yaml-set homeserver [:database :args :database] "synapse")
+    (yaml-set homeserver [:database :args :host] "postgres")
+    (yaml-set homeserver [:database :args :port] 5432)
+    (yaml-set homeserver [:database :args :cp_min] 5)
+    (yaml-set homeserver [:database :args :cp_max] 10)))
