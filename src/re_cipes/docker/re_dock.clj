@@ -26,7 +26,7 @@
   (let [repo "https://github.com/re-ops/re-dock.git"
         dest "/etc/docker/re-dock/"
         env (<< "~{dest}/.env")
-        {:keys [password]} (configuration :elasticsearch)]
+        {:keys [password]} (configuration :matrix :postgres)]
     (set-file-acl "re-ops" "rwx" "/etc/docker/")
     (directory "/etc/docker/compose" :present)
     (clone repo dest {})

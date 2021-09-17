@@ -7,7 +7,7 @@
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.service :refer (on-boot)]
-   [re-cog.resources.file :refer (copy symlink directory)]
+   [re-cog.resources.file :refer (copy symlink directory file line)]
    [re-cog.common.recipe :refer (require-recipe)]))
 
 (require-recipe)
@@ -62,3 +62,12 @@
       (directory dest :present)
       (run pip)
       (run configure))))
+
+(def-inline {:depends [#'re-cipes.apps.matrix/setup]} env
+  "Docker env file"
+  []
+  (let [{:keys [password]} (configuration :matrix :postgres)
+        parent "/etc/docker/compose/matrix/"
+        env (<< "~{parent}/.env")]
+    (file env :present)
+    (line env (<< "POSTGRES_PASSWORD=~{password}") :present)))
