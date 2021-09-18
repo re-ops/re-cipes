@@ -83,9 +83,9 @@
         homeserver (<< "~{dest}/homeserver.yaml")]
     (set-file-acl "re-ops" "rw" dest)
     (chmod dest "o+rw" {:recursive true})
-    (yaml-set (<< "~{dest}/~(hostname).log.config") [:handlers :file :filename] (<< "/data/homeserver.log"))
-    (yaml-set homeserver [:log_config] (<< "/data/~(hostname).log.config"))
-    (yaml-set homeserver [:signing_key_path] (<< "/data/~(hostname).signing.key"))
+    (yaml-set (<< "~{dest}/~(fqdn).log.config") [:handlers :file :filename] (<< "/data/homeserver.log"))
+    (yaml-set homeserver [:log_config] (<< "/data/~(fqdn).log.config"))
+    (yaml-set homeserver [:signing_key_path] (<< "/data/~(fqdn).signing.key"))
     (yaml-set homeserver [:media_store_path] (<< "/data/media_store"))
     (yaml-set homeserver [:pid_file] (<< "/data/homeserver.pid"))
     (yaml-set homeserver [:listeners 0 :bind_addresses] ["0.0.0.0"])))
