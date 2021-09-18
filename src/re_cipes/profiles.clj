@@ -131,7 +131,7 @@
 
 
 (def ^{:doc "An app running within docker"} base-docker-app
-  #{'re-cipes.hardening 're-cipes.docker.server})
+  #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.networking.nebula})
 
 (def ^{:doc "A webapp running on docker"} base-docker-webapp
   (into #{'re-cipes.docker.nginx} base-docker-app))
