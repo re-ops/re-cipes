@@ -3,7 +3,7 @@
 ; Basic profiles
 
 (def ^{:doc "Setting up access and hardening only"}
-  lean #{'re-cipes.access 're-cipes.hardening})
+  lean #{'re-cipes.monitoring 're-cipes.access 're-cipes.hardening})
 
 (def ^{:doc "A common base setup"}
   base (into #{'re-cipes.monitoring 're-cipes.security.beats 're-cipes.networking.nebula
@@ -131,7 +131,7 @@
 
 
 (def ^{:doc "An app running within docker"} base-docker-app
-  #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.networking.nebula})
+  #{'re-cipes.hardening 're-cipes.docker.server 're-cipes.networking.nebula 're-cipes.monitoring})
 
 (def ^{:doc "A webapp running on docker"} base-docker-webapp
   (into #{'re-cipes.docker.nginx} base-docker-app))
