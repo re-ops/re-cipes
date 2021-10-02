@@ -105,6 +105,11 @@
 
 (def base-tilled (into base-desktop #{'re-cipes.xmonad}))
 
+(def lean-tilled (into lean-desktop #{'re-cipes.xmonad}))
+
+(def ^{:doc "Automated tilled dashboard"}
+  dashboard (into lean-tilled #{'re-cipes.desktop.dashboard}))
+
 (def ^{:doc "JVM dev desktop"}
   jvm-desktop (into base-desktop jvm-dev))
 
