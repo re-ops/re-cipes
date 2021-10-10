@@ -19,7 +19,7 @@
   []
   (let [parent "/etc/docker/compose/photoprism"
         dest (<< "~{parent}/docker-compose.yml")
-        sum "c006d5c97a9aa3682e979b63e6f46df975d9cfbad9505fa80010c0d5e6c5fa3f"
+        sum "87633fb3f946918c7d2230a55267416613d21d32725e0b4bacf56cd5784964c3"
         url "https://dl.photoprism.org/docker/docker-compose.yml"
         {:keys [passwords volumes]} (configuration :photoprism)
         {:keys [db admin]} passwords
