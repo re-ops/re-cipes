@@ -187,3 +187,9 @@
 
 (def ^{:doc "squid-deb-proxy server"}
   squid-deb-proxy (into #{'re-cipes.apps.squiddebproxy} base))
+
+; Notebook webbapp
+
+(def ^{:doc "Python development machine"}
+  jupyter (into clj-dev (into #{'re-cipes.nvim 're-cipes.apps.jupyter} base-docker-webapp)))
+

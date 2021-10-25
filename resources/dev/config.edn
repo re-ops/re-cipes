@@ -90,4 +90,9 @@
   :matrix {
     :postgres {:password #ref [:secrets :matrix :postgres :password]}
   }
+
+  :jupyter {
+       :password  #ref [:secrets :jupyter :password]
+  }
+
 }
