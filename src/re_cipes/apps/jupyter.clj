@@ -46,5 +46,5 @@
   []
   (let [external-port 443
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "jupyter" external-port 8888 {:basic-auth false})
+    (site-enabled nginx "jupyter" external-port 8888 {:basic-auth false :websockets true})
     (add-rule external-port :allow {})))
