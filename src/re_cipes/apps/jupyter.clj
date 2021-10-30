@@ -4,18 +4,19 @@
    [re-cipes.hardening]
    [re-cog.resources.download :refer (download)]
    [re-cipes.docker.nginx]
+   [re-cipes.clojure]
    [re-cog.resources.exec :refer (run)]
    [re-cog.resources.systemd :refer (set-service)]
    [re-cog.resources.nginx :refer (site-enabled)]
    [re-cog.resources.ufw :refer (add-rule)]
    [re-cog.common.recipe :refer (require-recipe)]
    [re-cog.facts.config :refer (configuration)]
-   [re-cog.resources.file :refer (symlink directory)]))
+   [re-cog.resources.file :refer (symlink directory copy)]))
 
 (require-recipe)
 
-(def-inline anaconda
-  "Setting up Anaconda"
+(def-inline install
+  "Installing Anaconda"
   []
   (let [{:keys [home user]} (configuration)
         password (configuration :jupyter :password)
@@ -41,6 +42,26 @@
       (run anaconda)
       (run set-password))))
 
+(def-inline {:depends [#'re-cipes.apps.jupyter/install #'re-cipes.clojure/clj]} clojure-kernel
+  "Install Clojure Kernel"
+  []
+  (let [{:keys [home user]} (configuration)
+        kernel "clojure-kernel"
+        jar (<< "~{home}/clojupyter-standalone.jar")
+        bin (<< "~{home}/bin/")
+        clojure (<< "~{home}/bin/clojure")
+        deps "/tmp/resources/templates/juypter/deps.edn"]
+    (letfn [(build []
+              (script
+               (set! PATH @PATH ":" ~bin)
+               ("/usr/bin/bash" ~clojure "-A:depstar" "-m" "hf.depstar.uberjar" ~jar)))
+            (install []
+                     (script
+                      ("/usr/bin/bash" ~clojure "-m" "clojupyter.cmdline" "install" "--ident" "mykernel-1" "--jarfile" ~jar)))]
+      (copy deps (<< "~{home}/.clojure/deps.edn"))
+      (run build)
+      (run install))))
+
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]} nginx
   "Nginx site enable"
   []
@@ -48,3 +69,10 @@
         {:keys [nginx]} (configuration)]
     (site-enabled nginx "jupyter" external-port 8888 {:basic-auth false :websockets true})
     (add-rule external-port :allow {})))
+
+(def-inline service
+  "Setting up a user service for jupyter"
+  []
+  (let [{:keys [home user]} (configuration)
+        config {:user user :restart true}]
+    (set-service "jupyter" "Juypyter service" (<< "~{home}/anaconda/bin/jupyter notebook --no-browser --ip=0.0.0.0") config)))
