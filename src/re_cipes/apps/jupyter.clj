@@ -57,7 +57,7 @@
                ("/usr/bin/bash" ~clojure "-A:depstar" "-m" "hf.depstar.uberjar" ~jar)))
             (install []
                      (script
-                      ("/usr/bin/bash" ~clojure "-m" "clojupyter.cmdline" "install" "--ident" "mykernel-1" "--jarfile" ~jar)))]
+                      ("/usr/bin/bash" ~clojure "-m" "clojupyter.cmdline" "install" "--ident" ~kernel "--jarfile" ~jar)))]
       (copy deps (<< "~{home}/.clojure/deps.edn"))
       (run build)
       (run install))))
