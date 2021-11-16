@@ -38,7 +38,7 @@
   []
   (let [{:keys [home user]} (configuration)
         dest (<< "~{home}/bin/lein")
-        sum "913f072ada1fc452c7f9e4cb3dc8eaf17d244ebdaf370e114c728483d4017a12"
+        sum "54912fd6d11976a0163f85a45424dd504d1d0c263c56875d7f37e55bc8feff5c"
         url "https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein"
         dot-lein (<< "~{home}/.lein")]
     (directory (<< "~{home}/bin") :present)
