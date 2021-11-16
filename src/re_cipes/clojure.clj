@@ -52,10 +52,10 @@
   "Setting up Joker linter"
   []
   (let [{:keys [home user]} (configuration)
-        version "0.12.7"
+        version "0.17.3"
         archive (<< "joker-~{version}-linux-amd64.zip")
         url (<< "https://github.com/candid82/joker/releases/download/v~{version}/~{archive}")
-        sum "25ba334d68044971e556e9aa0ce6c1994610a464c399adf0e0357fd2e23b6c36"]
+        sum "f5f40776bb97d43c91993cd59a4531f28af019afaf185c0b0b300410e60fbb19"]
     (download url (<< "/tmp/~{archive}") sum)
     (directory (<< "~{home}/bin/") :present)
     (unzip (<< "/tmp/~{archive}") (<< "~{home}/bin/"))

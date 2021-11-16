@@ -43,7 +43,7 @@
       (run set-password))))
 
 (def-inline {:depends [#'re-cipes.apps.jupyter/install #'re-cipes.clojure/clj]} clojure-kernel
-  "Install Clojure Kernel"
+  "Install Clojure Jupyter kernel"
   []
   (let [{:keys [home user]} (configuration)
         kernel "clojure-kernel"
