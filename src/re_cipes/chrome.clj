@@ -20,7 +20,7 @@
         keyrings "/usr/share/keyrings"
         key "google-chrome-key"
         repo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"]
-    (download url (<< "~{keyrings}/~{key}") "5dfdccb6f67eea65aeb717f1ef90a81fa80fe77c60f4d3dfdf45c969748069c5")
+    (download url (<< "~{keyrings}/~{key}") "c9e8f825be3168600804973fdd41e47dd26a9b29d6b1a8b6fcab31758daced8c")
     (key-file (<< "~{keyrings}/~{key}"))
     (file listing :present)
     (line listing repo :present)
