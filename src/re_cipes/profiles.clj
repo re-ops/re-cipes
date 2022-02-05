@@ -70,6 +70,9 @@
 (def ^{:doc "Base dev support"}
   base-dev (into #{'re-cipes.nvim} base))
 
+(def ^{:doc "Dev with Syncthing enabled"}
+  base-sync (into #{'re-cipes.syncthing} base-dev))
+
 (def ^{:doc "Clojure development instance"}
   clj-dev (into #{'re-cipes.clojure} base-dev))
 
