@@ -95,4 +95,10 @@
        :password  #ref [:secrets :jupyter :password]
   }
 
+  :hydroxide {
+     :smtp-host "0.0.0.0"
+     :tls-key "/opt/hydroxide/hy.key"
+     :tls-cert "/opt/hydroxide/hy.crt"
+  }
+
 }

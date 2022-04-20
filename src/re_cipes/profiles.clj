@@ -76,6 +76,12 @@
 (def ^{:doc "Clojure development instance"}
   clj-dev (into #{'re-cipes.clojure} base-dev))
 
+(def ^{:doc "Go development instance"}
+  go-dev (into #{'re-cipes.development.go} base-dev))
+
+(def ^{:doc "Hydroxide instance"}
+  hydroxide (into #{'re-cipes.apps.hydroxide} go-dev))
+
 (def ^{:doc "Browser automation instance"}
   browser-drive (into #{'re-cipes.chromedriver} clj-dev))
 
@@ -111,7 +117,7 @@
 (def lean-tilled (into lean-desktop #{'re-cipes.xmonad}))
 
 (def ^{:doc "Automated tilled dashboard"}
-  dashboard (into lean-tilled #{'re-cipes.desktop.dashboard 're-cipes.re-ops.re-gent}))
+  dashboard (into lean-tilled #{'re-cipes.desktop.dashboard}))
 
 (def ^{:doc "JVM dev desktop"}
   jvm-desktop (into base-desktop jvm-dev))
