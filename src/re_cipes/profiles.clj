@@ -162,6 +162,9 @@
 (def ^{:doc "Influxdb server"}
   influxdb (into #{'re-cipes.apps.influxdb} base-docker-webapp))
 
+(def ^{:doc "Influxdb for Home asisstant server"}
+  influxdb-ha (into #{'re-cipes.apps.influxdb-ha} base-docker-webapp))
+
 (def ^{:doc "Grafana instance"}
   grafana (into #{'re-cipes.apps.grafana} base-re_dock))
 
@@ -174,7 +177,7 @@
 (def ^{:doc "Tiddlywiki"}
   tiddlywiki (into #{'re-cipes.apps.tiddlywiki} base-docker-webapp))
 
-(def ^{:doc "Tiddlywiki"}
+(def ^{:doc "Photoprism service"}
   photoprism (into #{'re-cipes.apps.photoprism} base-docker-webapp))
 
 (def ^{:doc "Artifactory instance"}
