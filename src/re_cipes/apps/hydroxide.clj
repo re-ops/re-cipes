@@ -34,11 +34,13 @@
     before starting this service.
   "
   []
-  (let [{:keys [smtp-host tls-cert tls-key]} (configuration :hydroxide)
+  (let [{:keys [user]} (configuration)
+        {:keys [smtp-host tls-cert tls-key]} (configuration :hydroxide)
         cmd (<< "/opt/hydroxide/hydroxide smtp -smtp-host ~{smtp-host} -tls-cert ~{tls-cert} -tls-key ~{tls-key}")
         opts {:wants "basic.target"
               :after "basic.target network.target"
               :restart "always"
               :stop "/bin/kill -HUP $MAINPID"
-              :wanted-by "multi-user.target"}]
+              :wanted-by "multi-user.target"
+              :user user}]
     (set-service "hydroxide" "Hydroxide Proton mail bridge" cmd opts)))
