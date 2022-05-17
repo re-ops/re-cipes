@@ -82,6 +82,9 @@
 (def ^{:doc "Hydroxide instance"}
   hydroxide (into #{'re-cipes.apps.hydroxide} go-dev))
 
+(def ^{:doc "Signal CLI instance"}
+  signal-cli (into #{'re-cipes.apps.signal-cli} base))
+
 (def ^{:doc "Browser automation instance"}
   browser-drive (into #{'re-cipes.chromedriver} clj-dev))
 
