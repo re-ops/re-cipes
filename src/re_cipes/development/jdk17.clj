@@ -1,5 +1,5 @@
-(ns re-cipes.jdk
-  "Setting up the jdk"
+(ns re-cipes.development.jdk17
+  "Setting up Amazon correto jdk 17"
   (:require
    [re-cipes.access :refer (permissions)]
    [clojure.core.strint :refer (<<)]
@@ -11,8 +11,8 @@
 
 (require-recipe)
 
-(def-inline {:depends #'re-cipes.access/permissions} jdk-11
-  "Setting up Amazon corretto 11 jdk"
+(def-inline {:depends #'re-cipes.access/permissions} jdk-17
+  "Setting up Amazon corretto 17 jdk"
   []
   (let
    [sources "/etc/apt/sources.list.d"
@@ -27,4 +27,4 @@
     (line listing repo :present)
     (update-)
     (package "java-1.8.0-amazon-corretto-jdk:amd64" :absent)
-    (package "java-11-amazon-corretto-jdk" :present)))
+    (package "java-17-amazon-corretto-jdk" :present)))

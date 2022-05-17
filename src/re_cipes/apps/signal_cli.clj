@@ -12,9 +12,9 @@
 (def-inline {:depends #'re-cipes.access/permissions} signal-cli
   "Setting up signal-cli"
   []
-  (let [version "0.10.15"
-        sum "c6586cd1c5bfc6b57c3bf5fc33a1e10bff7f07cc2f07d00ab507ad549e3a1bdf"
-        artifact (<< "signal-cli_~{version}_Linux_.tar.gz")
+  (let [version "0.10.5"
+        sum "26254ef650c1d6913d9af411a152926bbc7be6f93625cf0e1456d16b45e77b22"
+        artifact (<< "signal-cli-~{version}-Linux.tar.gz")
         dest (<< "/usr/src/~{artifact}")
         url (<< "https://github.com/AsamK/signal-cli/releases/download/v~{version}/~{artifact}")]
     (download url dest sum)
