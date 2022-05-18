@@ -101,4 +101,9 @@
      :tls-cert "/opt/hydroxide/hy.crt"
   }
 
+  :signal-cli {
+    :number "12345" 
+    :log "/var/log/signal-cli.log"
+  }
+
 }
