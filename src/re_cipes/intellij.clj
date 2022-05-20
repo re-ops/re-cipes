@@ -18,9 +18,9 @@
   "Setting up Intellij Idea community edition"
   []
   (let [{:keys [home]} (configuration)
-        version "ideaIC-2020.2.1"
+        version "ideaIC-2022.1.1"
         tmp (<< "/tmp/~{version}.tar.gz")
-        expected "a107f09ae789acc1324fdf8d22322ea4e4654656c742e4dee8a184e265f1b014"
+        expected "d43a290a0723336944236ef6275a2dd660db424abcce6238c53cb57469b8cb41"
         url (<< "https://download-cf.jetbrains.com/idea/~{version}.tar.gz")]
     (download url tmp expected)
     (untar tmp "/opt/")
