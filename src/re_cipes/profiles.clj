@@ -85,6 +85,9 @@
 (def ^{:doc "Signal CLI instance"}
   signal-cli (into #{'re-cipes.apps.signal-cli 're-cipes.development.jdk17} base))
 
+(def ^{:doc "re-bot instance"}
+  re-bot (into #{'re-cipes.apps.signal-cli 're-cipes.development.jdk17} clj-dev))
+
 (def ^{:doc "Browser automation instance"}
   browser-drive (into #{'re-cipes.chromedriver} clj-dev))
 

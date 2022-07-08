@@ -28,8 +28,9 @@
   "Setting up signal-cli service (make sure to link the device before starting it) "
   []
   (let [{:keys [user]} (configuration)
-        {:keys [number log]} (configuration :signal-cli)
-        cmd (<< "/usr/local/bin/signal-cli -a ~{number} -o json daemon --socket --log-file ~{log}")
+        number (configuration :signal-cli :number)
+        log (configuration :signal-cli :log)
+        cmd (<< "/usr/local/bin/signal-cli --log-file ~{log} -a ~{number} -o json daemon --socket")
         opts {:wants "basic.target"
               :after "basic.target network.target"
               :restart "always"
