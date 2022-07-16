@@ -20,7 +20,7 @@
   (directory "/var/local/data" :present)
   (chmod "/var/local/data" "a+wrx" {:recursive true}))
 
-(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.apps.influxdb/volume]} get-source
+(def-inline {:depends [#'re-cipes.docker.server/services #'re-cipes.apps.influxdb-ha/volume]} get-source
   "Grabbing source"
   []
   (let [repo "https://github.com/re-ops/re-dock.git"
@@ -37,7 +37,7 @@
   []
   (let [external-port 8087
         {:keys [nginx]} (configuration)]
-    (site-enabled nginx "influxdb-ha" external-port 8086 {:tls-3 true})
+    (site-enabled nginx "influxdb-ha" external-port 8086 {})
     (add-rule external-port :allow {})))
 
 (def-inline {:depends [#'re-cipes.docker.nginx/get-source #'re-cipes.hardening/firewall]}
