@@ -18,7 +18,7 @@
   get-source
   "Setting up service"
   []
-  (let [repo "/etc/docker/re-dock"
+  (let [repo "/etc/docker/re-dock/elastic"
         dest "/etc/docker/compose/elk"]
     (symlink dest repo)
     (on-boot "docker-compose@elk" :enable)))
@@ -35,7 +35,7 @@
   "Setting up logstash pipeline"
   []
   (let [conf "logstash.conf"
-        docker "/etc/docker/re-dock/"
+        docker "/etc/docker/re-dock/elastic/"
         pipeline (<< "~{docker}/logstash/pipeline/~{conf}")
         compose (<< "~{docker}/docker-compose.yml")
         {:keys [password]} (configuration :elasticsearch)

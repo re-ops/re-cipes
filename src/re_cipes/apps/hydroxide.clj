@@ -36,7 +36,8 @@
   []
   (let [{:keys [user]} (configuration)
         {:keys [smtp-host tls-cert tls-key]} (configuration :hydroxide)
-        cmd (<< "/opt/hydroxide/hydroxide smtp -smtp-host ~{smtp-host} -tls-cert ~{tls-cert} -tls-key ~{tls-key}")
+        tls (if (and tls-cert tls-key) (<< "-tls-cert ~{tls-cert} -tls-key ~{tls-key}") "")
+        cmd (<< "/opt/hydroxide/hydroxide -smtp-host ~{smtp-host} ~{tls} smtp")
         opts {:wants "basic.target"
               :after "basic.target network.target"
               :restart "always"
