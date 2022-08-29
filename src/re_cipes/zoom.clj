@@ -11,7 +11,7 @@
   "Installing zoom"
   []
   (let [url "https://zoom.us/client/latest/zoom_amd64.deb"
-        sum "292bfb9f7baad32e2320949efbb6742ef1bbee3152e81a4edf61941d16e45d9f"
+        sum "562d12f05d0651b49ce39c2041c10e7d1a41083973e8d203052a1df165da80f9"
         dest  "/tmp/zoom_amd64.deb"]
     (download url dest sum)
     (package dest :present)))
