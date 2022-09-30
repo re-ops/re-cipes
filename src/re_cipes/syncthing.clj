@@ -18,7 +18,7 @@
         listing (<< "~{sources}/syncthing.list")
         url "https://syncthing.net/release-key.gpg"
         keyrings "/usr/share/keyrings"
-        key "syncthing-key"
+        key "syncthing-archive-keyring.gpg"
         repo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable"]
     (download url (<< "~{keyrings}/~{key}") "a3806c3511f2cce3d2f12962f64b58b9192a15c9d862886cc46f9de8a25d7dbf")
     (key-file (<< "~{keyrings}/~{key}"))
