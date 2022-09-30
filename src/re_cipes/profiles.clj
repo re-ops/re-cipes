@@ -50,6 +50,9 @@
 
 ; Single purpose instance
 
+(def ^{:doc "Bitwarden CLI"}
+  bitwardedn (into #{'re-cipes.security.bitwarden} base))
+
 (def ^{:doc "Backup tools"}
   backup (into #{'re-cipes.backup} base))
 
