@@ -140,6 +140,9 @@
 (def ^{:doc "Zoom video"}
   zoom (into #{'re-cipes.zoom} lean-desktop))
 
+(def ^{:doc "Android ADB"}
+  adb (into #{'re-cipes.desktop.adb} lean-desktop))
+
 (def ^{:doc "Signal messaging"}
   signal (into #{'re-cipes.desktop.signal} lean-desktop))
 
