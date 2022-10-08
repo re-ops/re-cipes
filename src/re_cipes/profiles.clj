@@ -171,6 +171,9 @@
 (def ^{:doc "Elastisearch instance"}
   elasticsearch (into #{'re-cipes.apps.elasticsearch} base-re_dock))
 
+(def ^{:doc "Wallabag read it later app"}
+  wallabag (into #{'re-cipes.apps.wallabag} base-docker-webapp))
+
 (def ^{:doc "Influxdb server"}
   influxdb (into #{'re-cipes.apps.influxdb} base-docker-webapp))
 

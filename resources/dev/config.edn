@@ -50,6 +50,14 @@
     :org "testing-org"
   }
 
+  :wallabag {
+    :db_root_password #ref [:secrets :wallabag :db_root_password]
+    :db_password #ref [:secrets :wallabag :db_password]
+    :email "foo@bar.com"
+    :domain "localhost"
+    :name "instance"
+  }
+
   :nginx {
     :enabled "/etc/docker/compose/nginx-proxy/sites-enabled"
   }
